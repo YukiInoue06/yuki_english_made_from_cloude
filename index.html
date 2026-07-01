@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f0f0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="英語クイズ">
+<title>英語復習クイズ</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic UI", "Segoe UI", Roboto, sans-serif;
+    background: #0f0f0e;
+    color: #f0eee7;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .app { max-width: 560px; margin: 0 auto; padding: 16px 16px calc(24px + env(safe-area-inset-bottom)) 16px; padding-top: calc(16px + env(safe-area-inset-top)); }
+  .header { display: flex; align-items: center; justify-content: space-between; padding: 8px 4px 16px; }
+  .header h1 { font-size: 17px; font-weight: 600; margin: 0; letter-spacing: -0.01em; color: #f0eee7; }
+  .header .total { font-size: 12px; color: #a8a59c; background: #2a2a27; padding: 3px 10px; border-radius: 12px; }
+  .card { background: #1a1a18; border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 20px; margin-bottom: 12px; }
+  .subtitle { font-size: 13px; color: #a8a59c; margin: 0 0 16px; line-height: 1.5; }
+  .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .mode-btn { background: #232321; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px 12px; cursor: pointer; text-align: center; font-family: inherit; color: #f0eee7; transition: transform 0.1s, background 0.15s; -webkit-appearance: none; }
+  .mode-btn:active { transform: scale(0.97); background: #2d2d2a; }
+  .mode-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .mode-icon { font-size: 26px; margin-bottom: 6px; }
+  .mode-name { font-weight: 600; font-size: 15px; margin-bottom: 3px; color: #f0eee7; }
+  .mode-count { font-size: 11px; color: #a8a59c; }
+  .mode-mastered { font-size: 10px; color: #C0DD97; margin-top: 2px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat { background: #232321; border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .stat-num { font-size: 20px; font-weight: 600; line-height: 1.2; color: #f0eee7; }
+  .stat-lbl { font-size: 11px; color: #a8a59c; margin-top: 2px; }
+  .mastery-bar { margin-top: 14px; padding: 12px 14px; background: #232321; border-radius: 12px; }
+  .mastery-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 6px; }
+  .mastery-label { color: #a8a59c; }
+  .mastery-value { color: #C0DD97; font-weight: 600; }
+  .mastery-progress { height: 6px; background: #2a2a27; border-radius: 3px; overflow: hidden; }
+  .mastery-fill { height: 100%; background: linear-gradient(90deg, #639922, #8FBE4F); transition: width 0.4s; }
+  .mastery-hint { font-size: 11px; color: #a8a59c; margin-top: 8px; line-height: 1.5; }
+  .reset-btn { background: transparent; border: none; color: #6b6862; font-size: 11px; cursor: pointer; padding: 4px 8px; margin-top: 8px; text-decoration: underline; font-family: inherit; }
+  .reset-btn:active { color: #a8a59c; }
+  .q-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #a8a59c; margin-bottom: 10px; }
+  .streak { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 4px 10px; background: #3a2a0f; color: #FAC775; border-radius: 12px; font-weight: 500; }
+  .q-progress { height: 5px; background: #2a2a27; border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
+  .q-progress-fill { height: 100%; background: #378ADD; transition: width 0.3s; }
+  .q-text { font-size: 17px; font-weight: 600; margin: 0 0 4px; line-height: 1.5; letter-spacing: -0.01em; color: #f0eee7; }
+  .q-hint { font-size: 12px; color: #a8a59c; margin: 0 0 16px; }
+  .q-mastery-tag { display: inline-block; font-size: 10px; padding: 2px 8px; background: #1f3a0f; color: #C0DD97; border-radius: 8px; margin-left: 6px; vertical-align: middle; }
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice { background: #232321; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 16px; cursor: pointer; text-align: left; font-size: 15px; font-family: inherit; color: #f0eee7; min-height: 50px; line-height: 1.4; -webkit-appearance: none; transition: transform 0.1s, background 0.15s, border-color 0.15s; }
+  .choice:active:not(:disabled) { transform: scale(0.98); background: #2d2d2a; }
+  .choice:disabled { cursor: default; }
+  .choice.correct { background: #1f3a0f; border-color: #639922; color: #C0DD97; font-weight: 500; }
+  .choice.wrong { background: #3a1313; border-color: #A32D2D; color: #F09595; font-weight: 500; }
+  .choice.dim { opacity: 0.35; }
+  .feedback { margin-top: 16px; padding: 14px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; }
+  .feedback.ok { background: #1f3a0f; color: #C0DD97; }
+  .feedback.ng { background: #3a1313; color: #F09595; }
+  .fb-label { font-weight: 600; margin-bottom: 4px; font-size: 13px; }
+  .fb-mastery { display: block; margin-top: 8px; font-size: 12px; font-weight: 500; padding-top: 8px; border-top: 1px solid rgba(192,221,151,0.2); }
+  .btn { width: 100%; margin-top: 12px; padding: 14px; background: #232321; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; cursor: pointer; font-size: 15px; font-weight: 600; font-family: inherit; color: #f0eee7; min-height: 48px; -webkit-appearance: none; transition: transform 0.1s, background 0.15s; }
+  .btn:active { transform: scale(0.98); background: #2d2d2a; }
+  .btn-primary { background: #378ADD; color: white; border-color: #378ADD; }
+  .btn-primary:active { background: #185FA5; }
+  .score-num { font-size: 48px; font-weight: 700; text-align: center; margin: 16px 0 4px; letter-spacing: -0.02em; color: #f0eee7; }
+  .score-msg { text-align: center; font-size: 14px; color: #a8a59c; margin-bottom: 16px; }
+  .btn-row { display: flex; gap: 8px; margin-top: 16px; }
+  .btn-row .btn { margin-top: 0; }
+  .review { margin-top: 8px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .review-h { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #f0eee7; }
+  .review-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; line-height: 1.5; color: #d4d2c9; }
+  .review-item:last-child { border-bottom: none; }
+  .review-mark { display: inline-block; width: 20px; }
+  .review-correct { margin-left: 20px; margin-top: 4px; color: #a8a59c; font-size: 12px; }
+  .empty-state { text-align: center; padding: 24px 16px; color: #a8a59c; font-size: 14px; line-height: 1.6; }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+  @media (max-width: 360px) {
+    .mode-name { font-size: 14px; }
+    .q-text { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>📚 英語復習クイズ</h1>
+    <span class="total" id="total-badge"></span>
+  </div>
+  <div class="card" id="root"></div>
+</div>
+
+<script>
+const QUESTIONS = {
+  vocab: [
+    { id: 'v01', q: '「consider」のコアイメージは？', choices: ['磨かれてツルツル', 'じっくり目を向ける', 'ヒリヒリ痛む', '内側に向ける'], correct: 1,
+      explain: 'consider = じっくり目を向ける。語源はラテン語の「星をじっと見る」。"Please consider my offer."（私の提案をよく考えてください）のように使います。' },
+    { id: 'v02', q: '「polite」のコアイメージは？', choices: ['親切な', '磨かれた', '静かな', '正しい'], correct: 1,
+      explain: 'polite = 磨かれてツルツル。polish（磨く）と同じ語源。"Try to be polite to your teachers."（先生には礼儀正しくしようね）。' },
+    { id: 'v03', q: '「sore」の意味は？', choices: ['悲しい', '柔らかい', 'ヒリヒリ痛む', '硬い'], correct: 2,
+      explain: 'sore = ヒリヒリ・ズキズキする痛み。"My legs are sore after running."（走った後で足が痛い）のように使います。' },
+    { id: 'v04', q: '「introvert」の意味は？', choices: ['外向的な人', '内向的な人', '正直な人', '冒険好きな人'], correct: 1,
+      explain: 'introvert = 内側（intro-）に向ける（-vert）人 → 内向的な人。"She is more of an introvert."（彼女はどちらかというと内向的）。反対は extrovert。' },
+    { id: 'v05', q: '「pass away」の意味は？', choices: ['通り過ぎる', '気を失う', '亡くなる', '合格する'], correct: 2,
+      explain: 'pass away = この世から通り過ぎて去る → 亡くなる（やわらかい表現）。"My grandfather passed away last year."（祖父は去年亡くなりました）。' },
+    { id: 'v06', q: '「pass out」の意味は？', choices: ['亡くなる', '気を失う', '合格する', '通り過ぎる'], correct: 1,
+      explain: 'pass out = 意識が外（out）へ抜ける → 気を失う。"He passed out from the heat."（彼は暑さで気を失った）。away（遠くへ）と out（外へ）で意味が変わります。' },
+    { id: 'v07', q: '「政治家」を英語で言うと？', choices: ['politics', 'political', 'politician', 'policy'], correct: 2,
+      explain: 'politician = 政治家。-ian は「〜する人」を表す語尾。"He wants to be a politician."（彼は政治家になりたい）。musician（音楽家）と同じパターン。' },
+    { id: 'v08', q: '「政策・方針」を英語で言うと？', choices: ['policy', 'politics', 'politician', 'police'], correct: 0,
+      explain: 'policy = 政策・方針。"What is your company\'s policy on returns?"（御社の返品ポリシーは？）。polis（都市国家）ファミリーで、police（警察）と同じ語源。' },
+    { id: 'v09', q: '「clarify」のコアイメージは？', choices: ['指を向ける', 'クリアにする', '徹底的に通り抜ける', '混ぜ合わせる'], correct: 1,
+      explain: 'clarify = clear（澄んだ）+ ify（〜にする）→ 霧を晴らしてはっきり見せる。"Could you clarify what you mean?"（どういう意味か説明してくれる？）。' },
+    { id: 'v10', q: '「refer」のコアイメージは？', choices: ['そっちへ向ける', '前に置く', '差し出す', '越えて運ぶ'], correct: 0,
+      explain: 'refer = re-（あっちへ）+ fer（運ぶ）→ 指を向ける。"The doctor referred me to a specialist."（医者は私を専門医に紹介してくれた）。仲間：prefer, offer, transfer。' },
+    { id: 'v11', q: '「thoroughly」のコアイメージは？', choices: ['軽く触れる', '通り抜ける', '中央を貫く', '上から覆う'], correct: 1,
+      explain: 'thoroughly は through（通り抜ける）と同じ語源。「端から端まで全部」イメージ → 徹底的に、完全に。"Wash your hands thoroughly."（手を徹底的に洗って）。' },
+    { id: 'v12', q: '「pair」の語源「par」の意味は？', choices: ['二つ', '対', '等しい', '組'], correct: 2,
+      explain: 'pair の語源 par = equal（等しい）。仲間：compare（一緒に等しさを見る → 比べる）、parallel（平行な）。"a pair of socks"（靴下一組）。' },
+    { id: 'v13', q: '「drowsy」の意味は？', choices: ['元気な', 'ぼんやりと眠い', '疲れた', 'クタクタの'], correct: 1,
+      explain: 'drowsy = 意識がゆっくり沈んでいく眠さ。"This medicine may make you drowsy."（この薬は眠気を引き起こすかも）。sleepy（夜寝る前の眠さ）とは少し違います。' },
+    { id: 'v14', q: '「nausea（吐き気）」の語源は？', choices: ['薬', '船', '胃', '熱'], correct: 1,
+      explain: 'nausea の語源はギリシャ語の naus（船）。船酔いがもとの意味。"I feel nauseous on long bus rides."（長時間バスに乗ると気持ち悪くなる）。astronaut（星の船乗り）も同じ仲間。' },
+    { id: 'v15', q: '「cute」のもともとの意味は？', choices: ['小さい', 'かわいい', '鋭く賢い', '柔らかい'], correct: 2,
+      explain: 'cute は acute（鋭い・賢い）が短くなったもの。「ハッと心を引きつける鋭さ」がコア。"Look at that cute squirrel!"（あのリスかわいい！）。' },
+    { id: 'v16', q: '「姪（女の子）」を英語で？', choices: ['nephew', 'niece', 'cousin', 'sister'], correct: 1,
+      explain: 'niece = 姪、nephew = 甥。"My niece is starting school next month."（来月、姪が学校に通い始める）。niece には ice の綴り。' },
+    { id: 'v17', q: '「compare」の意味は？', choices: ['消える', '比べる', '完成させる', '混ぜる'], correct: 1,
+      explain: 'compare = com（一緒に）+ pare（等しい）→ 比べる。"Let\'s compare these two phones."（この2つのスマホを比べよう）。pair と同じ par（等しい）ファミリー。' },
+    { id: 'v18', q: '「universe（宇宙）」の語源の意味は？', choices: ['星の集まり', '一つの全体', '無限の空間', '神の領域'], correct: 1,
+      explain: 'universe = uni（一つに）+ verse（向きを変えたもの）→ 一つにまとまった全体。"The universe is full of mystery."（宇宙は神秘でいっぱい）。' },
+    { id: 'v19', q: '「鳥肌」を英語で？', choices: ['chicken skin', 'goosebumps', 'cold skin', 'shaking skin'], correct: 1,
+      explain: 'goosebumps = 鳥肌。直訳「ガチョウのブツブツ」。"That horror movie gave me goosebumps."（あのホラー映画で鳥肌が立った）。' },
+    { id: 'v20', q: '「演技力」を英語で？', choices: ['action', 'acting', 'play', 'doing'], correct: 1,
+      explain: 'acting = 俳優としての演技。action は「行動・動き全般」。"Her acting in the new movie was amazing."（新しい映画での彼女の演技は素晴らしかった）。' },
+    { id: 'v21', q: '「独り言」を英語で？', choices: ['alone-talk', 'self-talk', 'mono-talk', 'inside-talk'], correct: 1,
+      explain: 'self-talk = 独り言。"Positive self-talk can boost your confidence."（前向きな独り言は自信を高める）。英語学習で発声練習にも◎' },
+    { id: 'v22', q: '「平和な一日」と言いたい時、正しい形は？', choices: ['a peace day', 'a peaceful day', 'a peacely day', 'the peace day'], correct: 1,
+      explain: 'peaceful = 平和な（形容詞）。peace は名詞。"I spent a peaceful afternoon in the park."（公園で平和な午後を過ごした）。名詞 day を修飾するには形容詞が必要。' },
+    { id: 'v23', q: '「今日もまた平和な一日」の「もう一つの・また」は？', choices: ['other', 'another', 'one more', 'second'], correct: 1,
+      explain: 'another = もう一つの・また別の。"Can I have another cup of coffee?"（もう一杯コーヒーをもらえますか？）。an + other が合体した単語。' },
+    { id: 'v24', q: '「果物、特にいちごが好き」の「特に」は？', choices: ['especially', 'specially', 'mostly', 'really'], correct: 0,
+      explain: 'especially = 特に。"I enjoy outdoor sports, especially hiking."（アウトドアスポーツ、特にハイキングが好き）。具体例を強調する時に使います。' },
+    { id: 'v25', q: '「テストの点数」を表すのに適切な単語は？', choices: ['points', 'score', 'numbers', 'marks'], correct: 1,
+      explain: 'score = テストの点数。"What was your score on the English test?"（英語のテスト何点だった？）。points はゲームやスポーツの「得点」。' },
+    { id: 'v26', q: '「ever」のコアイメージは？', choices: ['いつでも', 'すべての時の中で', '永遠に', '時々'], correct: 1,
+      explain: 'ever = これまでのすべての時間の中で。"Have you ever been to Japan?"（日本に行ったことある？）。疑問文・否定文・最上級で使います。' },
+    { id: 'v27', q: '「気持ち悪い・吐き気がする」を一番カジュアルに言うと？', choices: ['I feel sick', 'I feel nauseous', 'I feel queasy', 'I feel weak'], correct: 0,
+      explain: 'I feel sick. = 気持ち悪い（日常会話で一番自然）。"I ate too much, I feel sick."（食べ過ぎて気持ち悪い）。nauseous は少しフォーマル。' },
+    { id: 'v28', q: '「めまいがする」を英語で？', choices: ['I feel dizzy', 'I feel drowsy', 'I feel sick', 'I feel weak'], correct: 0,
+      explain: 'dizzy = めまいがする。"I stood up too fast and felt dizzy."（急に立ち上がってめまいがした）。drowsy（ぼんやり眠い）と混同しないように。' },
+    { id: 'v29', q: '「車酔い」を英語で？', choices: ['car-sick', 'carsick', 'car sick', 'sickcar'], correct: 1,
+      explain: 'carsick = 車酔い（一語）。"She always gets carsick on long trips."（彼女は長旅でいつも車酔いする）。seasick（船酔い）、airsick（飛行機酔い）も同じパターン。' },
+    { id: 'v30', q: '「I see.」の意味は？', choices: ['見えます', 'なるほど', '会いに行きます', '探します'], correct: 1,
+      explain: 'I see. = なるほど・わかった。"Oh, I see. That makes sense."（あ、なるほど。納得）。see は「見る」だけでなく「理解する」の意味も。' },
+    { id: 'v31', q: '「映像がきれい」の「映像」を英語で？', choices: ['visual', 'visuals', 'visual scene', 'picture'], correct: 1,
+      explain: 'visuals = 映像（複数形が自然）。"The visuals in this game are stunning."（このゲームの映像はすごい）。graphics も同じように使えます。' },
+    { id: 'v32', q: '「薬」を「たくさん」買った時、正しい形は？', choices: ['a lot of medicines', 'a lot of medicine', 'many medicine', 'much medicines'], correct: 1,
+      explain: 'medicine（薬）は数えない名詞なので medicines にしません。"I took some medicine for my headache."（頭痛に薬を飲んだ）。' },
+    { id: 'v33', q: '「薬局」を英語で？', choices: ['medicine store', 'drugstore / pharmacy', 'medical shop', 'health store'], correct: 1,
+      explain: 'drugstore / pharmacy = 薬局。"Is there a pharmacy near here?"（この近くに薬局ある？）。アメリカでは drugstore、イギリスでは chemist もよく使われます。' },
+    { id: 'v34', q: '「whatever」のコアイメージは？', choices: ['いつでも', '何であろうと', 'どこでも', '誰でも'], correct: 1,
+      explain: 'whatever = 何であろうと関係ない。"You can order whatever you want."（何でも好きなものを注文していいよ）。"Whatever happens, stay calm."（何が起きても冷静に）。' },
+    { id: 'v35', q: '「いつであっても」を英語で？', choices: ['whatever', 'whenever', 'wherever', 'whoever'], correct: 1,
+      explain: 'whenever = いつであっても。"Call me whenever you need help."（必要な時はいつでも電話して）。wh- + ever ファミリー（whatever, wherever, whoever, however）の1つ。' },
+    { id: 'v36', q: '「連続で（会議などが続く）」を英語で？', choices: ['back-to-back', 'side-by-side', 'one-by-one', 'step-by-step'], correct: 0,
+      explain: 'back-to-back = 連続で。"I have three back-to-back lessons today."（今日は3コマ連続でレッスンがある）。背中合わせにぴったり続くイメージ。' },
+    { id: 'v37', q: '動詞の「last」のコアイメージは？', choices: ['最後にする', '持ちこたえる', '失う', '終わらせる'], correct: 1,
+      explain: 'last（動詞）= 最後まで残る → 続く・持続する。"How long does this medicine last?"（この薬はどのくらい効く？）。"The party lasted until midnight."（パーティーは夜中まで続いた）。' },
+    { id: 'v38', q: '「continue」と「last」の違いは？', choices: ['同じ意味', 'continue は動きのある「続ける」、last は長さに注目した「持続する」', 'continue は短期、last は長期', 'continue は人、last はモノ'], correct: 1,
+      explain: 'continue = 動きのある「続ける」、last = 長さに注目した「持続する」。"The rain continued all day."（雨が一日中降り続けた）vs "The drought lasted six months."（干ばつは6ヶ月続いた）。' },
+    { id: 'v39', q: '「wind down」の意味は？', choices: ['風が吹く', 'リラックスする', '下に降りる', '巻き戻す'], correct: 1,
+      explain: 'wind down = リラックスする。"I read a book to wind down before bed."（寝る前に本を読んでリラックスする）。寝る前の習慣によく使う表現。' },
+    { id: 'v40', q: '「get used to ~」の意味は？', choices: ['〜を使う', '〜に慣れる', '〜を使ったことがある', '〜が必要'], correct: 1,
+      explain: 'get used to ~ = 〜に慣れる。"It took me a while to get used to the spicy food here."（ここの辛い食べ物に慣れるのに時間がかかった）。' },
+    { id: 'v41', q: '「applicable」のコアイメージは？', choices: ['応用できる', 'ピタッと当てはまる', '便利な', '実用的な'], correct: 1,
+      explain: 'applicable = ピタッと当てはまる。"This discount is applicable to students only."（この割引は学生のみ対象）。動詞 apply（適用する）の仲間。' },
+    { id: 'v42', q: '「affect」と「effect」の違いは？', choices: ['同じ意味', 'affect は動詞「影響を与える」、effect は名詞「影響・結果」', 'affect は名詞、effect は動詞', 'affect はプラス、effect はマイナス'], correct: 1,
+      explain: 'affect（動詞・影響を与える）、effect（名詞・影響）。"Stress affects sleep."（ストレスは睡眠に影響する）vs "Stress has an effect on sleep."（ストレスは睡眠に影響がある）。' },
+    { id: 'v43', q: '「consequence」のコアイメージは？', choices: ['楽しい結果', '深刻な結果', '良い結末', '予想通りの結果'], correct: 1,
+      explain: 'consequence = 行動の後にやってくる結末（重いニュアンス）。"Drinking and driving has serious consequences."（飲酒運転には深刻な結果がある）。' },
+    { id: 'v44', q: '「worse」は何の比較級？', choices: ['good', 'bad', 'better', 'best'], correct: 1,
+      explain: 'bad → worse → worst（不規則変化）。"The traffic is worse than usual today."（今日は交通量がいつもよりひどい）。' },
+    { id: 'v45', q: '「deteriorate」の意味は？', choices: ['急に良くなる', 'だんだん悪化する', '変わらない', '完全に壊れる'], correct: 1,
+      explain: 'deteriorate = だんだん悪化する（かため）。"The weather is expected to deteriorate tonight."（夜には天気が悪化する見込み）。会話では get worse が自然。' },
+    { id: 'v46', q: '「frightening」と「frightened」の違いは？', choices: ['同じ意味', 'frightening は物事が人をこわがらせる、frightened は人がこわがっている', 'frightening は弱い、frightened は強い', '区別なく使える'], correct: 1,
+      explain: '-ing は「人をそうさせる原因」、-ed は「人の気持ち」。"The thunder was frightening."（雷はこわかった/こわがらせる）vs "I was frightened by the thunder."（雷でこわかった）。scary/scared と同じルール。' },
+    { id: 'v47', q: '「warn」のコアイメージは？', choices: ['伝える', '前もって知らせる', '思い出させる', '怒る'], correct: 1,
+      explain: 'warn = あぶないよと前もって知らせる。"The sign warns drivers about falling rocks."（標識は落石をドライバーに警告している）。よく使う形：warn 人 to do / warn 人 not to do。' },
+    { id: 'v48', q: '「scary」「frightening」「terrifying」の強さの順は？', choices: ['scary > frightening > terrifying', 'scary < frightening < terrifying', '全部同じ', '順番はない'], correct: 1,
+      explain: '弱→強：scary（こわい・会話向き）< frightening（ぞっとする・少しかため）< terrifying（恐怖でこわばる）。"That was a terrifying experience."（あれは本当に恐ろしい経験だった）。' },
+    { id: 'v49', q: '「scary」の自然な反対語は？', choices: ['unscary', 'safe', 'happy', 'easy'], correct: 1,
+      explain: '会話レベルでは not scary / safe が自然。"Don\'t worry, this neighborhood is safe."（心配しないで、この地区は安全だよ）。少しかたく言うなら reassuring（安心させる）。' },
+    { id: 'v50', q: '「relevant」の意味は？', choices: ['正しい', '関係がある', 'ふさわしい', '重要な'], correct: 1,
+      explain: 'relevant = 話のテーマに関係がある。"Please share only relevant information."（関係のある情報だけ共有してください）。applicable（当てはまる）、suitable（ふさわしい）と区別。' },
+    { id: 'v51', q: '「fascinating」のコアイメージは？', choices: ['とても新しい', '夢中にさせる', 'こわがらせる', 'おもしろくない'], correct: 1,
+      explain: 'fascinating = 目が離せなくなるほど夢中にさせる。語源は「魔法をかける」。"I find space fascinating."（宇宙は興味深い）。自分が夢中なら fascinated。' },
+    { id: 'v52', q: '「apparent」のコアイメージは？', choices: ['隠れている', 'ぱっと見て分かる', '聞こえる', '触れる'], correct: 1,
+      explain: 'apparent = ぱっと見て分かる。語源は appear（現れる）。"It was apparent that he was tired."（彼が疲れているのは明らかだった）。' },
+    { id: 'v53', q: '「apparently」（会話の超便利語）の意味は？', choices: ['明らかに', 'どうやら〜らしい', 'たぶん', 'すぐに'], correct: 1,
+      explain: 'apparently = どうやら〜らしい。確実ではないけど「〜みたい」と伝える便利な副詞。"Apparently, she is moving to Tokyo."（どうやら彼女は東京に引っ越すらしい）。' },
+    { id: 'v54', q: '「upset」のコアイメージは？', choices: ['上に置く', 'ひっくり返す', '下に落ちる', '怒鳴る'], correct: 1,
+      explain: 'upset = up（上に）+ set（置く）→ ひっくり返す。気持ちがひっくり返れば動揺、お腹がひっくり返れば不調。"She was upset about the news."（その知らせに動揺した）。' },
+    { id: 'v55', q: '「urgent」のコアイメージは？', choices: ['重要な', '今すぐ迫られる', 'のんびりした', 'むずかしい'], correct: 1,
+      explain: 'urgent = 今すぐやらないと、と押される感じ。語源 urge（強く促す）。"This is an urgent message."（これは緊急のメッセージ）。important（重要）と違い、時間がないのが特徴。' },
+    { id: 'v56', q: '「vote」のコアイメージは？', choices: ['投げる', '一票を示す', '選ばれる', '集まる'], correct: 1,
+      explain: 'vote = 自分の意思を1票として示す。語源は「願い・誓い」。"I will vote for her."（彼女に投票する）。前置詞：vote for（賛成）、vote against（反対）。' },
+    { id: 'v57', q: '「knowledge」と「wisdom」の違いは？', choices: ['同じ意味', 'knowledge = 知識（情報）、wisdom = 知恵（うまく使う力）', 'knowledge = 古い、wisdom = 新しい', 'knowledge = 学校、wisdom = 仕事'], correct: 1,
+      explain: 'knowledge = 知識（知っている情報）、wisdom = 知恵（その知識をうまく使う力）。"He has the wisdom to make good choices."（彼は良い選択をする知恵がある）。どちらも数えない名詞。' },
+    { id: 'v58', q: '「intent」のコアイメージは？', choices: ['考え', '一方向に向く', '感情', '夢'], correct: 1,
+      explain: 'intent = in（〜の方へ）+ tend（伸ばす）→ 心が目標にピンと向く。"He was intent on winning."（彼は勝つことに熱中していた）。日常会話では intention の方が自然。' },
+    { id: 'v59', q: '「疲れた〜」をカジュアルなスラングで言うと？', choices: ["I'm tired", "I'm beat", "I'm sad", "I'm done"], correct: 1,
+      explain: 'I\'m beat = 疲れた〜（スラング・カジュアル）。"What a long day! I\'m beat."（長い一日だった！疲れた〜）。I\'m tired より会話っぽい。' },
+    { id: 'v60', q: '「plumber（配管工）」の発音で注意するのは？', choices: ['plを強く読む', 'bは読まない（プラマー）', 'rを2回読む', '最後にエを足す'], correct: 1,
+      explain: 'plumber は b を読まない（プラマー）。語源 plumb = 鉛（昔のパイプは鉛製）。"We called a plumber."（配管工を呼んだ）。' },
+    { id: 'v61', q: '「indent」の意味は？', choices: ['字下げする', '消す', '広げる', '繰り返す'], correct: 0,
+      explain: 'indent = in（中へ）+ dent（へこみ）→ 字下げ。"Please indent the first line of each paragraph."（各段落の最初の行を字下げしてください）。プログラミングでも頻出！' },
+    { id: 'v62', q: '「afford」の意味は？', choices: ['余裕がある', '与える', '前進する', '提供する'], correct: 0,
+      explain: 'afford = ～する余裕がある。"I can\'t afford a new car."（新しい車を買う余裕がない）。can/can\'t とセットで使うのが基本。' },
+    { id: 'v63', q: '「intense」のコアイメージは？', choices: ['張り詰めた', '広がる', '優しい', '冷たい'], correct: 0,
+      explain: 'intense = in（中に）+ tense（張る）→ 内側に張り詰めた → 強烈な。"The training was intense."（トレーニングは強烈だった）。intent（心がピンと向く）と同じ仲間。' },
+    { id: 'v64', q: '「opposite」のコアイメージは？', choices: ['同じ', '反対側', '上下', '近く'], correct: 1,
+      explain: 'opposite = op（向かい）+ posite（置かれた）→ 反対の・向かい側の。"The bank is opposite the post office."（銀行は郵便局の向かい）。' },
+    { id: 'v65', q: '「annoyed」の意味は？', choices: ['嬉しい', 'イライラする', 'こわい', '悲しい'], correct: 1,
+      explain: 'annoyed = 少しイライラする・うっとうしい（angry より弱め）。"I\'m annoyed by the noise."（その騒音にイライラする）。-ed は人の気持ち。' },
+    { id: 'v66', q: '「satisfied」のコアイメージは？', choices: ['満たされて十分', '驚いた', '怒った', '疲れた'], correct: 0,
+      explain: 'satisfied = 満たされて十分な状態 → 満足した。"I\'m satisfied with my work."（自分の仕事に満足している）。語源は satis（十分）+ fy（する）。' },
+    { id: 'v67', q: '「justify」のコアイメージは？', choices: ['正当化する', '審判する', '罰する', '反対する'], correct: 0,
+      explain: 'justify = just（正しい）+ ify（〜にする）→ 正当化する。"You can\'t justify lying."（嘘をつくことを正当化はできない）。' },
+    { id: 'v68', q: '「farewell」の意味は？', choices: ['さよなら', 'こんにちは', 'おやすみ', 'ありがとう'], correct: 0,
+      explain: 'farewell = fare（旅）+ well（よく）→ 元気で行ってきてね → さよなら（少しフォーマル）。"a farewell party"（送別会）。' },
+    { id: 'v69', q: '「recap」の意味は？', choices: ['取り戻す', 'おさらい', '帽子をかぶる', '再開する'], correct: 1,
+      explain: 'recap = re（再び）+ cap（capitulate の頭）→ 要点をもう一度まとめる → おさらい。"Let me recap what we discussed."（話したことをおさらいしましょう）。summary より会話っぽい。' },
+    { id: 'v70', q: '「definitely」の使い方で正しいのは？', choices: ['必ず yes の意味だけ', '強く同意する時', '「たぶん」の意味', '丁寧な「お願い」'], correct: 1,
+      explain: 'definitely = 絶対・確実に。"Are you coming?" "Definitely!"（来るの？）（絶対！）。否定は definitely not（絶対ない）。スペル注意：defin**ite**ly（×definately）。' },
+    { id: 'v71', q: '「Well done!」の意味は？', choices: ['きれいに終わった', 'よくやったね、お疲れさま', '正解', 'はっきり言って'], correct: 1,
+      explain: 'Well done! = よくやったね、お疲れさま。"Well done on your test!"（テスト、よくやったね！）。少していねいで、先生が生徒に使う場面でもよく聞きます。' },
+    { id: 'v72', q: '「a bit of」の意味は？', choices: ['とても', '少しの', 'たくさんの', '全くない'], correct: 1,
+      explain: 'a bit of + 不可算名詞 = 少しの〜。"I need a bit of help."（少し助けが必要）。a little とほぼ同じだけど、a bit of の方が少しカジュアル。' },
+    { id: 'v73', q: '「definitely」の意味は？', choices: ['たぶん', '絶対に', 'すぐに', '時々'], correct: 1,
+      explain: 'definitely = 絶対に・もちろん。"Are you coming?" "Definitely!"（来る？）（もちろん！）。"definitely not" = 絶対違う／絶対嫌。' },
+    { id: 'v74', q: '「recap」のコアイメージは？', choices: ['再放送', '振り返り', '取り戻す', '再開する'], correct: 1,
+      explain: 'recap = re（再び）+ cap（つかむ）→ もう一度つかみ直す → 要約。"Let me recap what we discussed."（話し合った内容を振り返ろう）。動詞・名詞両方使えます。' },
+    { id: 'v75', q: '「realistic」の意味は？', choices: ['実用的な', '現実的な', '正直な', '正確な'], correct: 1,
+      explain: 'realistic = 現実的な。"Be realistic about your goals."（目標は現実的にしよう）。real（現実の）、reality（現実）の仲間。' },
+    { id: 'v76', q: '「opposite」の意味は？', choices: ['同じ', '反対の', '隣の', '似ている'], correct: 1,
+      explain: 'opposite = 反対の。"They live on the opposite side of the street."（彼らは道の反対側に住んでいる）。意味の反対だけでなく、場所の反対側にも使えます。' },
+    { id: 'v77', q: '「emotion」のコアイメージは？', choices: ['考え', '感情', '反応', '気分'], correct: 1,
+      explain: 'emotion = e（外へ）+ motion（動き）→ 心が外へ動き出す → 感情。"He has trouble showing his emotions."（彼は感情を表に出すのが苦手）。' },
+    { id: 'v78', q: '「childhood」の意味は？', choices: ['子供たち', '子供時代', '幼稚園', '誕生日'], correct: 1,
+      explain: 'childhood = 子供時代（child + hood = 時期・状態）。"I have happy memories of my childhood."（子供時代の楽しい思い出がある）。仲間：adulthood（大人時代）、neighborhood（近所）。' },
+    { id: 'v79', q: '「satisfied」の意味は？', choices: ['疲れた', '満足した', 'うれしい', '心配した'], correct: 1,
+      explain: 'satisfied = 満足した（自分の気持ち → -ed）。"I\'m satisfied with my work."（自分の仕事に満足している）。satisfying（満足させる側）は -ing 形。' },
+    { id: 'v80', q: '「lack」の意味は？', choices: ['余る', '足りない', 'たくさんある', '失う'], correct: 1,
+      explain: 'lack = 不足している・欠けている。"He lacks confidence."（彼は自信が足りない）。名詞でも動詞でも使える。"a lack of sleep"（睡眠不足）。' },
+    { id: 'v81', q: '「bury」の意味は？', choices: ['掘り出す', '埋める', '燃やす', '隠れる'], correct: 1,
+      explain: 'bury = 埋める。発音は「ベリー」。"They buried the time capsule in the garden."（庭にタイムカプセルを埋めた）。名詞は burial（埋葬）。' },
+    { id: 'v82', q: '「archaeologist」の意味は？', choices: ['天文学者', '考古学者', '生物学者', '地質学者'], correct: 1,
+      explain: 'archaeologist = 考古学者。archaeo（古い）+ logist（〜を研究する人）。"The archaeologist found ancient pottery."（考古学者は古代の陶器を発見した）。' },
+    { id: 'v83', q: '「theory」の意味は？', choices: ['事実', '理論', '実験', '証拠'], correct: 1,
+      explain: 'theory = 理論・学説。"Einstein\'s theory of relativity."（アインシュタインの相対性理論）。"in theory"（理論上は）もよく使う。' },
+    { id: 'v84', q: '「religion」の意味は？', choices: ['政治', '宗教', '伝統', '文化'], correct: 1,
+      explain: 'religion = 宗教。"Many religions teach kindness."（多くの宗教は優しさを教える）。形容詞は religious（信心深い／宗教の）。' },
+    { id: 'v85', q: '「strange」の意味は？', choices: ['普通の', '奇妙な', '強い', '美しい'], correct: 1,
+      explain: 'strange = 奇妙な・見慣れない。"I heard a strange noise last night."（昨夜、変な音が聞こえた）。stranger は「見知らぬ人」。' },
+    { id: 'v86', q: '「interrupt」のコアイメージは？', choices: ['つなげる', 'さえぎる', '続ける', '終わらせる'], correct: 1,
+      explain: 'interrupt = inter（間に）+ rupt（破る）→ 間に割って入る → さえぎる・中断する。"Sorry to interrupt, but..."（話の途中ごめんね、でも…）。' },
+    { id: 'v87', q: '「frequently」の意味は？', choices: ['まれに', '頻繁に', '一度だけ', 'ゆっくり'], correct: 1,
+      explain: 'frequently = 頻繁に・よく。"She frequently travels for work."（彼女は仕事でよく出張する）。often と近いが少しフォーマル。' },
+    { id: 'v88', q: '「swear」の意味は？', choices: ['泣く', '誓う', '笑う', '黙る'], correct: 1,
+      explain: 'swear = 誓う、または罵る（汚い言葉を言う）。"I swear I\'ll never give up."（絶対諦めないと誓う）。"Don\'t swear in class."（授業中に汚い言葉を使わないで）。' },
+    { id: 'v89', q: '「reserve」のコアイメージは？', choices: ['取っておく', '使い切る', '配る', '捨てる'], correct: 0,
+      explain: 'reserve = re（後ろに）+ serve（取っておく）→ 取っておく・予約する。"I reserved a table for two."（2人分の席を予約した）。名詞 reservation（予約）。' },
+    { id: 'v90', q: '「expect」のコアイメージは？', choices: ['思い出す', '予期する', '驚く', '無視する'], correct: 1,
+      explain: 'expect = ex（外を）+ spect（見る）→ 前もって見て待つ → 予期する・期待する。"I expect it to rain tomorrow."（明日は雨だと思う）。' },
+    { id: 'v91', q: '「rough」の意味は？', choices: ['なめらかな', 'ざらざらした', '柔らかい', '冷たい'], correct: 1,
+      explain: 'rough = 粗い・ざらざらした。発音は「ラフ」。"The road was rough and bumpy."（道は粗くてデコボコだった）。反対は smooth（なめらか）。' },
+    { id: 'v92', q: '「incompetent」の意味は？', choices: ['有能な', '無能な', '正直な', '親切な'], correct: 1,
+      explain: 'incompetent = in（否定）+ competent（有能な）→ 無能な。"The incompetent worker kept making mistakes."（その無能な作業員はミスを繰り返した）。' },
+    { id: 'v93', q: '「addicted」の意味は？', choices: ['飽きた', '夢中になった', '満足した', '疲れた'], correct: 1,
+      explain: 'addicted = 夢中・中毒になった。"I\'m addicted to this game!"（このゲームにハマってる！）。前置詞は to。形容詞 addictive は「クセになる・中毒性がある」（物の側）。' },
+    { id: 'v94', q: '「outweigh」のコアイメージは？', choices: ['軽くする', '上回る', '同じ重さ', '計る'], correct: 1,
+      explain: 'outweigh = out（超えて）+ weigh（重さがある）→ 〜を上回る。"The benefits outweigh the risks."（利点がリスクを上回る）。pros and cons を比べる時に便利。' },
+    { id: 'v95', q: '「selfish」の意味は？', choices: ['親切な', '自分勝手な', '正直な', 'シャイな'], correct: 1,
+      explain: 'selfish = self（自分）+ ish（〜的な）→ 自分勝手な。"It would be selfish to keep them all for myself."（全部独り占めするのは自分勝手だ）。' },
+    { id: 'v96', q: '「brilliant」の意味は？', choices: ['普通の', 'すばらしい', '暗い', '退屈な'], correct: 1,
+      explain: 'brilliant = キラキラ輝く → 見事な・とても賢い。イギリス英語では「いいね！最高！」の意味でもよく使う。"That\'s a brilliant idea!"（それは素晴らしいアイデアだ！）。' },
+    { id: 'v97', q: '「chilly」の意味は？', choices: ['暑い', 'ひんやり肌寒い', '蒸し暑い', '暖かい'], correct: 1,
+      explain: 'chilly = ひんやり肌寒い（cold ほど寒くない）。"It gets chilly in the evening."（夕方は肌寒くなる）。chili（唐辛子）とはスペルも意味も別物。' },
+    { id: 'v98', q: '「dedicate」のコアイメージは？', choices: ['打ち込む', '受け取る', '断る', '分ける'], correct: 0,
+      explain: 'dedicate = 心や時間を捧げる・打ち込む。"She dedicated her life to teaching."（彼女は人生を教えることに捧げた）。"dedicated"（献身的な・専用の）もよく使う。' },
+    { id: 'v99', q: '「epidemic」の意味は？', choices: ['天気', '流行', '祭り', '工事'], correct: 1,
+      explain: 'epidemic = epi（人々の間に）+ dem（人々）→ 病気の流行。"The flu epidemic spread quickly."（インフルの流行が急速に広がった）。世界規模だと pandemic。' },
+    { id: 'v100', q: '「heartfelt」の意味は？', choices: ['冷たい', '心からの', 'うわべの', '悲しい'], correct: 1,
+      explain: 'heartfelt = heart（心）+ felt（感じた）→ 心からの。"a heartfelt thank you"（心からの感謝）。手紙やスピーチでよく使う温かい表現。' },
+    { id: 'v101', q: '「guilt」の意味は？', choices: ['喜び', '罪悪感', '誇り', '恐怖'], correct: 1,
+      explain: 'guilt = 罪悪感・後ろめたさ。"I felt guilt for not helping."（手伝わなかったことに罪悪感を感じた）。形容詞 guilty（後ろめたい／有罪の）。' },
+    { id: 'v102', q: '「tend to ~」の意味は？', choices: ['〜を避ける', '〜する傾向がある', '〜を嫌う', '〜を忘れる'], correct: 1,
+      explain: 'tend to + 動詞 = 〜する傾向がある・〜しがち。"I tend to wake up late on weekends."（週末は寝坊しがち）。性格や習慣を語る時に便利。' },
+    { id: 'v103', q: '「responsible」の意味と前置詞は？', choices: ['responsible to / 自由な', 'responsible for / 責任がある', 'responsible of / 有名な', 'responsible in / 親切な'], correct: 1,
+      explain: 'be responsible for ~ = 〜に責任がある。"I\'m responsible for cleaning the kitchen."（キッチンの掃除は私の担当）。名詞は responsibility（責任）。' },
+    { id: 'v104', q: '「margin」のコアイメージは？', choices: ['中心', 'ページの余白', '線', '面積'], correct: 1,
+      explain: 'margin = 端・余白。"Write notes in the margin."（余白にメモを書いて）。「利益率（profit margin）」や「差（win by a margin）」にも使う。動詞 marginalize（隅に追いやる）も同じ仲間。' },
+    { id: 'v105', q: '「inheritance」の意味は？', choices: ['借金', '受け継ぐ遺産', '寄付', '給料'], correct: 1,
+      explain: 'inheritance = 遺産・受け継ぐもの。動詞 inherit（受け継ぐ）。"She received a large inheritance."（彼女は多額の遺産を相続した）。プログラミングの「継承」も inheritance。' },
+    { id: 'v106', q: '「suffer」のコアイメージは？', choices: ['楽しむ', '苦しむ', '逃げる', '勝つ'], correct: 1,
+      explain: 'suffer = suf（下で）+ fer（運ぶ）→ 重荷を下で支えて耐える → 苦しむ。"He suffered from a headache."（頭痛に苦しんだ）。前置詞は from。' },
+    { id: 'v107', q: '「fault」の意味は？', choices: ['長所', '過失', '事実', '結果'], correct: 1,
+      explain: 'fault = 過失・〜のせい。"It\'s not your fault."（君のせいじゃないよ）。"It\'s my fault."（私のせいだ）。地震の「断層」も fault。' },
+    { id: 'v108', q: '「dangle」の意味は？', choices: ['ぶら下がる', '転がる', '飛ぶ', '沈む'], correct: 0,
+      explain: 'dangle = ぶら下がる・ぶらぶら揺れる。"Keys dangled from his belt."（鍵がベルトからぶら下がっていた）。子供が足をブラブラさせる様子にも使う。' },
+    { id: 'v109', q: '「competition」の意味は？', choices: ['協力', '競争', '会議', '休憩'], correct: 1,
+      explain: 'competition = 競争・大会。動詞 compete（競う）、形容詞 competitive（競争の激しい）。"She won the dance competition."（彼女はダンス大会で優勝した）。' },
+    { id: 'v110', q: '「aged」の意味は？', choices: ['若い', '年をとった', '元気な', '新しい'], correct: 1,
+      explain: 'aged = 年をとった／〜歳の。"an aged man"（年老いた男性）、"a boy aged ten"（10歳の少年）。"aged cheese"（熟成チーズ）のように「熟成した」の意味も。' },
+    { id: 'v111', q: '「meant」（mean の過去形）の意味は？', choices: ['会った', '意図した', '見た', '言った'], correct: 1,
+      explain: 'meant = mean（意図する・意味する）の過去形。"I didn\'t mean to hurt you."（傷つけるつもりはなかった）。"What do you mean?"（どういう意味？）。' },
+    { id: 'v112', q: '「associate」のコアイメージは？', choices: ['切り離す', '関連づける', '隠す', '無視する'], correct: 1,
+      explain: 'associate = as（〜の方へ）+ soci（仲間）→ 仲間として結びつける → 関連づける。"I associate summer with the beach."（夏といえば海を連想する）。前置詞は with。' },
+    { id: 'v113', q: '「tardiness」の意味は？', choices: ['早起き', '遅刻', '欠席', '居眠り'], correct: 1,
+      explain: 'tardiness = 遅刻（フォーマル）。形容詞 tardy（遅れた）。"Tardiness is not allowed."（遅刻は認められません）。日常会話では being late の方が自然。' },
+    { id: 'v114', q: '「narrow」と「small」の違いは？', choices: ['同じ意味', 'narrow = 幅が狭い（細長い）、small = 全体が小さい', 'narrow = 小さい、small = 細長い', 'narrow = 大きい、small = 狭い'], correct: 1,
+      explain: 'narrow = 幅が狭い・細長い（道や廊下など）。small = 全体が小さい。"a narrow road"（細い道）vs "a small room"（狭い部屋）。部屋が狭い時は small を使う。' },
+    { id: 'v115', q: '「diagnose」の意味は？', choices: ['治療する', '診断する', '入院する', '処方する'], correct: 1,
+      explain: 'diagnose = 診断する。dia（通して）+ gnose（知る）→ 見抜く。"The doctor diagnosed her with the flu."（医者は彼女をインフルと診断した）。名詞は diagnosis（診断）。' },
+    { id: 'v116', q: '「opponent」の意味は？', choices: ['味方', '対戦相手', '審判', '観客'], correct: 1,
+      explain: 'opponent = op（向かい合って）+ pon（置く）→ 対戦相手。"He beat his opponent in the final."（彼は決勝で対戦相手を倒した）。oppose（反対する）も同じ仲間。' },
+    { id: 'v117', q: '「loosely」のコアイメージは？', choices: ['きつく', 'ゆるく', '速く', '静かに'], correct: 1,
+      explain: 'loosely = ゆるく・大ざっぱに。形容詞 loose（ゆるい）。"The shirt fits loosely."（シャツはゆったりしている）。"loosely based on ~"（〜を大まかに元にした）もよく使う。' },
+    { id: 'v118', q: '「statement」の意味は？', choices: ['質問', '声明', '命令', '約束'], correct: 1,
+      explain: 'statement = 声明・はっきりした発言。動詞 state（述べる）。"The company made an official statement."（会社は公式声明を出した）。銀行の「明細書」も statement。' },
+    { id: 'v119', q: '「passage」のコアイメージは？', choices: ['壁', '通路', '部屋', '屋根'], correct: 1,
+      explain: 'passage = pass（通る）+ age → 通路、または（本などの）一節。"Read this passage aloud."（この一節を音読して）。"a narrow passage"（細い通路）。' },
+    { id: 'v120', q: '「childhood」の -hood は何を表す？', choices: ['場所', '時期', '人', '感情'], correct: 1,
+      explain: '-hood = 状態・時期を表す語尾。childhood = 子供（child）の時期 → 子供時代。"I had a happy childhood."（幸せな子供時代を過ごした）。neighborhood（近所）、adulthood（成人期）も同じ。' },
+    { id: 'v121', q: '「suffering」の意味は？', choices: ['喜び', '苦しみ', '休息', '幸運'], correct: 1,
+      explain: 'suffering = 苦しみ・苦痛（名詞）。動詞 suffer（苦しむ）。"The war caused great suffering."（戦争は大きな苦しみをもたらした）。前置詞は suffer from ~（〜に苦しむ）。' },
+    { id: 'v122', q: '「objective」の意味は？', choices: ['主観的な', '客観的な', '感情的な', '個人的な'], correct: 1,
+      explain: 'objective = 客観的な（事実に基づく）／目標。"Try to be objective."（客観的になろう）。反対は subjective（主観的）。ゲーム開発の「目標・課題」も objective。' },
+    { id: 'v123', q: '「consideration」の意味は？', choices: ['無視', '思いやり', '決定', '質問'], correct: 1,
+      explain: 'consideration = よく考えること・配慮。動詞 consider（じっくり考える）。"Thank you for your consideration."（ご配慮ありがとう）。"take ~ into consideration"（〜を考慮に入れる）。' },
+    { id: 'v124', q: '「nursing home」の意味は？', choices: ['病院', '介護施設', '保育園', '学校'], correct: 1,
+      explain: 'nursing home = 介護施設・老人ホーム。nurse（看護する）+ home（家）。"My grandmother lives in a nursing home."（祖母は老人ホームに住んでいる）。' },
+    { id: 'v125', q: '動詞「hang」の意味と過去形は？', choices: ['hang/hanged = 置く', 'hang/hung = （ぶら下げて）かける', 'hang/hanged = 投げる', 'hang/hung = 折る'], correct: 1,
+      explain: 'hang = （ぶら下げて）かける。過去形・過去分詞は hung（不規則）。"I hung the picture on the wall."（壁に絵をかけた）。前置詞は on the wall。' },
+    { id: 'v126', q: '「arrange」のコアイメージは？', choices: ['壊す', 'きれいに並べる', '隠す', '捨てる'], correct: 1,
+      explain: 'arrange = きれいに並べる・配置する、または手配する。"She arranged the flowers."（花を生けた）。"I arranged a meeting."（会議を手配した）。名詞 arrangement。' },
+    { id: 'v127', q: '動詞「lay」の意味は？', choices: ['立てる', '敷く', '吊るす', '投げる'], correct: 1,
+      explain: 'lay = （平らに）置く・敷く。"I want to lay a carpet in my room."（部屋にカーペットを敷きたい）。簡単には put down も使える。過去形は laid。' },
+    { id: 'v128', q: '「get rid of ~」の意味は？', choices: ['〜を集める', '処分する', '〜を直す', '〜を借りる'], correct: 1,
+      explain: 'get rid of ~ = 〜を処分する・手放す（じゃまな物を）。"I want to get rid of these old magazines."（この古い雑誌を処分したい）。throw away より「厄介払い」のニュアンス。' },
+    { id: 'v129', q: '「laundry」の意味は？', choices: ['台所', '洗濯物', '掃除', '料理'], correct: 1,
+      explain: 'laundry = 洗濯物・洗濯。"do the laundry"（洗濯をする）。"laundry basket"（洗濯かご）、"laundry room"（洗濯部屋）。数えない名詞なので laundries にしない。' },
+    { id: 'v130', q: '「degree」のコアイメージは？', choices: ['重さ', '段階（step）', '速さ', '形'], correct: 1,
+      explain: 'degree のコアイメージは「段階（step）」。語源ラテン語 gradus（一歩）。そこから「程度（to some degree）」「温度・角度の度（30 degrees）」「学位（a degree in math）」に枝分かれ。grade（等級）も仲間。' },
+    { id: 'v131', q: '「degree」の意味として当てはまらないのは？', choices: ['程度・度合い', '温度・角度の度', '大学の学位', '速度の単位'], correct: 3,
+      explain: 'degree = 程度／（温度・角度の）度／学位。速度の単位ではない。"It\'s 30 degrees today."（今日は30度）、"a college degree"（大学の学位）、"to some degree"（ある程度）。' },
+    { id: 'v132', q: '「distract」のコアイメージは？', choices: ['押しつける', '引き離す', '結びつける', '持ち上げる'], correct: 1,
+      explain: 'distract = dis（離れて）+ tract（引く）→ 注意を引き離す → 気を散らす。"Don\'t distract me. I\'m studying."（気を散らさないで、勉強中なんだ）。attract（引き寄せる）、extract（引き抜く）も tract 仲間。' },
+    { id: 'v133', q: '「attract」の意味は？', choices: ['引き寄せる・魅了する', '追い払う', '無視する', '隠す'], correct: 0,
+      explain: 'attract = at（〜へ）+ tract（引く）→ 引き寄せる・魅了する。"The flowers attract bees."（花は蜂を引き寄せる）。distract（気をそらす）、extract（引き抜く）と同じ tract ファミリー。' },
+    { id: 'v134', q: '「veer」の意味は？', choices: ['止まる', '急に方向を変える', 'まっすぐ進む', '加速する'], correct: 1,
+      explain: 'veer = 急に方向を変える・それる。"The car veered to the left."（車は左に急にそれた）。政治的に「（立場が）左右に寄る」意味でも使う。turn と近いが「急な向きの変化」が特徴。' },
+    { id: 'v135', q: '「self-centered」の意味は？', choices: ['思いやりのある', '自己中心的な', '正直な', '社交的な'], correct: 1,
+      explain: 'self-centered = 自己中心的な（自分を中心に考える）。"He is too self-centered to listen to others."（彼は自己中心的すぎて人の話を聞かない）。selfish（わがまま）と近い。' },
+    { id: 'v136', q: '「therapeutic」の意味は？', choices: ['危険な', '心や体を癒す・治療効果のある', '退屈な', '高価な'], correct: 1,
+      explain: 'therapeutic = 癒しの・治療効果のある。"Gardening is therapeutic for me."（園芸は私にとって癒しだ）。名詞 therapy（治療・セラピー）の形容詞。' },
+    { id: 'v137', q: '「quilt」の意味は？', choices: ['枕', 'キルト（中綿入りの掛け布団）', 'カーテン', 'タオル'], correct: 1,
+      explain: 'quilt = キルト（中綿を挟んで縫った掛け布団）。"She made a warm quilt for winter."（冬用の暖かいキルトを作った）。発音は「クィルト」。guilt（罪悪感）と音が似てるので注意。' },
+    { id: 'v138', q: '「insist」のコアイメージは？', choices: ['上に立つ', '〜の上に強く立つ → 言い張る', '座る', '逃げる'], correct: 1,
+      explain: 'insist = in（上に）+ sist（立つ）→ 主張の上にしっかり立つ → 強く言い張る。"He insisted on paying the bill."（彼は支払うと言い張った）。前置詞は insist on ~。' },
+    { id: 'v139', q: '「government」の意味は？', choices: ['会社', '政府・政治', '学校', '軍隊'], correct: 1,
+      explain: 'government = 政府。動詞 govern（統治する）+ -ment（名詞化）。"The government announced a new law."（政府は新しい法律を発表した）。発音注意：n を忘れず「ガヴァ(ン)メント」。' },
+    { id: 'v140', q: '「juvenile」の意味は？', choices: ['年配の', '少年・若者の', '外国の', '有名な'], correct: 1,
+      explain: 'juvenile = 少年・若者の（フォーマル）。"juvenile delinquency"（少年非行）。"a juvenile court"（少年裁判所）。日常では young people の方が自然。' },
+    { id: 'v141', q: '「delinquency」の意味は？', choices: ['成功', '非行・怠慢', '勝利', '親切'], correct: 1,
+      explain: 'delinquency = 非行・（義務の）怠慢。"juvenile delinquency"（少年非行）。形容詞 delinquent（非行の／滞納の）。少しかたい語で、ニュースや法律の文脈で使う。' },
+    { id: 'v142', q: '「extract」の意味は？', choices: ['押し込む', '引き抜く・抽出する', '混ぜる', '覆う'], correct: 1,
+      explain: 'extract = ex（外へ）+ tract（引く）→ 引き抜く・抽出する。"The dentist extracted my tooth."（歯医者が歯を抜いた）。attract（引き寄せる）、distract（気をそらす）と同じ tract ファミリー。' },
+    { id: 'v143', q: '「inspect」のコアイメージは？', choices: ['見逃す', '中をじっくり見る → 検査する', '隠す', '壊す'], correct: 1,
+      explain: 'inspect = in（中を）+ spect（見る）→ じっくり検査する。"He inspected the car before buying it."（買う前に車を点検した）。expect（前もって見る→予期）、respect（振り返って見る→尊敬）も spect 仲間。' },
+    { id: 'v144', q: '「predict」のコアイメージは？', choices: ['後で言う', '前もって言う → 予言・予測する', '黙る', '繰り返す'], correct: 1,
+      explain: 'predict = pre（前もって）+ dict（言う）→ 予測する。"No one can predict the future."（誰も未来を予測できない）。dictionary（言葉の本）、dictate（口述する）も dict 仲間。' },
+    { id: 'v145', q: '「souvenir」の意味は？', choices: ['記念品・お土産', '荷物', '財布', '切符'], correct: 0,
+      explain: 'souvenir = お土産・記念品（旅行先で買うもの）。"I bought a souvenir for my mom."（母にお土産を買った）。数えられる名詞なので a souvenir / some souvenirs。発音は「スーヴェニア」。' },
+    { id: 'v146', q: '「genetic」の意味は？', choices: ['電気の', '遺伝の・遺伝子の', '機械の', '化学の'], correct: 1,
+      explain: 'genetic = 遺伝の・遺伝子の。"genetic engineering"（遺伝子工学）。名詞 gene（遺伝子）、genetics（遺伝学）。"It\'s a genetic trait."（それは遺伝的な特徴だ）。' },
+    { id: 'v147', q: '「engineering」の意味は？', choices: ['工学・技術', '芸術', '医学', '法律'], correct: 0,
+      explain: 'engineering = 工学・技術。動詞 engineer（設計する）。"He studies software engineering."（彼はソフトウェア工学を学んでいる）。"genetic engineering"（遺伝子工学）。' },
+    { id: 'v148', q: '「criticize」の意味は？', choices: ['ほめる', '批判する・あら探しする', '無視する', '応援する'], correct: 1,
+      explain: 'criticize = 批判する。名詞 criticism（批判）、critic（批評家）。"Don\'t criticize others too much."（人を批判しすぎないで）。アメリカ式スペルは criticize、イギリス式は criticise。' },
+    { id: 'v149', q: '「herbicide」の意味は？', choices: ['肥料', '除草剤', '殺虫剤', '種'], correct: 1,
+      explain: 'herbicide = 除草剤（herb 草 + cide 殺す）。-cide は「殺すもの」を表す語尾。pesticide（殺虫剤）、insecticide（殺虫剤）も仲間。"This crop resists herbicides."（この作物は除草剤に強い）。' }
+  ],
+  phrase: [
+    { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
+      explain: 'Thank you for having me. = 家に迎え入れてくれてありがとう。"Thank you so much for having me this weekend."（今週末泊めてくれて本当にありがとう）。' },
+    { id: 'p02', q: '「心を込めて頑張る」を英語で？', choices: ['with all my mind', 'with all my heart', 'with all my soul', 'with all my power'], correct: 1,
+      explain: 'with all my heart = 心を込めて。"I love my family with all my heart."（家族を心から愛している）。do my best も近い意味で使えます。' },
+    { id: 'p03', q: '「楽しみにしている」を英語で？', choices: ['looking forward to', 'looking up to', 'looking after', 'looking into'], correct: 0,
+      explain: 'looking forward to ~ing = 〜を楽しみにしている。"I\'m looking forward to summer vacation."（夏休みが楽しみ）。to の後は名詞か動名詞。' },
+    { id: 'p04', q: '人の死を聞いた時のお悔やみ表現は？', choices: ['I feel bad for you', "I'm sorry for your loss", 'My condolences only', 'Sad to hear that'], correct: 1,
+      explain: 'I\'m sorry for your loss. = ご愁傷さまです。家族や友人を亡くした人にかける定番の言葉。"I just heard about your father. I\'m sorry for your loss."' },
+    { id: 'p05', q: 'レストランで「ドレッシングを別添えで」は？', choices: ['on the table', 'on the side', 'on the top', 'on the plate'], correct: 1,
+      explain: 'on the side = 別添えで。"Can I get the sauce on the side?"（ソースを別添えにできますか？）。アレルギーや好みで分けたい時に便利。' },
+    { id: 'p06', q: '「失礼だと思われる」を英語で？', choices: ['It thinks rude', "It's thought rude", "It's considered rude", 'It looks rude'], correct: 2,
+      explain: 'It\'s considered rude. = 失礼だと思われる。"In Japan, it\'s considered rude to talk loudly on the train."（日本では電車で大声で話すのは失礼とされる）。' },
+    { id: 'p07', q: '「念のため確認させてください、〜」を英語で？', choices: ['Just to check, ...', 'Just to clarify, ...', 'Just to know, ...', 'Just to ask, ...'], correct: 1,
+      explain: 'Just to clarify, ... = 念のため確認だけど。"Just to clarify, the meeting starts at 2, right?"（確認だけど、会議は2時開始だよね？）。' },
+    { id: 'p08', q: 'メールで「ご参考までに」と添える時の定番表現は？', choices: ['for your reference', 'for your information', 'as you know', 'just in case'], correct: 0,
+      explain: 'for your reference = ご参考までに。"I\'ve attached the report for your reference."（参考までにレポートを添付しました）。ビジネスメール頻出。' },
+    { id: 'p09', q: '薬の説明書の「眠気を引き起こす可能性があります」は？', choices: ['May make you sleep', 'May cause drowsiness', 'May feel tired', 'May get sleepy'], correct: 1,
+      explain: 'May cause drowsiness = 眠気を引き起こす可能性があります。"Warning: This medicine may cause drowsiness. Do not drive."（注意：この薬は眠気を引き起こすことがあります。運転しないでください）。' },
+    { id: 'p10', q: '「レッスンを受ける」で自然なのは？', choices: ['do a lesson', 'have a lesson', 'play a lesson', 'work a lesson'], correct: 1,
+      explain: 'have/take a lesson = レッスンを受ける。"I have a piano lesson every Tuesday."（毎週火曜にピアノレッスンがある）。教える側なら give a lesson。' },
+    { id: 'p11', q: '「もっと早く試せばよかった」を英語で？', choices: ['I want to try it sooner', 'I should have tried it sooner', 'I will try it sooner', 'I tried it sooner'], correct: 1,
+      explain: 'should have + 過去分詞 = 〜すべきだった（後悔）。"I should have studied harder for the exam."（試験のためにもっと勉強すべきだった）。' },
+    { id: 'p12', q: '「英語を話すことに緊張する」を英語で？', choices: ["I'm nervous to speak English", "I'm nervous about speak English", "I'm nervous about speaking English", "I'm nervous of speaking English"], correct: 2,
+      explain: 'I\'m nervous about ~ing = 〜することに緊張する。"I\'m nervous about meeting my host family."（ホストファミリーに会うのが緊張する）。about の後は動名詞。' },
+    { id: 'p13', q: '「いいアイデアを思いついた」を英語で？', choices: ['I thought a good idea', 'I came up with a good idea', 'I came down with a good idea', 'I made up a good idea'], correct: 1,
+      explain: 'come up with ~ = 〜を思いつく。"She came up with a creative solution."（彼女は創造的な解決策を思いついた）。アイデアがふっと上に浮かぶイメージ。' },
+    { id: 'p14', q: '「アイデアが尽きた」を英語で？', choices: ['I lost ideas', 'I ran out of ideas', 'I ran away from ideas', 'I ended ideas'], correct: 1,
+      explain: 'run out of ~ = 〜が尽きる。"We\'re running out of time."（時間がなくなってきた）。come up with（思いつく）の対比ペア。' },
+    { id: 'p15', q: '「あと1話だけ残っている」を英語で？', choices: ['I have one episode remain', 'I have only one episode left', 'I am one episode left', 'One episode is leaving'], correct: 1,
+      explain: 'have ~ left = 〜が残っている。"How much money do you have left?"（あといくら残ってる？）。leave の過去分詞 left を使って「残された状態」を表します。' },
+    { id: 'p16', q: '「そろそろ留学準備を始めよう」を英語で？', choices: ['Soon I prepare to study abroad', "It's about time to start preparing to study abroad", "I'll soon prepare studying abroad", "I'm ready for study abroad now"], correct: 1,
+      explain: 'It\'s about time to ~ = そろそろ〜しよう。"It\'s about time to head home."（そろそろ家に帰る時間だ）。' },
+    { id: 'p17', q: '「復習に時間をかける」を英語で？', choices: ['use time reviewing', 'spend time reviewing', 'take time reviewing', 'put time reviewing'], correct: 1,
+      explain: 'spend time ~ing = 〜に時間をかける。"I spent the weekend cleaning my room."（週末を部屋の掃除に費やした）。' },
+    { id: 'p18', q: '「うまくいくといいな」（現実的な願い）を英語で？', choices: ['I wish it goes well', 'I hope it goes well', 'I want it goes well', 'I think it goes well'], correct: 1,
+      explain: 'hope = 起こりそうなことを願う（現実的）。"I hope you feel better soon."（早くよくなるといいね）。wish は非現実的な願いに使います。' },
+    { id: 'p19', q: '「商談の準備をする」を英語で？', choices: ['prepare to the meeting', 'prepare for the meeting', 'prepare about the meeting', 'prepare on the meeting'], correct: 1,
+      explain: 'prepare for ~ = 〜に向けて準備する。"She\'s preparing for her interview."（彼女は面接の準備をしている）。前置詞は for（目的）。' },
+    { id: 'p20', q: '「鳥肌が立った」を英語で？', choices: ['I had goosebumps', 'It gave me goosebumps', 'I made goosebumps', 'Goosebumps came up'], correct: 1,
+      explain: 'It gave me goosebumps. = 鳥肌が立った。"This song always gives me goosebumps."（この曲はいつも鳥肌が立つ）。I got goosebumps. も同じ意味。' },
+    { id: 'p21', q: '「テストで満点を取った」を英語で？', choices: ['I got perfect score at the test', 'I got a perfect score on the test', 'I got a perfect score in the test', 'I got perfect score for the test'], correct: 1,
+      explain: 'a perfect score on the test = テストで満点。"My sister got a perfect score on the spelling test."（妹はスペリングテストで満点を取った）。on は接触イメージ。' },
+    { id: 'p22', q: '「一度だけでもいいから満点取りたい」を英語で？', choices: ['I want a perfect score ever', 'I want a perfect score at least once', 'I want a perfect score someday', 'I want a perfect score one'], correct: 1,
+      explain: 'at least once = 少なくとも一度は。"I want to visit Paris at least once in my life."（一生に一度はパリに行ってみたい）。' },
+    { id: 'p23', q: '「お母さんに似てる」を英語で？', choices: ['I look like my mom', 'I take after my mom', 'どちらも正しい', "I'm like my mom"], correct: 2,
+      explain: '家族なら両方OK。"You really take after your father."（本当にお父さん似だね）= 性格・才能も含む。"You look like your father."（お父さんに似てる）= 見た目。' },
+    { id: 'p24', q: '「友達に似てるね」を英語で？', choices: ['You look like your friend', 'You take after your friend', 'どちらも正しい', "You're like your friend"], correct: 0,
+      explain: 'take after は家族・親戚にしか使えません。友達には look like。"You look like that actor!"（あの俳優に似てるね！）。' },
+    { id: 'p25', q: '「うちに遊びに来ない？」を一番自然に言うと？', choices: ['Do you want to come to my house?', 'Do you want to come over?', 'Do you want to visit me?', 'Will you come?'], correct: 1,
+      explain: 'come over = うちに来る。"Want to come over and watch a movie?"（うちに来て映画見ない？）。親しい人を招く時の定番。' },
+    { id: 'p26', q: '「少しずつ良くなっている」を英語で？', choices: ['getting a bit well', 'getting a little better', 'getting little good', 'becoming a bit well'], correct: 1,
+      explain: 'getting better = 良くなっている（比較級）。"My grandma is getting better day by day."（祖母は日に日に良くなっている）。little by little, step by step も同じ仲間。' },
+    { id: 'p27', q: '「楽しいレッスンだった気がする」を英語で？', choices: ['I think I had a fun lesson', 'I feel like I had a fun lesson', "I'm sure I had a fun lesson", 'I know I had a fun lesson'], correct: 1,
+      explain: 'I feel like ~ = 〜な気がする。"I feel like we\'ve met before."（前に会ったことがある気がする）。I think より感覚的なニュアンス。' },
+    { id: 'p28', q: '「頭が痛い」を英語で？', choices: ['My head is pain', 'I have a headache', "I'm a headache", 'My head hurts very'], correct: 1,
+      explain: 'I have a headache. = 頭が痛い。英語では体調を have で表す：have a cold, have a fever, have a stomachache。"I have a bad headache today."' },
+    { id: 'p29', q: '「面白そう！」（実際に見て思っている）を英語で？', choices: ['It may be interesting', 'It looks interesting', 'It can be interesting', 'It will interesting'], correct: 1,
+      explain: 'looks / seems = 〜そう（実際に見て感じる）。"That cake looks delicious!"（あのケーキおいしそう！）。may be だと「かもしれない」と弱い感じに。' },
+    { id: 'p30', q: '「習慣にする」を英語で？', choices: ['be used to it', 'make a habit of it', 'get a habit of it', 'do a habit of it'], correct: 1,
+      explain: 'make a habit of ~ = 〜を習慣にする。"Try to make a habit of drinking water in the morning."（朝に水を飲む習慣をつけよう）。' },
+    { id: 'p31', q: '「調べてみよう」を英語で？', choices: ["I'll search it", "I'll look it up", "I'll find it", "I'll check up it"], correct: 1,
+      explain: 'look it up = それを調べる。"I don\'t know that word. Let me look it up."（その単語知らない。調べてみる）。代名詞 it は look と up の間に。' },
+    { id: 'p32', q: '友達に再会して「久しぶり！」を英語で？', choices: ["It's been a while since I saw you", 'Long time no see', 'どちらも正しい', 'Long time not see'], correct: 2,
+      explain: 'Long time no see! / It\'s been a while! どちらもOK（ただし人への再会専用）。"Hey! Long time no see! How have you been?"' },
+    { id: 'p33', q: '「久しぶりにゲームをする」を英語で？', choices: ['I play games long time no see', "It's been a while since I last played games", 'I play games after long time', 'Long time no play games'], correct: 1,
+      explain: 'It\'s been a while since I last ~ = 久しぶりに〜する。"It\'s been a while since I last cooked."（久しぶりに料理する）。long time no see は人への再会専用！' },
+    { id: 'p34', q: '「待ちきれない！」を英語で？', choices: ["I'm looking forward", "I can't wait", 'I want to wait', 'I hope to wait'], correct: 1,
+      explain: 'I can\'t wait! = 待ちきれない！"I can\'t wait to see you again!"（また会うのが待ちきれない！）。looking forward to よりカジュアル。' },
+    { id: 'p35', q: '「交渉してよかった（聞いてみてよかった）」を英語で？', choices: ['I was glad to negotiate', "I'm glad I asked", 'I glad to ask', 'I was good to ask'], correct: 1,
+      explain: 'I\'m glad I asked. = 聞いてみてよかった。"I\'m glad I asked for help."（助けを求めてよかった）。今の気持ちなので現在形。' },
+    { id: 'p36', q: '「思っていたより荷物が少ない」の「思っていたより」は？', choices: ['than I think', 'than I thought', 'more than think', 'as I thought'], correct: 1,
+      explain: 'than I thought = 思っていたより（過去形 thought）。"The test was easier than I thought."（テストは思っていたより簡単だった）。' },
+    { id: 'p37', q: '「そろそろ寝ようかな」を自然に言うと？', choices: ["It's about time to go to bed", 'I should head to bed soon', 'I go to bed now', 'I want sleep'], correct: 1,
+      explain: 'I should head to bed soon. = そろそろ寝よう。"I should head to bed soon. I have an early start tomorrow."（そろそろ寝なきゃ。明日早いし）。' },
+    { id: 'p38', q: '「人に〜してほしい」の正しい形は？', choices: ['I want that you come', 'I want you to come', 'I want you come', 'I want you coming'], correct: 1,
+      explain: 'want + 人 + to + 動詞 = 人に〜してほしい。"I want you to be happy."（あなたに幸せになってほしい）。超重要構文！' },
+    { id: 'p39', q: '「3年間続いたプロジェクトが終わった！」を英語で？', choices: ['The project that continued three years was end', 'The project that lasted for three years is over', 'The project ended three years', 'The project finished three years'], correct: 1,
+      explain: 'lasted for ~ = 期間続いた、is over = 終わっている（状態）。"The war that lasted for ten years is finally over."（10年続いた戦争がついに終わった）。' },
+    { id: 'p40', q: '「お疲れ様、自分！」を英語で？', choices: ['Good job me', 'Good job, me!', 'Tired job me', 'Hard job me'], correct: 1,
+      explain: 'Good job, me! = お疲れ様、自分！呼びかけの前にカンマ。"Good job, everyone! Let\'s take a break."（みんなお疲れ様！休憩しよう）。' },
+    { id: 'p41', q: '「明後日」を英語で？', choices: ['day after tomorrow', 'the day after tomorrow', 'after tomorrow', 'next next day'], correct: 1,
+      explain: 'the day after tomorrow = 明後日（the が必要）。"My flight is the day after tomorrow."（飛行機は明後日）。同じパターンに the day before yesterday（一昨日）。' },
+    { id: 'p42', q: '「予定が決まっている」未来形、正しいのは？', choices: ["I'll go to study abroad", "I'm going to study abroad", 'どちらも正しいがニュアンスが違う', 'I go to study abroad'], correct: 2,
+      explain: 'I\'ll = その場で決めた未来、I\'m going to = もう予定が決まっている未来。"I\'m going to visit my grandparents this weekend."（今週末は祖父母を訪ねる予定）。' },
+    { id: 'p43', q: '「リスニングの練習」を英語で？', choices: ['listening', 'listening practice', 'practice of listen', 'listen practice'], correct: 1,
+      explain: 'listening practice = リスニングの練習。"I do listening practice every morning."（毎朝リスニング練習をする）。' },
+    { id: 'p44', q: '「英語を聞く練習をする」を英語で？', choices: ['study listening English', 'practice listening to English', 'do listening English', 'try listen English'], correct: 1,
+      explain: 'practice listening to English = 英語を聞く練習。listen の後ろに to が必要。"I practice listening to podcasts on my way to school."（通学中にポッドキャストを聞く練習をする）。' },
+    { id: 'p45', q: '「これいい音楽見つけた」と勧めたい時の自然な反応は？', choices: ['Sweet dreams', 'Sounds nice!', 'Long time no see', 'See you tomorrow'], correct: 1,
+      explain: 'Sounds nice! = いいね！相手の話への相づち。"I\'m going hiking tomorrow." "Sounds fun!"（明日ハイキング行くんだ）（楽しそう！）。' },
+    { id: 'p46', q: '「私の部屋には金庫がない」を英語で？', choices: ["I don't have safe in my room", "I don't have a safe in my room", 'There is no a safe in my room', 'My room has not safe'], correct: 1,
+      explain: 'safe = 金庫（名詞）。"Most hotel rooms have a safe."（ほとんどのホテルの部屋には金庫がある）。one を使うと「もう一個欲しい」が表現できます。' },
+    { id: 'p47', q: '「買うものがたくさんある」を英語で？', choices: ['I have many buying things', 'I have a lot of things to buy', "I'm buying many things", 'I have a lot of buy things'], correct: 1,
+      explain: 'things to buy = 買うもの（to不定詞）。"I have a lot of homework to finish."（終わらせる宿題がたくさんある）も同じパターン。' },
+    { id: 'p48', q: '「生活するために必要なもの」を自然に言うと？', choices: ['things to live', 'things for my daily life', 'things to alive', 'living things'], correct: 1,
+      explain: 'for my daily life = 毎日の生活のために。"I bought a kettle for my daily life."（毎日の生活のためにケトルを買った）。' },
+    { id: 'p49', q: '「バスルームがちょっと不安」を英語で？', choices: ['The bathroom may not clean', "I'm a little worried about the bathroom", 'The bathroom is no good', "I don't like bathroom"], correct: 1,
+      explain: 'I\'m a little worried about ~ = 〜がちょっと不安。"I\'m a little worried about tomorrow\'s test."（明日のテストがちょっと不安）。' },
+    { id: 'p50', q: '「水がきれいかどうかわからない」を英語で？', choices: ["I don't know the water is clean", "I don't know if the water is clean", "I don't know that the water is clean", "I don't know is the water clean"], correct: 1,
+      explain: 'I don\'t know if ~ = 〜かどうかわからない。"I don\'t know if she\'ll come to the party."（彼女がパーティーに来るかわからない）。' },
+    { id: 'p51', q: '「シャドーイングを試してみた」を英語で？', choices: ['I tried to shadowing', 'I tried shadowing', 'I tried to my shadowing', 'I did try shadowing'], correct: 1,
+      explain: 'tried + 動名詞 = 試しに〜してみた。"I tried using a new app to study English."（新しいアプリを試しに使ってみた）。tried to + 動詞だと「努力した」で意味が違う。' },
+    { id: 'p52', q: '「明日から授業が始まる」を英語で？', choices: ['The class is going to start from tomorrow', 'The class is going to start tomorrow', 'The class will start since tomorrow', 'The class starts to tomorrow'], correct: 1,
+      explain: '英語では "from tomorrow" はあまり使わず、tomorrow だけでOK。"School starts Monday."（学校は月曜日から始まる）。' },
+    { id: 'p53', q: '「危ないよ、と注意してくれた」を英語で？', choices: ['She told me the danger', 'She warned me about the danger', 'She said me danger', 'She advised me danger'], correct: 1,
+      explain: 'warn 人 about/of ~ = 人に〜を注意する。"The teacher warned us about the test next week."（先生は来週のテストについて注意してくれた）。' },
+    { id: 'p54', q: '「人に〜しないよう注意する」の正しい形は？', choices: ["warn 人 to don't do", 'warn 人 not to do', 'warn 人 no doing', 'warn 人 to not'], correct: 1,
+      explain: 'warn 人 not to do = 人に〜しないよう注意する。"My mom warned me not to talk to strangers."（母は知らない人と話さないよう注意した）。' },
+    { id: 'p55', q: '「あの犬がこわかった（自分の気持ち）」を英語で？', choices: ['That dog was scared', 'I was scared of that dog', 'That dog was frightening me', 'I scared that dog'], correct: 1,
+      explain: 'I was scared of ~ = 〜がこわかった（自分の気持ち→ -ed）。"I\'m scared of spiders."（クモがこわい）。-ed は人の気持ち、-ing は原因。' },
+    { id: 'p56', q: '友達同士のカジュアルな挨拶「最近どう？」を英語で？', choices: ['How are you?', "What's up?", 'How do you do?', 'Are you fine?'], correct: 1,
+      explain: 'What\'s up? = 最近どう？やあ！友達同士のカジュアルな挨拶。"Hey, what\'s up?" "Not much, you?"（やあ、どう？）（特に何も、君は？）。' },
+    { id: 'p57', q: "「What's up?」への自然な返事は？", choices: ['Yes, please', 'Not much', "I'm fine, thank you", 'Goodbye'], correct: 1,
+      explain: 'Not much. / Nothing much. = 特に何もないよ。"What\'s up?" への定番の返事。"I\'m good." も使えます。' },
+    { id: 'p58', q: '「いい夢を」を英語で？', choices: ['Good dream', 'Sweet dreams', 'Have a dream', 'Dream good'], correct: 1,
+      explain: 'Sweet dreams. = いい夢を。寝る前の挨拶のバリエーション：Good night（定番）、Sleep tight（ぐっすり寝てね）、Time to hit the hay（カジュアルなスラング）。' },
+    { id: 'p59', q: '「久しぶりにバドミントンをした（動作）」を英語で？', choices: ['Long time no see, I played badminton', 'I played badminton for the first time in a while', 'I played badminton after long time', "It's been a while badminton"], correct: 1,
+      explain: 'for the first time in a while = 久しぶりに（動作）。"I cooked for the first time in a while."（久しぶりに料理した）。long time no see は人への再会専用！' },
+    { id: 'p60', q: '「これを続けたい」を英語で？', choices: ['I want to continue it', 'I want to keep doing this', 'どちらも通じるが keep doing this の方が会話で自然', 'I want to do this'], correct: 2,
+      explain: 'keep doing this = これを続ける（会話で自然）。"Keep up the good work!"（その調子！）。continue も正しいけど少し硬め。' },
+    { id: 'p61', q: '「知恵を使って解決した」を英語で（手段を表す）？', choices: ['He solved it to use his wisdom', 'He solved it by using his wisdom', 'He solved it for using his wisdom', 'He solved it with use his wisdom'], correct: 1,
+      explain: 'by + ~ing = 〜することによって（手段）。"I learn English by watching movies."（映画を見て英語を学ぶ）。to + 動詞は「〜するために」（目的）で意味が違う！' },
+    { id: 'p62', q: '「ゲームは私に大きな影響を与えた」を英語で？', choices: ['Games gave me influence', 'Games had a big influence on me', 'Games influenced to me', 'Games big influenced me'], correct: 1,
+      explain: 'have an influence on ~ = 〜に影響を与える。前置詞は on。"Her teacher had a big influence on her."（彼女の先生は彼女に大きな影響を与えた）。' },
+    { id: 'p63', q: '話を締めくくる「そんな感じ」を英語で？', choices: ['Something like that', 'Like a feeling', 'That feeling', 'So feeling'], correct: 0,
+      explain: 'Something like that. = そんな感じ。"I just clean my room and relax. Something like that."（部屋を掃除してのんびり。そんな感じ）。万能の締めフレーズ。' },
+    { id: 'p64', q: '話を全部言い終わって「以上です／だいたいそんなとこ」を英語で？', choices: ["It's that", "That's about it", 'About that', 'That is over'], correct: 1,
+      explain: 'That\'s about it. = だいたいそんなとこ／以上です。"I woke up, ate breakfast, and went to school. That\'s about it."（起きて、朝食食べて、学校。そんな感じ）。' },
+    { id: 'p65', q: '「よくやったね！」を少し丁寧に言うと？', choices: ['Good for you', 'Well done', 'Nice try', 'You did'], correct: 1,
+      explain: 'Well done! = よくやったね！Good job! / Nice work! より少し丁寧で、先生や年上の人もよく使う。"Well done on your new game!"（新しいゲーム、よくできたね！）。' },
+    { id: 'p66', q: 'お客さんに「くつろいでね」を英語で？', choices: ['Be relaxed', 'Make yourself at home', 'You can relax', 'Take a break'], correct: 1,
+      explain: 'Make yourself at home. = くつろいでね（自分の家のようにして）。家にお客さんを招いた時の定番フレーズ。' },
+    { id: 'p67', q: '誤解を防ぐ「誤解しないでね」を英語で？', choices: ["Don't misunderstand me", "Don't get me wrong", "Don't think wrong", "Don't take me wrong"], correct: 1,
+      explain: 'Don\'t get me wrong. = 誤解しないでね。批判や否定的なことを言う前のクッション言葉。"Don\'t get me wrong, I like him, but..."（誤解しないで、彼は好きだけど…）。' },
+    { id: 'p68', q: '「自業自得だね」を英語で？', choices: ['You did wrong', 'It serves you right', "It's your fault", 'Bad for you'], correct: 1,
+      explain: 'It serves you right. = 自業自得だね（少しイジワル）。"You ate too much candy? It serves you right that your stomach hurts!"（キャンディ食べ過ぎ？お腹痛いの自業自得だよ！）。' },
+    { id: 'p69', q: '説明の途中で「ここまでわかった？」を英語で？', choices: ['Do you know?', 'Are you following me?', 'Did you hear?', 'Are you OK?'], correct: 1,
+      explain: 'Are you following me? = ついてきてる？／わかってる？説明の途中で確認したい時に。"Are you following me so far?"（ここまで大丈夫？）。' },
+    { id: 'p70', q: '「私は考えが顔に出るタイプ」を英語で？', choices: ["I'm easy to read", "I'm a bit of an open book", 'My face says everything', "I can't hide"], correct: 1,
+      explain: "I'm a bit of an open book. = 開いた本のように読みやすい → 隠せない性格。a bit of an ~（母音の前は an）に注意。" },
+    { id: 'p71', q: '「日本にはないキティのガチャポン」を英語で？', choices: ["a Hello Kitty gachapon which I didn't get in Japan", "a Hello Kitty gachapon that we don't have in Japan", "a Hello Kitty gachapon Japan doesn't", 'a Hello Kitty gachapon no in Japan'], correct: 1,
+      explain: '「日本にはない」は「持っていない」と考えて have を使う。"that we don\'t have in Japan"（日本にはない）。didn\'t get（手に入れなかった）だと少し違う意味に。' },
+    { id: 'p72', q: '「遊戯王カードを1枚も買えなかった」を英語で？', choices: ["I didn't buy Yu-Gi-Oh cards", "I couldn't buy any Yu-Gi-Oh cards", "I can't buy Yu-Gi-Oh cards", 'I no buy Yu-Gi-Oh cards'], correct: 1,
+      explain: 'couldn\'t = 買えなかった（買いたかったけど無理だった）、any = 1枚も〜ない（否定文の強調）。"I couldn\'t find any good ones."（いいのが1つも見つからなかった）。' },
+    { id: 'p73', q: '「だいたいそんなとこ／以上です」を英語で？', choices: ["It's all", "That's about it", 'About me', 'And that'], correct: 1,
+      explain: 'That\'s about it. = だいたいそんなとこ／以上。話を全部言い終わって「これで終わり」のニュアンス。"I woke up, had breakfast, went to school. That\'s about it."' },
+    { id: 'p74', q: '「私、隠せないタイプなんだ（顔に出ちゃう）」を英語で？', choices: ["I can't hide myself", "I'm a bit of an open book", 'I am a clear person', "I'm always honest"], correct: 1,
+      explain: "I'm a bit of an open book. = 私、隠せないタイプ／オープンな性格。直訳「ちょっと開いた本のような」。気持ちが顔や態度に出ちゃう人に使う慣用表現。" },
+    { id: 'p75', q: '強く否定する「絶対違う／絶対嫌」を英語で？', choices: ['Definitely not', 'Definitely no', 'No definitely', 'Not really'], correct: 0,
+      explain: 'Definitely not! = 絶対違う／絶対嫌！"Do you want to skip school?" "Definitely not!"（学校サボりたい？）（絶対嫌！）。definitely no は不自然なので注意。' },
+    { id: 'p76', q: '「友達に手伝うよう頼んだ」を英語で？', choices: ['I asked my friend help', 'I asked my friend to help', 'I asked my friend helping', 'I asked help my friend'], correct: 1,
+      explain: 'ask + 人 + to do = 人に〜するよう頼む。"My mom asked me to clean my room."（母は部屋を掃除するよう頼んだ）。want + 人 + to do と同じ構文。' },
+    { id: 'p77', q: '「言われたことが聞き取れた」を一番自然に英語で？', choices: ['I heard what they said', 'I caught what they said', 'I listened what they said', 'I got what they said'], correct: 1,
+      explain: 'catch = 聞き取れる（音をキャッチする感じ）。"Sorry, I didn\'t catch your name."（ごめん、名前聞き取れなかった）。listening の場面でめちゃ使えます。' },
+    { id: 'p78', q: '「カードが買えなくて悲しい」を英語で？', choices: ["I sad that I couldn't buy cards", "I'm sad that I couldn't buy any cards", 'It is sad I cannot buy cards', 'Sad I could not buy any cards'], correct: 1,
+      explain: 'I\'m sad that + 文 = 〜で悲しい。感情 + that 節のパターン。"I\'m happy that you came."（来てくれて嬉しい）。否定文の「1つも」には any。' },
+    { id: 'p79', q: '「Mang Inasal で食べたチキン」の「お店で」の前置詞は？', choices: ['in Mang Inasal', 'at Mang Inasal', 'on Mang Inasal', 'to Mang Inasal'], correct: 1,
+      explain: 'at + 店名 = お店で（場所として）。"I ate at McDonald\'s."（マクドナルドで食べた）。in だと「お店の中に物理的にいる」だけのニュアンス。' },
+    { id: 'p80', q: '「賛否両論・長所と短所」を英語で？', choices: ['good and bad', 'pros and cons', 'yes and no', 'up and down'], correct: 1,
+      explain: 'pros and cons = 賛否両論・長所と短所。語源はラテン語 pro（賛成）/ contra（反対）。"Let\'s discuss the pros and cons."（メリットとデメリットを話し合おう）。' },
+    { id: 'p81', q: '「いなくなった人を探す」を英語で？', choices: ['search missing people', 'search for missing people', 'search to missing people', 'search of missing people'], correct: 1,
+      explain: 'search for ~ = 〜を探す（探している対象には for が必要）。"They searched for the lost dog all night."（一晩中いなくなった犬を探した）。look for も同じ意味。' },
+    { id: 'p82', q: '「泳ぎに行く」を英語で？', choices: ['go to swim', 'go swim', 'go swimming', 'go for swim'], correct: 2,
+      explain: 'go + ~ing = 〜しに行く（特にスポーツ・レジャー）。"go swimming / shopping / fishing / hiking"。"Let\'s go shopping this weekend!"（今週末買い物に行こう！）。' },
+    { id: 'p83', q: '「見せるのを嫌がらなかった」を英語で？', choices: ["didn't mind to show", "didn't mind showing", "didn't mind show", "didn't mind to showing"], correct: 1,
+      explain: 'mind + 動名詞（~ing）= 〜するのを嫌がる。"Do you mind opening the window?"（窓を開けてもらえますか？）。mind の後は必ず ~ing。' },
+    { id: 'p84', q: '「本を読むのに忙しい」を英語で？', choices: ['busy to read a book', 'busy reading a book', 'busy read a book', 'busy for reading a book'], correct: 1,
+      explain: 'busy + ~ing = 〜するのに忙しい。"She was busy preparing for the exam."（彼女は試験準備で忙しかった）。busy の後は ~ing（to不定詞ではない）。' },
+    { id: 'p85', q: '「まあこういう日もあるよね」を英語で？', choices: ['This is a day', 'Some days are like that', 'Today is a day', "It's a such day"], correct: 1,
+      explain: 'Some days are like that. = まあこういう日もあるよね。落ち込んだ時の慰めフレーズ。"Oh well."（まあいいか）、"It is what it is."（しょうがない）も同じ場面で使えます。' },
+    { id: 'p86', q: '「しょうがない・そういうものだ」を英語で？', choices: ['It is what it is', 'It is what', 'That is that', 'What it is'], correct: 0,
+      explain: 'It is what it is. = しょうがない・そういうものだ。変えられない現実を受け入れる時の定番フレーズ。"We lost, but it is what it is."（負けたけど、まあしょうがない）。' },
+    { id: 'p87', q: '「医者から薬をもらった」を英語で？', choices: ['I got medicine to the doctor', 'I got medicine from the doctor', 'I got medicine by the doctor', 'I got medicine of the doctor'], correct: 1,
+      explain: 'from the doctor = 医者から（出どころを表す from）。"I got medicine from the doctor and took it."（医者から薬をもらって飲んだ）。' },
+    { id: 'p88', q: '「だいぶ良くなった」を英語で？', choices: ["I'm pretty good", 'I feel much better', "I'm very well", "I'm good now"], correct: 1,
+      explain: 'feel much better = だいぶ良くなった（比較級 better + much で強調）。"I feel much better now."（今はだいぶ良くなった）。pretty good は「まあまあ」で病み上がりには不自然。' },
+    { id: 'p89', q: '「いつも通りに授業に行く」を英語で？', choices: ['go to class normally', 'go to class as usual', 'go to class usually', 'go class as usual'], correct: 1,
+      explain: 'as usual = いつも通りに。"I woke up at 7 as usual."（いつも通り7時に起きた）。normally は「普通は／通常は」で少しニュアンスが違います。' },
+    { id: 'p90', q: '「お客さんの立場から見ると」を英語で？', choices: ["From a customer's point of view", "In a customer's side", "By a customer's view", "On a customer's point"], correct: 0,
+      explain: 'From a ~\'s point of view = 〜の立場・視点から見ると。"From a student\'s point of view, the test was too hard."（学生の視点から見ると、テストは難しすぎた）。意見を述べる時に便利。' },
+    { id: 'p91', q: '相手の意見を聞く「どう思う？」を英語で？', choices: ['How do you think?', 'What do you think?', 'Do you think how?', 'What you think?'], correct: 1,
+      explain: 'What do you think? = どう思う？「どう」でも英語は What を使う（How do you think? は誤り）。"What do you think about this plan?"（この計画についてどう思う？）。' },
+    { id: 'p92', q: '「お気持ちはわかります、でも〜」を英語で？', choices: ['I know you, but...', 'I understand, but...', 'I think you, but...', 'I feel you are, but...'], correct: 1,
+      explain: 'I understand, but... = お気持ちはわかります、でも〜。反論する前のクッション言葉。"I understand how you feel, but maybe there\'s another way."（お気持ちはわかります、でも別の方法があるかも）。' },
+    { id: 'p93', q: '「全部独り占めするのは少しわがままかな」を英語で？', choices: ['It would be selfish to keep them all for myself', 'It is selfish keeping them all', 'I am selfish to keep all', 'Keeping all is selfish for me'], correct: 0,
+      explain: 'It would be selfish to ~ = 〜するのは(ちょっと)わがままかな。would で「〜したら…だろう」と控えめに。"It would be rude to leave early."（早く帰るのは失礼かな）。' },
+    { id: 'p94', q: '「Wi-Fiにつないだ」を英語で？', choices: ['I connected wi-fi', 'I connected to wi-fi', 'I connected with wi-fi', 'I connected in wi-fi'], correct: 1,
+      explain: 'connect to ~ = 〜につなぐ（接続先には to）。"I connected to the wi-fi at the cafe."（カフェでWi-Fiにつないだ）。' },
+    { id: 'p95', q: '「うまくいかなかった」を英語で？', choices: ['I was not going well', "it didn't go well", 'I did not go well', 'it was not good well'], correct: 1,
+      explain: 'it didn\'t go well = うまくいかなかった（主語は it = その試み）。go well は「物事がうまく進む」。"The interview didn\'t go well."（面接はうまくいかなかった）。' },
+    { id: 'p96', q: '「リスニングが上達しない」を英語で？', choices: ['Listening is not getting better', "I'm not getting better at listening", 'Listening was not doing better', "I'm not good listening"], correct: 1,
+      explain: 'get better at ~ = 〜が上達する（自分が主語）。"I want to get better at cooking."（料理が上手くなりたい）。listening は「もの」なので自分を主語にするのが自然。' },
+    { id: 'p97', q: '「リスニングもスピーキングも上達しない」の正しい接続詞は？', choices: ['at listening and speaking', 'at listening or speaking', 'at listening nor speaking', 'at listening but speaking'], correct: 1,
+      explain: '否定文では and ではなく or を使う。"I\'m not getting better at listening or speaking."（リスニングもスピーキングも上達しない）。"I don\'t like coffee or tea."（コーヒーも紅茶も好きじゃない）。' },
+    { id: 'p98', q: '「一人部屋はAIスピーキングに向いてそう」を英語で？', choices: ['A single room may be feeling good with AI speaking', 'A single room may be better for AI speaking', 'A single room feels good to AI speaking', 'A single room is good with AI speaking'], correct: 1,
+      explain: 'be better for ~ = 〜に向いている。"This chair is better for your back."（この椅子は腰にいい）。feel good with は不自然。' },
+    { id: 'p99', q: '「やっとキティちゃん3種類ゲット！」の「やっと」を英語で？', choices: ['At last finally', 'Finally', 'In the end finally', 'Lastly'], correct: 1,
+      explain: 'Finally = やっと・ついに（長く待った末に）。"Finally, I got three kinds of Hello Kitty!"（やっとキティちゃん3種類ゲット！）。文頭に置いて達成感を表せる。' },
+    { id: 'p100', q: '「体調がまだ良くなかった」を英語で？', choices: ['I was not feeling good yet', 'I am not feeling good yet', 'I was not feel good yet', 'I did not feeling good yet'], correct: 0,
+      explain: 'was not feeling good = 体調が良くなかった（過去進行形で「その時の状態」）。yet = まだ（否定文で）。"I wasn\'t feeling well yet, but I went out."（まだ体調は良くなかったけど出かけた）。' },
+    { id: 'p101', q: '「金曜に一日中スピーキングを練習する」の語順で自然なのは？', choices: ['practice speaking on Friday all day', 'practice speaking all day on Friday', 'practice all day speaking on Friday', 'practice on Friday speaking all day'], correct: 1,
+      explain: '時間の語順：小さいまとまり（all day 一日中）→ 大きいまとまり（on Friday 金曜に）。"I studied all day on Sunday."（日曜は一日中勉強した）。' },
+    { id: 'p102', q: '「日本のと少し味が違う」を英語で？', choices: ['different a little to Japanese one', 'a little different from the Japanese one', 'a little different to Japanese one', 'different from a little Japanese one'], correct: 1,
+      explain: 'a little different from ~ = 〜と少し違う。「少し」は different の前。「〜と違う」は different from（基本）。"My answer is a little different from yours."（私の答えは君のと少し違う）。' },
+    { id: 'p103', q: '「久しぶりに食べたピザ」を英語で？', choices: ['the pizza which I ate long time no see', "the pizza which I hadn't eaten in a long time", 'the pizza I ate after long time', 'the pizza long time no see'], correct: 1,
+      explain: "which I hadn't eaten in a long time = 久しぶりに食べた（しばらく食べていなかった）。long time no see は人への挨拶専用で、食べ物には使えない！過去完了 hadn't eaten で「それまで食べていなかった」を表す。" },
+    { id: 'p104', q: '「もう行くことはなさそう」を英語で？', choices: ['I would never go there', "I don't think I'll go there again", 'I never go there again', "I can't go there"], correct: 1,
+      explain: "I don't think I'll go there again. = もう行かなさそう（軽い気持ち）。would never go there は「何があっても絶対行かない」と強すぎる。やわらかい否定は I don't think I'll ~ が便利。" },
+    { id: 'p105', q: 'ホテルで「ゴミを集めて、シーツを替えて、毛布を1枚もらえますか」をまとめると？', choices: ['Please do trash, sheet, blanket', 'Could you please collect the trash, change the sheets, and bring an extra blanket?', 'Can you trash and sheets and blanket?', 'I want trash, sheets, blanket please'], correct: 1,
+      explain: 'Could you please A, B, and C? = AとBとCをしてもらえますか？（丁寧な複数依頼）。3つ以上は「A, B, and C」とカンマと and でつなぐ。ホテルやお店での依頼に便利。' },
+    { id: 'p106', q: '「行ってみようかな」（ためらい）を英語で？', choices: ["I'll go to", "I'm thinking about going to", 'I go to', 'I want go to'], correct: 1,
+      explain: 'I\'m thinking about ~ing = 〜してみようかな（まだ迷っている）。"I\'m thinking about going to the gym."（ジムに行こうかな）。I\'ll go だと決定済みで、ためらいのニュアンスが消える。' },
+    { id: 'p107', q: '「電話で話した」を英語で？', choices: ['I called on the phone', 'I talked on the phone', 'I spoke the phone', 'I phoned on'], correct: 1,
+      explain: 'talk on the phone = 電話で話す。"I talked with my mom on the phone."（母と電話で話した）。call は「電話をかける」行為で、「話した」中身を伝えるなら talk が自然。' },
+    { id: 'p108', q: '「モール内を歩き回った」を英語で？', choices: ['walked around the mall', 'walked in the mall around', 'walked the mall around', 'around walked the mall'], correct: 0,
+      explain: 'walk around ~ = 〜を歩き回る。"We walked around the park."（公園を歩き回った）。around は「あちこち」のイメージ。' },
+    { id: 'p109', q: '「日本のと同じ」を「同じ商品（前に出たもの）」を指して言うと？', choices: ['same as Japan', 'the same as the Japanese one', 'same Japanese', 'as same as Japan'], correct: 1,
+      explain: 'the same as the Japanese one = 日本のと同じ。one は前に出た名詞の繰り返しを避ける代名詞。same には the が必要。"This bag is the same as the one I lost."（このバッグはなくしたのと同じ）。' },
+    { id: 'p110', q: '「授業がうまくいった・いい感じだった」を英語で？', choices: ['The class felt good', 'The class went well', 'The class was good in', 'The class did good'], correct: 1,
+      explain: 'go well = うまくいく。"The class went well today."（今日の授業はうまくいった）。felt good in class は不自然。物事の成功は go well が定番。' },
+    { id: 'p111', q: '「友達ができた」を英語で？', choices: ['I had a friend', 'I made a friend', 'I got a friend', 'I became a friend'], correct: 1,
+      explain: 'make a friend = 友達を作る・友達ができる。"I made a friend named Hada."（ハダという友達ができた）。had a friend は「友達がいた（すでに）」で意味が違う。' },
+    { id: 'p112', q: '「ハダという名前の友達」を英語で？', choices: ['a friend name Hada', 'a friend named Hada', 'a friend is Hada', 'a friend called name Hada'], correct: 1,
+      explain: 'a friend named ~ = 〜という名前の友達。named は「名付けられた」（過去分詞）。"I have a cat named Mochi."（モチという名前の猫を飼っている）。a friend called ~ も同じ意味でOK。' },
+    { id: 'p113', q: '「カーペットを敷く」を英語で？', choices: ['stand a carpet', 'lay a carpet / put down a carpet', 'hang a carpet', 'arrange a carpet'], correct: 1,
+      explain: 'lay a carpet / put down a carpet = カーペットを敷く。"We put down a new carpet last week."（先週新しいカーペットを敷いた）。put down が一番やさしい言い方。' },
+    { id: 'p114', q: '「元の場所に戻して」を英語で？', choices: ['Put it back', 'Return it back', 'Put back it', 'Set it back'], correct: 0,
+      explain: 'put it back = 元の場所に戻す。代名詞 it は put と back の間。"Please put it back where it was."（元あった場所に戻して）。return（返す）は借りた物に使う。' },
+    { id: 'p115', q: '「ゴミを捨てる」で一番よく使うのは？', choices: ['drop the trash', 'throw away the trash', 'put the trash', 'leave the trash'], correct: 1,
+      explain: 'throw away ~ = 〜を捨てる（一番一般的）。"I threw away the old shoes."（古い靴を捨てた）。throw out も同じ意味。過去形は threw（不規則）。' },
+    { id: 'p116', q: '「絵をまっすぐ壁にかけたい」を英語で？', choices: ['I want to hang the picture straight on the wall', 'I want to put the picture in the wall', 'I want to hang the picture on wall straight', 'I want to set the picture to the wall'], correct: 0,
+      explain: 'hang ~ on the wall = 壁に〜をかける。「まっすぐに」は straight。「壁に」の前置詞は on。"Hang the clock straight on the wall."（時計をまっすぐ壁にかけて）。' },
+    { id: 'p117', q: '「太ってきた」をやわらかく言うと？', choices: ["I'm getting fat", "I'm gaining weight", "I'm being fat", "I have fat"], correct: 1,
+      explain: 'gain weight / put on weight = 体重が増える（やわらかい）。"I\'ve gained weight recently."（最近太ってきた）。fat は直接的でキツく聞こえることがあるので、gain weight が無難。' },
+    { id: 'p118', q: '「体に悪いとわかっているもの」を英語で？', choices: ['things they know are bad for them', 'things they know bad for them', 'things they are knowing bad', 'things bad they know for them'], correct: 0,
+      explain: 'things (that) they know are bad for them = 自分に悪いとわかっているもの。関係代名詞 that が省略された形。bad for ~ = 〜にとって悪い。"People eat things they know are bad for them."（人は体に悪いと知りつつ食べる）。' },
+    { id: 'p119', q: '「気が散って集中できない」を英語で？', choices: ['My phone distracts me from my homework', 'My phone distracts me to my homework', 'My phone is distract my homework', 'My phone distracted from me'], correct: 0,
+      explain: 'distract A from B = BからAの気をそらす。"My phone distracts me from my homework."（スマホのせいで宿題に集中できない）。前置詞は from。' },
+    { id: 'p120', q: '「パーティーを開く」で自然なのは？', choices: ['do a party', 'have a party', 'make a party', 'play a party'], correct: 1,
+      explain: 'have a party = パーティーを開く（throw a party もOK）。"We had a birthday party for my mom."（母の誕生日パーティーを開いた）。do a party は不自然。' },
+    { id: 'p121', q: '「私には合わないかも」とやわらかく言うには？', choices: ['It is bad for me', 'It might be bad for me', 'It will bad for me', 'It is bad to me'], correct: 1,
+      explain: 'might be ~ = 〜かもしれない（控えめな推量）。"Too much coffee might be bad for me."（コーヒーの飲みすぎは私に良くないかも）。断定を避けるクッション表現。' },
+    { id: 'p122', q: '「日焼け（こんがり健康的）」を英語で？', choices: ['sunburn', 'suntan', 'sunlight', 'sunshine'], correct: 1,
+      explain: 'suntan（tan）= こんがりした健康的な日焼け。"She got a nice tan at the beach."（ビーチでいい感じに日焼けした）。一方 sunburn は「赤くヒリヒリする（痛い）日焼け」で別物。' },
+    { id: 'p123', q: '「君には関係ないよ」を英語で？', choices: ["It's not your thing", "It's none of your business", "It's nobody to you", "It's not for you"], correct: 1,
+      explain: "It's none of your business. = 君には関係ない・口出しするな。\"What I do is none of your business.\"（私が何をしようと君には関係ない）。少しキツい表現なので使う相手に注意。" },
+    { id: 'p124', q: '「自分のためだけに生きる」を英語で？', choices: ['live to himself', 'live for himself', 'live by himself', 'live with himself'], correct: 1,
+      explain: 'live for ~ = 〜のために生きる。"He lives only for himself."（彼は自分のためだけに生きている）。live by himself（一人で暮らす）とは意味が違うので注意。' },
+    { id: 'p125', q: '「友達なしでやっていく」を英語で？', choices: ['get along without friends', 'get along with friends', 'go along without friends', 'get away without friends'], correct: 0,
+      explain: 'get along without ~ = 〜なしでやっていく。"I can\'t get along without my phone."（スマホなしではやっていけない）。get along with ~ なら「〜と仲良くやる」で逆の意味。' },
+    { id: 'p126', q: '「人と仲良くやっていく」を英語で？', choices: ['get along without people', 'get along with people', 'get over people', 'get along to people'], correct: 1,
+      explain: 'get along with ~ = 〜と仲良くやっていく。"She gets along well with her coworkers."（彼女は同僚とうまくやっている）。without（〜なしで）と with（〜と）で意味が真逆。' },
+    { id: 'p127', q: '「〜の困ったところは…」を英語で？', choices: ['The trouble of ~ is...', 'The trouble with ~ is...', 'The trouble for ~ is...', 'The trouble to ~ is...'], correct: 1,
+      explain: 'The trouble with ~ is... = 〜の困ったところは…。"The trouble with this plan is that it costs too much."（この計画の難点はお金がかかりすぎることだ）。前置詞は with。' },
+    { id: 'p128', q: '「わがままを抑えないと、振り回されるよ」を英語で？', choices: ['Master selfishness or it will master you', 'Master selfishness and it masters you', 'Be master selfishness or master you', 'Master to selfishness or it master you'], correct: 0,
+      explain: '命令文 + or + 主語 will ~ = 〜しろ、さもないと…するぞ。"Hurry up or you\'ll be late."（急がないと遅刻するよ）。master = 支配する・使いこなす。' },
+    { id: 'p129', q: '「フィリピンでは（その商品を）売っていない」を英語で？', choices: ['they sold out in the Philippines', "they don't sell them in the Philippines", 'they are not sell in the Philippines', "they don't selling in the Philippines"], correct: 1,
+      explain: 'they don\'t sell them = （店が）それを売っていない。sold out は「売り切れ」で、そもそも扱いがない時は don\'t sell が正しい。"They don\'t sell that brand here."（その銘柄はここでは売っていない）。' },
+    { id: 'p130', q: '「お土産を買った方がいい」を英語で？', choices: ['I should buy a souvenir', 'I should buy some souvenirs', 'I should buy souvenir', 'I should buy the souvenir'], correct: 1,
+      explain: 'should buy some souvenirs = お土産を（いくつか）買った方がいい。souvenir は数えられる名詞。複数買うなら some souvenirs。"I should buy some snacks."（おやつを買っておこう）。' },
+    { id: 'p131', q: '「ちょっと探してみよう」を英語で？', choices: ["I'll try to find them a little", "I'll try finding them a little", "I'll try to looking for them", "I try find them"], correct: 0,
+      explain: 'try to + 動詞 = 〜しようとする。look for / find = 探す。"I\'ll try to find a good restaurant."（いいレストランを探してみる）。a little で「ちょっと」を添える。' },
+    { id: 'p132', q: '「体に合わない（食べ物が）」を英語で？', choices: ["the food doesn't fit my body", "the food doesn't agree with me", "the food doesn't suit to me", "the food isn't good my body"], correct: 1,
+      explain: 'the food doesn\'t agree with me = その食べ物が体に合わない（食べると調子が悪くなる）。"Spicy food doesn\'t agree with me."（辛い物は体に合わない）。簡単には "makes me sick" も使える。' },
+    { id: 'p133', q: '「全部がそうとは限らない」を英語で？', choices: ['All of them are not', 'Not all of them', 'Not all them', 'All not of them'], correct: 1,
+      explain: 'Not all of them ~ = それら全部が〜なわけではない（一部は違う）。"Not all of them are dangerous."（全部が危険なわけではない）。部分否定の便利な表現。' },
+    { id: 'p134', q: '「体に悪い」を中学レベルで簡単に言うと？', choices: ['bad against the body', 'bad for the body', 'bad to the body', 'bad with the body'], correct: 1,
+      explain: 'bad for ~ = 〜に悪い。"Too much sugar is bad for your teeth."（砂糖の取りすぎは歯に悪い）。反対は good for ~（〜に良い）。前置詞は for。' },
+    { id: 'p135', q: '「最新のパックを買った」を英語で？', choices: ['I bought the new packs', 'I bought the newest packs', 'I bought the most new packs', 'I bought new packs'], correct: 1,
+      explain: 'the newest = 最新の（new の最上級 + the）。"I got the newest iPhone."（最新のiPhoneを買った）。new だと「新しい」止まりで「最新」のニュアンスは弱い。' },
+    { id: 'p136', q: '「（店に）置いてなかった」を英語で？', choices: ['it was nothing', "they didn't have one", 'there was not', 'it did not exist'], correct: 1,
+      explain: "they didn't have one = （店に）置いてなかった。one = 欲しかった商品。\"I wanted the red one, but they didn't have it.\"（赤いのが欲しかったけど、なかった）。it was nothing は「大したことない」で全く別の意味。" },
+    { id: 'p137', q: '「ライチュウのぬいぐるみ」を英語で？', choices: ["a Raichu's stuffed toy", 'a Raichu stuffed toy', 'a stuffed toy of Raichu', 'a Raichu of stuffed toy'], correct: 1,
+      explain: 'a Raichu stuffed toy = ライチュウのぬいぐるみ。名詞を並べて表す（アポストロフィ s は不要）。"a Pikachu keychain"（ピカチュウのキーホルダー）も同じ作り方。' },
+    { id: 'p138', q: '「たくさん用事を済ませた」を自然に言うと？', choices: ['I finished a lot of plans', 'I got a lot of things done', 'I did a lot of plans', 'I ended many things'], correct: 1,
+      explain: 'get things done = 用事を片付ける・物事を済ませる。"I got a lot done today."（今日はたくさん片付けた）。finish plans は不自然。get + 物 + done の形を覚えると便利。' },
+    { id: 'p139', q: '「（選考のある）仕事に応募した」を英語で？', choices: ['I applied the job', 'I applied for the job', 'I applied to the job', 'I signed up the job'], correct: 1,
+      explain: 'apply for ~ = 〜に応募する（選考がある）。"She applied for a scholarship."（彼女は奨学金に応募した）。誰でも登録できるものは sign up for（sign up for a class 授業に登録する）。' },
+    { id: 'p140', q: '「1日で全部終わらせた」を英語で？', choices: ['on a day', 'in one day', 'at one day', 'for one day'], correct: 1,
+      explain: 'in one day = 1日で（かかった時間）。"I read the whole book in one day."（1日で本を読み切った）。in は「〜という時間の中で」。on a day とは言わない。' }
+  ],
+  grammar: [
+    { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
+      explain: '所有格（\'s）と the は同時に使えません。"Let\'s check today\'s news."（今日のニュースをチェックしよう）。my book に the my book と言わないのと同じ。' },
+    { id: 'g02', q: '「先生はいい人でした」の正しい文は？', choices: ['The teacher is good person.', 'The teacher was good person.', 'The teacher was a good person.', "The teacher's a good person."], correct: 2,
+      explain: 'person は数えられる名詞なので a が必要。過去なので was。"He was a kind man."（彼は優しい男性だった）。' },
+    { id: 'g03', q: '「いつ英語を学び始めましたか？」の正しい文は？', choices: ['When did you started learning English?', 'When did you start learning English?', 'When you started learning English?', 'When do you started learning English?'], correct: 1,
+      explain: 'did を使ったら動詞は原形（start）に。"When did you arrive?"（いつ着いたの？）。中学英語の重要ルール。' },
+    { id: 'g04', q: '「Politics ___ difficult.」に入るのは？', choices: ['are', 'is', 'were', 'be'], correct: 1,
+      explain: '-ics で終わる学問名は単数扱い。"Mathematics is my favorite subject."（数学は私の好きな科目）。economics, physics も同様。' },
+    { id: 'g05', q: "次の文の間違いは？「I enjoyed today's lesson. The teacher is a good person.」", choices: ['enjoyed が間違い', 'is が間違い（was にする）', "today's が間違い", '間違いはない'], correct: 1,
+      explain: '前の文が過去形 enjoyed なら、後の文も過去形 was に揃える。"I went to the park. It was beautiful."（公園に行った。きれいだった）。時制の一致。' },
+    { id: 'g06', q: "「I'm looking forward ___ you.」に入るのは？", choices: ['to see', 'to seeing', 'see', 'seeing'], correct: 1,
+      explain: 'looking forward to の to は前置詞なので、後ろは動名詞（〜ing）。"I\'m looking forward to hearing from you."（あなたからの返事を楽しみにしてます）。' },
+    { id: 'g07', q: '「明日は最終日です」の正しい文は？', choices: ['Tomorrow is last day.', 'Tomorrow is a last day.', 'Tomorrow is the last day.', 'Tomorrow is my the last day.'], correct: 2,
+      explain: '世界に1つしかないものには the。"Today is the first day of summer."（今日は夏の最初の日）。the last / the first / the best など順序・最上級に the。' },
+    { id: 'g08', q: '「クーラーを使い始めた」の正しい文は？', choices: ['I started use the air conditioner.', 'I started on the air conditioner.', 'I started using the air conditioner.', 'I started to using the air conditioner.'], correct: 2,
+      explain: 'start + 動名詞 / to + 原形。"She started running every morning."（彼女は毎朝走り始めた）。会話では ~ing がより自然。' },
+    { id: 'g09', q: "「It's ___ hot to sleep.」（暑すぎて眠れない）に入るのは？", choices: ['so', 'too', 'very', 'such'], correct: 1,
+      explain: 'too は「〜すぎる（困る）」。"too ... to ~"（〜すぎて…できない）の形。"This coffee is too hot to drink."（このコーヒーは熱すぎて飲めない）。' },
+    { id: 'g10', q: '「ジーンズを1本買った」の正しい文は？', choices: ['I bought a jeans.', 'I bought jeans.', 'I bought a pair of jeans.', 'I bought a piece of jeans.'], correct: 2,
+      explain: 'jeans, pants, glasses, scissors など2つの部分でできるものは a pair of で数える。"I need a new pair of glasses."（新しいメガネがいる）。' },
+    { id: 'g11', q: '一番自然な英文はどれ？', choices: ["I enjoyed to do today's lesson.", "I enjoyed do today's lesson.", "I enjoyed doing today's lesson.", "I enjoyed today's lesson."], correct: 3,
+      explain: 'enjoy の目的語は名詞か動名詞。"I enjoyed the movie."（映画を楽しんだ）が一番自然。do a lesson は不自然。' },
+    { id: 'g12', q: '「Thank you ___ having me.」に入るのは？', choices: ['to', 'of', 'for', 'about'], correct: 2,
+      explain: 'Thank you for ~ing = 〜してくれてありがとう。"Thank you for helping me."（助けてくれてありがとう）。for の後は動名詞または名詞。' },
+    { id: 'g13', q: '「7月に」を英語で？', choices: ['at July', 'on July', 'in July', 'to July'], correct: 2,
+      explain: '月の前は in。at（時刻 at 7）、on（日付 on Monday）、in（月・年・季節 in spring, in 2026）。"She was born in October."' },
+    { id: 'g14', q: '「フィリピンに行く」の正しい文は？', choices: ['I go to Philippines', 'I go to the Philippines', 'I go to a Philippines', 'I go Philippines'], correct: 1,
+      explain: 'the Philippines は必ず the が必要。複数形の国名には the。"I\'d like to visit the Netherlands someday."（いつかオランダに行きたい）。' },
+    { id: 'g15', q: '「商談準備を終えた」の正しい文は？', choices: ['I finished to prepare for the meeting', 'I finished preparing for the meeting', 'I finished prepare for the meeting', 'I finished to preparing for the meeting'], correct: 1,
+      explain: 'finish + 動名詞。"Have you finished writing the report?"（レポート書き終わった？）。enjoy, stop, give up も同じパターン。' },
+    { id: 'g16', q: '「次のパーティーを楽しみにしてる」の正しい文は？', choices: ['I look forward to enjoy the next party', "I'm looking forward to the next party", 'I look forward enjoy the next party', "I'm looking forward enjoy the next party"], correct: 1,
+      explain: 'look forward to の to は前置詞なので、後ろは名詞か動名詞。"I\'m looking forward to the weekend."（週末が楽しみ）。' },
+    { id: 'g17', q: '「この髪型でフィリピンに行く」の「この髪型で」は？', choices: ['on this hairstyle', 'in this hairstyle', 'with this hairstyle', 'by this hairstyle'], correct: 2,
+      explain: 'with this hairstyle = この髪型で。with は「〜を身につけて」。"The girl with the red hat is my sister."（赤い帽子の女の子が私の妹）。' },
+    { id: 'g18', q: '「英語を話すことへの緊張が少し減った」の正しい文は？', choices: ['I feel a little less nervous about speaking English', 'I feel a little less nervous to speak English', 'I feel little less nervous about speaking English', 'I feel a less nervous about speaking English'], correct: 0,
+      explain: 'less + 形容詞 = より〜でない。"I feel less tired today."（今日は疲れが少ない）。nervous about の後は ~ing。' },
+    { id: 'g19', q: '「Unity Editor を操作できる uLoop」を関係代名詞で説明するなら？', choices: ['uLoop that control Unity Editor', 'uLoop, which lets you control Unity Editor', 'uLoop which control Unity Editor', 'uLoop that lets control Unity Editor'], correct: 1,
+      explain: 'コンマ + which は補足説明。"My laptop, which I bought last year, is broken."（去年買ったノートパソコンが壊れた）。' },
+    { id: 'g20', q: '「うまくいきますように」を hope を使って言うと？', choices: ['I hope go well', 'I hope it goes well', 'I hope it go well', 'I hope to go well'], correct: 1,
+      explain: 'I hope の後は「主語 + 動詞」。三単現の s も忘れずに。"I hope she likes my gift."（彼女がプレゼントを気に入るといいな）。' },
+    { id: 'g21', q: '「明日が最終日」の正しい文は？', choices: ['Tomorrow is last day', 'Tomorrow is a last day', 'Tomorrow is the last day', 'Tomorrow is one last day'], correct: 2,
+      explain: 'the last day = 最後の日（世界に1つしかないので the）。"This is the best pizza I\'ve ever had."（人生最高のピザだ）。' },
+    { id: 'g22', q: '「Tomorrow」のスペル、正しいのは？', choices: ['Tommorow', 'Tommrow', 'Tomorrow', 'Tomorow'], correct: 2,
+      explain: 'Tomorrow = to + morrow。m は1つ、r は2つ。よく間違える単語ベスト10入り！丁寧に覚えよう。' },
+    { id: 'g23', q: '「テストで点数を取る」の前置詞は？', choices: ['at the test', 'in the test', 'on the test', 'for the test'], correct: 2,
+      explain: 'on the test = テストで。on は接触のコア。"He got 95 on his history test."（彼は歴史のテストで95点取った）。' },
+    { id: 'g24', q: '「My English is getting ___ little by little.」に入るのは？', choices: ['well', 'good', 'better', 'best'], correct: 2,
+      explain: 'better = より良く（比較級）。get + 比較級 = だんだん〜になる。"The days are getting longer."（日がだんだん長くなっている）。' },
+    { id: 'g25', q: "「I'm thinking ___ studying abroad.」（留学を考え中）の前置詞は？", choices: ['to', 'of', 'for', 'about'], correct: 1,
+      explain: 'I\'m thinking of ~ing = 〜しようかなと考え中。"I\'m thinking of buying a new bike."（新しい自転車を買おうかと考え中）。' },
+    { id: 'g26', q: '「毎日出社する」の「毎日」、正しいのは？', choices: ['everyday', 'every day', 'all day', 'each days'], correct: 1,
+      explain: 'every day（2語）= 毎日（副詞）。everyday（1語）= 日常の〜（形容詞、everyday life など）。"I drink water every day."' },
+    { id: 'g27', q: '「留学の準備をする」の正しい形は？', choices: ['prepare studying abroad', 'prepare for studying abroad', 'prepare to study abroad', 'prepare for と to の両方OK'], correct: 3,
+      explain: 'prepare for + 名詞/動名詞、prepare to + 動詞。"She\'s preparing for her exam."（試験準備）/ "She\'s preparing to leave."（出発準備）。' },
+    { id: 'g28', q: '「でも英語の復習もしなきゃ」の also の正しい位置は？', choices: ['But also I have to review', 'But I also have to review', 'But I have also to review', 'But I have to also review'], correct: 1,
+      explain: 'also は「主語 + also + 動詞」が基本。"I also like coffee."（私もコーヒーが好き）。be動詞や助動詞の前に置きます。' },
+    { id: 'g29', q: '「何が起きても諦めない」の正しい文は？', choices: ["Whatever I don't give up", "Whatever happens, I won't give up", "Whatever happen, I won't give up", "Whatever, I don't give up"], correct: 1,
+      explain: 'Whatever + 主語 + 動詞 の型。"Whatever you decide, I\'ll support you."（あなたが何を決めても応援する）。カンマも忘れずに。' },
+    { id: 'g30', q: '「ソルジャーボーイに戦ってほしかった（実際は戦わなかった）」を英語で？', choices: ['I wanted to fight with Soldier Boy', 'I wish Soldier Boy had joined the fight', 'I hope Soldier Boy fights', 'I wanted Soldier Boy fight'], correct: 1,
+      explain: 'wish + 過去完了 = 過去の事実に反する願望。"I wish I had studied harder in school."（学校でもっと勉強すればよかった）。' },
+    { id: 'g31', q: '「給料を60万円に上げてもらった」の正しい表現は？', choices: ['They increased it for 600,000 yen', 'They raised it to 600,000 yen', 'They raised it for 600,000 yen', 'They up it to 600,000 yen'], correct: 1,
+      explain: 'raise it to ~ = 〜に上げる（to は到達点）。"The shop raised the price to 5,000 yen."（店は値段を5,000円に上げた）。' },
+    { id: 'g32', q: '「映画の最後のシーン」を英語で？', choices: ['the scene of the end', 'the scene at the end', 'the scene in the end', 'the scene to the end'], correct: 1,
+      explain: 'at the end = 終わりの地点で。"We met at the end of the street."（通りの突き当たりで会った）。at は特定の地点。' },
+    { id: 'g33', q: '「最後まで・ずっと」を英語で？', choices: ['until the end', 'all the way to the end', 'どちらも正しいが all the way の方が勢いがある', 'to the end'], correct: 2,
+      explain: 'all the way to the end = 最後の最後まで（勢いがある）。"He ran all the way home."（家までずっと走った）。' },
+    { id: 'g34', q: '「見終わった」を英語で？', choices: ['I watched it', 'I finished watching it', 'I ended watching it', 'I done watch it'], correct: 1,
+      explain: 'finish watching = 見終わる。finish の後は動名詞。"Have you finished reading the book?"（本読み終わった？）。' },
+    { id: 'g35', q: '「期間（3年間）続いた」の正しい時制と動詞は？', choices: ['continues three years', 'lasted for three years', 'last three years', 'is lasted three years'], correct: 1,
+      explain: 'lasted for ~ = 期間続いた（過去形）。前置詞 for とセット。"Our trip lasted for two weeks."（旅行は2週間続いた）。' },
+    { id: 'g36', q: '「セブに到着した」の正しい前置詞は？', choices: ['I arrived at Cebu', 'I arrived in Cebu', 'I arrived to Cebu', 'I arrived on Cebu'], correct: 1,
+      explain: 'arrive in + 広い場所、arrive at + 狭い地点。"They arrived in Tokyo last night."（昨晩東京に到着）/ "He arrived at the station."（駅に到着）。' },
+    { id: 'g37', q: '「長ズボン買えばよかった！」（後悔）を英語で？', choices: ['I want to buy long pants', 'I should have bought long pants', 'I will buy long pants', 'I bought long pants'], correct: 1,
+      explain: 'should have + 過去分詞 = 〜すべきだった（後悔）。"I should have brought an umbrella."（傘を持ってくればよかった）。' },
+    { id: 'g38', q: '「the bathroom may not ___」（バスルームがきれいじゃないかも）の正しい形は？', choices: ['clean', 'be clean', 'cleaning', 'cleans'], correct: 1,
+      explain: 'clean は形容詞なので、助動詞の後に be が必要。"The food may not be fresh."（食べ物は新鮮じゃないかも）。形容詞の前には be 動詞。' },
+    { id: 'g39', q: '「私のもの」を表すのに自然なのは？', choices: ['I got textbooks', 'I got my textbooks', 'I got the textbooks', 'I got textbook'], correct: 1,
+      explain: '自分のものには my をつけると自然。"I lost my keys."（鍵をなくした）。所有を明確にすると自然な英文に。' },
+    { id: 'g40', q: '同じ単語を繰り返さない時、a + 名詞 の代わりに使うのは？', choices: ['it', 'one', 'that', 'the'], correct: 1,
+      explain: 'one = 前に出た「a + 名詞」の代わり。"I lost my pen. I need to buy one."（ペンをなくした。1本買わなきゃ）。it だと「その特定のペン」になってしまう。' },
+    { id: 'g41', q: '「先生は知らない人と話すなと注意した」の正しい文は？', choices: ["The teacher warned us to don't talk to strangers", 'The teacher warned us not to talk to strangers', 'The teacher said us not talk to strangers', 'The teacher warned us no talking to strangers'], correct: 1,
+      explain: 'warn 人 not to do = 〜しないよう注意する。"The doctor warned him not to eat too much sugar."（医者は彼に砂糖を取りすぎないよう注意した）。' },
+    { id: 'g42', q: '「あの映画はこわかった（映画が原因）」を英語で？', choices: ['That movie was scared', 'That movie was frightened', 'That movie was frightening', 'That movie was fear'], correct: 2,
+      explain: '物事が人をこわがらせる時は -ing。"That movie was so frightening!"（あの映画こわかった！＝こわがらせるものだった）。-ed は人の気持ち（I was frightened）。' },
+    { id: 'g43', q: '「手段（〜することによって）」と「目的（〜するために）」の正しい使い分けは？', choices: ['どちらも to + 動詞', '手段は by + ~ing、目的は to + 動詞', 'どちらも by + ~ing', '手段は for + 名詞、目的は ~ing'], correct: 1,
+      explain: 'by + ~ing = 手段（〜することによって）。to + 動詞 = 目的（〜するために）。"I lost weight by exercising."（運動で痩せた）vs "I exercise to lose weight."（痩せるために運動する）。' },
+    { id: 'g44', q: '「100回上げることができた」の正しい文は？', choices: ['I lifted it hundred times', 'I lifted it a hundred times', 'I lifted it the hundred times', 'I lifted it one hundred time'], correct: 1,
+      explain: 'a hundred times = 100回（hundred の前に a が必要）。同じパターン：a thousand（千）、a million（百万）。"He has read it a hundred times."（彼はそれを100回読んだ）。' },
+    { id: 'g45', q: '「（一回の達成として）〜することができた」の自然な言い方は？', choices: ['I could lift the dumbbell', 'I was able to lift the dumbbell', 'I can lifted the dumbbell', 'I could to lift the dumbbell'], correct: 1,
+      explain: '一回の達成 = was able to。could だと「能力があった（一般的）」になりがち。"I was able to finish the report on time."（時間通りにレポートを終えられた）。' },
+    { id: 'g46', q: '「彼は寝ているに違いない」の正しい文は？', choices: ['He must be sleeping', 'He must sleeping', 'He must to sleep', 'He must slept'], correct: 0,
+      explain: '助動詞（must, can, will, could など）のあとは必ず動詞の原形。be + sleeping で「寝ている」。"You must be tired."（疲れているに違いない）。 ★ゆうきの伸びしろポイント！' },
+    { id: 'g47', q: '「used to + 動詞」と「get used to + 名詞/~ing」の違いは？', choices: ['同じ意味', 'used to = 昔の習慣（今はしてない）、get used to = 〜に慣れる', 'used to = 慣れる、get used to = 昔の習慣', 'どちらも「使う」'], correct: 1,
+      explain: 'used to + 動詞 = 昔は〜だった（今はしてない）。get used to + 名詞/~ing = 〜に慣れる。"I used to live in Tokyo."（昔は東京に住んでた）vs "I got used to living in Cebu."（セブでの生活に慣れた）。' },
+    { id: 'g48', q: '「友達が私に教えてくれた」自然な英文は？', choices: ['I was taught my friend', 'I was taught by my friend', 'A friend taught me', 'どちらも自然だが A friend taught me がより自然'], correct: 3,
+      explain: '日本語の受動的な表現を、英語では能動態で言う方が自然。"A friend taught me how to use the gym machines."（友達がジム機材の使い方を教えてくれた）。' },
+    { id: 'g49', q: '「会議はそれぞれ約1時間でした」の正しい文は？', choices: ["It's about one hour", 'They were about an hour each', 'They are about one hour', 'They were one hour'], correct: 1,
+      explain: '過去なので were、複数なので They、それぞれを表す each、会話では an hour が one hour より自然。"The lessons were about an hour each."（レッスンはそれぞれ約1時間だった）。' },
+    { id: 'g50', q: '「ここに駐車してはいけない」（禁止）の正しい表現は？', choices: ["You can't park here", 'You must not park here', 'どちらも禁止を表せる', "You don't park here"], correct: 2,
+      explain: '禁止は must not（強い）も can\'t（やわらかい）もOK。"You can\'t take photos here."（写真撮影禁止）。ただし「彼が来るはずがない」のような強い否定の推量は can\'t（must not は使わない）。' },
+    { id: 'g51', q: '「他のもう1つのモール」の正しい表現は？', choices: ['other mall', 'another mall', 'the other mall', 'other malls'], correct: 1,
+      explain: 'another = もう一つ別の（単数）。other は単独で単数名詞につけられない。"another cup of coffee"（もう1杯）vs "other people"（他の人々／複数）。' },
+    { id: 'g52', q: '「日本と同じ雰囲気」を英語で？', choices: ['same as Japan', 'same as in Japan', 'the same as in Japan', 'same with Japan'], correct: 2,
+      explain: 'same は the same が基本。「日本（の中）と同じ」は in が必要。"The food here is the same as in my hometown."（ここの食べ物は地元と同じ）。' },
+    { id: 'g53', q: '「月曜日に」の前置詞は？', choices: ['at Monday', 'on Monday', 'in Monday', 'for Monday'], correct: 1,
+      explain: '曜日は on。"See you on Monday."（月曜日に会おう）。前置詞ルール：at（時刻 at 7）→ on（日・曜日 on Monday）→ in（月・年・季節 in July）と範囲が広がる。' },
+    { id: 'g54', q: '「カードを1枚も買えなかった」の正しい文は？', choices: ["I didn't buy cards", "I couldn't buy any cards", "I couldn't buy some cards", "I didn't buy any card"], correct: 1,
+      explain: 'couldn\'t = 買えなかった（買いたかったけど無理だった）、any = 否定文で「1つも」、cards = 複数。"I couldn\'t find any errors."（エラーが1つも見つからなかった）。' },
+    { id: 'g55', q: '「a bit of」の後ろに来る名詞は？', choices: ['複数形のみ', '不可算名詞', '可算名詞のみ', '何でもいい'], correct: 1,
+      explain: 'a bit of + 不可算名詞 = 少しの〜。"a bit of water/help/time/sugar"。可算名詞の複数形には a few を使い分け（a few books）。' },
+    { id: 'g56', q: "「I'm a bit of ___ open book.」の空欄に入るのは？", choices: ['a', 'an', 'the', 'なし'], correct: 1,
+      explain: '母音の発音で始まる単語の前は an。open は母音始まりなので an。"an apple"（リンゴ）、"an hour"（h が無音）も同じパターン。' },
+    { id: 'g57', q: '「速く走る」の「速く」、正しいのは？', choices: ['fastly', 'fast', 'fastly または fast', 'fasty'], correct: 1,
+      explain: 'fast は形容詞も副詞も同じ形（fastly という単語は存在しない！）。"He runs fast."（彼は速く走る）。同じパターン：hard（熱心に）、early（早く）、late（遅く）。' },
+    { id: 'g58', q: '「泳ぎに行く」の正しい文は？', choices: ['I go to swim', 'I go swim', 'I go swimming', 'I go for swimming'], correct: 2,
+      explain: 'go + ~ing = 〜しに行く。"I go swimming every weekend."（毎週末泳ぎに行く）。go fishing, go shopping, go hiking なども同じ形。' },
+    { id: 'g59', q: '「迷子を探す」の正しい文は？', choices: ['search a lost child', 'search for a lost child', 'search to a lost child', 'search about a lost child'], correct: 1,
+      explain: 'search for + 探す対象。"The police searched for the missing man."（警察は行方不明の男性を探した）。search a place（場所を捜索する）と search for（探す対象）を区別。' },
+    { id: 'g60', q: '「窓を開けてもらえますか？」の正しい文は？', choices: ['Do you mind to open the window?', 'Do you mind opening the window?', 'Do you mind open the window?', 'Do you mind to opening the window?'], correct: 1,
+      explain: 'mind + 動名詞（~ing）。"Would you mind closing the door?"（ドアを閉めてもらえますか？）。mind, enjoy, finish, give up, avoid は動名詞をとる動詞。' },
+    { id: 'g61', q: '「海・川・海洋」に the をつける？つけない？', choices: ['the the Pacific Ocean のように the が必要', 'the は不要', 'どちらでもいい', 'a をつける'], correct: 0,
+      explain: '自然の海・川・海洋には the が必要。the Pacific Ocean（太平洋）、the Nile（ナイル川）。一方、Lake Biwa（琵琶湖）、Mount Fuji（富士山）のように「種類＋名前」の形は the 不要。' },
+    { id: 'g62', q: '「Mount Fuji（富士山）」に the は必要？', choices: ['the Mount Fuji が正しい', 'the は不要（Mount Fuji のまま）', 'a Mount Fuji', 'どちらでもいい'], correct: 1,
+      explain: 'Mount/Lake/Central などの「種類を表す語＋名前」には the が不要。Mount Fuji, Lake Biwa, Central Park, Tokyo Station。一方 the Pacific Ocean（海洋）は the が必要。' },
+    { id: 'g63', q: '「（証拠から）〜だったはずがない」推量の過去の否定は？', choices: ['must not have been', "couldn't have been", 'may not have been', 'should not have been'], correct: 1,
+      explain: 'couldn\'t have + 過去分詞 = 〜だったはずがない（過去の強い否定推量）。"He couldn\'t have stolen it; he was with me."（彼が盗んだはずがない、僕と一緒にいたから）。might not have は「〜しなかったかも」と弱い。' },
+    { id: 'g64', q: '「風邪をひいたので休んだ」の正しい文は？', choices: ['I have a cold so I take a day off', 'I caught a cold, so I took a day off', 'I catch a cold so I took a day off', 'I had a cold so I take a day off'], correct: 1,
+      explain: '日記は過去形に統一。「風邪をひく」は catch a cold（過去 caught）。「休みを取る」take a day off（過去 took）。"I caught a cold yesterday."（昨日風邪をひいた）。' },
+    { id: 'g65', q: '「来週」に前置詞は必要？', choices: ['in next week', 'on next week', 'next week（前置詞なし）', 'at next week'], correct: 2,
+      explain: 'next / last / this がつくと前置詞は不要。"I\'ll move next week."（来週引っ越す）。"See you next Monday."（また来週月曜）。in next week とは言いません。' },
+    { id: 'g66', q: '「授業に行く」の正しい形は？', choices: ['go to the class', 'go to class', 'go class', 'go in class'], correct: 1,
+      explain: 'go to class = 授業に行く（class は「授業」の意味では a も the もつけない）。go to school, go to work も同じパターン（無冠詞）。"I go to class every day."' },
+    { id: 'g67', q: '「despite」の後ろに来るのは？', choices: ['文（主語＋動詞）', '名詞または動名詞（~ing）', 'to + 動詞', '形容詞'], correct: 1,
+      explain: 'despite / in spite of + 名詞・動名詞 = 〜にもかかわらず。"Despite the rain, we went out."（雨にもかかわらず出かけた）。一方 although は後ろに文がくる（although it rained）。' },
+    { id: 'g68', q: '「雨だったけど出かけた」を although で言うと？', choices: ['Although the rain, we went out', 'Although it rained, we went out', 'Although raining, we went out', 'Although of rain, we went out'], correct: 1,
+      explain: 'although + 文（主語＋動詞）。"Although it rained, we went out."（雨が降ったけど出かけた）。despite は名詞をとる（despite the rain）ので使い分けに注意。' },
+    { id: 'g69', q: '「将来は」の前置詞、正しいのは？', choices: ['for the future', 'in the future', 'on the future', 'at the future'], correct: 1,
+      explain: 'in the future = 将来は。"I want to live in the US in the future."（将来アメリカに住みたい）。for the future は「将来のために（備え）」と意味が変わります。' },
+    { id: 'g70', q: '「might be able to」と「might have to」の違いは？', choices: ['同じ意味', 'might be able to = できるかも、might have to = しなければならないかも', '逆の意味で同じ', 'どちらも「したい」'], correct: 1,
+      explain: 'might be able to = できるかも（可能性）。might have to = しなければならないかも（義務）。"I might be able to join."（参加できるかも）vs "I might have to work."（働かなきゃかも）。助動詞は重ねられないので be able to / have to を使う。' },
+    { id: 'g71', q: '「薬を飲む」の正しい動詞は？', choices: ['drink medicine', 'take medicine', 'eat medicine', 'have medicine'], correct: 1,
+      explain: 'take medicine = 薬を飲む（drink は使わない！）。"Take this medicine twice a day."（この薬を1日2回飲んで）。錠剤も液体も take。' },
+    { id: 'g72', q: '「専門学校」を英語で？', choices: ['special school', 'vocational school', 'professional school', 'technical college のいずれも使えるが vocational school が一般的'], correct: 3,
+      explain: 'vocational school / technical college = 専門学校（職業訓練の学校）。"I study game design at a vocational school."（専門学校でゲームデザインを学んでいる）。special school は「特別支援学校」で別物。' },
+    { id: 'g73', q: '「うるさかった」を英語で（形容詞 noisy を使って）？', choices: ['there was noisy', 'it was noisy', 'there was noise it', 'it was noise'], correct: 1,
+      explain: 'it was noisy（形容詞 noisy）/ there was noise（名詞 noise）。"there was noisy" は名詞の位置に形容詞が来てNG。"The cafe was noisy."（カフェはうるさかった）。' },
+    { id: 'g74', q: '「騒音があった」を英語で（名詞 noise を使って）？', choices: ['there was noisy', 'there was noise', 'it was noise', 'there had noise'], correct: 1,
+      explain: 'there was + 名詞 = 〜があった。noise は名詞「騒音」。"There was a lot of noise outside."（外で騒音がたくさんあった）。noisy は形容詞なので there was の後には来ない。' },
+    { id: 'g75', q: '「静かだから」を英語で？', choices: ['because of quietly', "because it's quiet", 'because of quiet', 'because quietly'], correct: 1,
+      explain: 'because + 文（it\'s quiet）= 〜だから。because of + 名詞。"because of quietly"（副詞）は不可。"I like libraries because they\'re quiet."（静かだから図書館が好き）。' },
+    { id: 'g76', q: '「お店の一点」を表す前置詞は？', choices: ['in Starbucks', 'at Starbucks', 'on Starbucks', 'to Starbucks'], correct: 1,
+      explain: 'at + 店名 = お店で（点としての場所）。"I work at Starbucks."（スターバックスで働いている）。in は「内部の空間」を強調する時。日常では at が自然。' },
+    { id: 'g77', q: '「〜したけれど」を1語の接続詞で表すなら？', choices: ['despite', 'because', 'though / although', 'so'], correct: 2,
+      explain: 'though / although + 文 = 〜だけれど。"Although I was tired, I kept working."（疲れていたけど働き続けた）。though は文末にも置ける："I was tired. I kept working, though."（でも働いたよ）。' },
+    { id: 'g78', q: '「drink（飲む）」の過去形は？', choices: ['drunk', 'drank', 'drinked', 'drunken'], correct: 1,
+      explain: 'drink → drank（過去形）→ drunk（過去分詞）。"I drank a cup of coffee."（コーヒーを一杯飲んだ）。drunk は have drunk（飲んだことがある）か「酔っ払った」の意味。' },
+    { id: 'g79', q: '「サウナに行った」の正しい文は？', choices: ['I went to sauna', 'I went to a sauna', 'I went to the sauna', 'I went sauna'], correct: 1,
+      explain: 'sauna は数えられる名詞なので a が必要。"I went to a sauna after the gym."（ジムの後にサウナへ行った）。go to school / work（無冠詞）とは違うので注意。' },
+    { id: 'g80', q: '「正午ちょうど」と「午後（昼から）」の使い分けは？', choices: ['どちらも at noon', 'at noon = 正午ちょうど、in the afternoon = 午後', 'at noon = 午後、in the afternoon = 正午', 'どちらも in the afternoon'], correct: 1,
+      explain: 'at noon = 正午ちょうど（12時）、in the afternoon = 午後（昼から）。「昼から出かけた」なら in the afternoon。"I have lunch at noon."（正午に昼食をとる）。' },
+    { id: 'g81', q: '「〜と違う」の正しい前置詞は（中学レベル）？', choices: ['different to', 'different from', 'different with', 'different than'], correct: 1,
+      explain: 'different from ~ = 〜と違う（基本）。"My idea is different from yours."（私の考えは君のと違う）。different to はイギリス口語、different than はアメリカ口語。中学では from が安心。' },
+    { id: 'g82', q: '「3つ以上を丁寧にお願いする」時の正しい形は？', choices: ['Could you A, B, C?', 'Could you please A, B, and C?', 'Could you please A and B and C?', 'Please you A, B, C?'], correct: 1,
+      explain: 'Could you please A, B, and C? = AとBとCをしてもらえますか？3つ以上はカンマで区切り、最後だけ and。"Could you please clean the room, take out the trash, and bring a towel?"' },
+    { id: 'g83', q: '「the Japanese one」の one は何を指す？', choices: ['数字の1', '前に出た名詞の繰り返しを避ける代名詞', '人', '冠詞'], correct: 1,
+      explain: 'one = 前に出た名詞（ここでは pizza）の繰り返しを避ける代名詞。"This pizza is different from the Japanese one."（このピザは日本のと違う、one = pizza）。it（その特定のもの）とは使い分け。' },
+    { id: 'g84', q: '「来てからずっとお腹の調子が悪い」の正しい文は？', choices: ['My stomach is bad since I came', 'My stomach has been bad since I came', 'My stomach was bad since I came', 'My stomach bad since I came'], correct: 1,
+      explain: 'has been + since ~ = 〜してからずっと…（現在完了）。過去から今まで続く状態には現在完了を使う。"I have lived here since 2020."（2020年からここに住んでいる）。' },
+    { id: 'g85', q: '「来てから（時点）」を表す正しい形は？', choices: ['since I came', 'since then I came', 'since I come', 'from I came'], correct: 0,
+      explain: 'since + 文（過去形）= 〜して以来。"since then"（それ以来）と "since I came"（来て以来）は別物で、混ぜて "since then I came" とは言わない。重複に注意。' },
+    { id: 'g86', q: '「hang（かける）」の過去形は？', choices: ['hanged', 'hung', 'hanged または hung', 'hangged'], correct: 1,
+      explain: 'hang → hung → hung（不規則変化）。"I hung my coat on the hook."（フックにコートをかけた）。※ hanged は「絞首刑にした」という特別な意味の時だけ使う別の形。' },
+    { id: 'g87', q: '「throw（投げる・捨てる）」の過去形は？', choices: ['throwed', 'threw', 'thrown', 'throwing'], correct: 1,
+      explain: 'throw → threw（過去形）→ thrown（過去分詞）。"I threw away the trash this morning."（今朝ゴミを捨てた）。thrown は have thrown（過去分詞）の形なので過去形とは別。' },
+    { id: 'g88', q: '「体に悪いとわかっているもの」の関係代名詞は？', choices: ['things which they know is bad', 'things (that) they know are bad', 'things what they know are bad', 'things they know is bad'], correct: 1,
+      explain: 'things (that) they know are bad = 悪いとわかっているもの。会話では関係代名詞 that が省略される。主語が things（複数）なので are。what は使えない（先行詞 things があるため）。' },
+    { id: 'g89', q: '「だんだん太ってきている」の正しい形は？', choices: ['I get fatter', "I'm getting fatter", 'I am get fatter', 'I getting fatter'], correct: 1,
+      explain: 'be + getting + 比較級 = だんだん〜になってきている（変化の進行）。"The weather is getting colder."（だんだん寒くなってきた）。fatter は fat の比較級。' },
+    { id: 'g90', q: '「気をそらす」distract の前置詞は？', choices: ['distract A to B', 'distract A from B', 'distract A of B', 'distract A at B'], correct: 1,
+      explain: 'distract A from B = BからAの気をそらす。"Noise distracts me from studying."（騒音が勉強から気をそらす）。「本来集中すべきもの（B）から離す」イメージなので from。' },
+    { id: 'g91', q: '「パーティーを開く」の正しい動詞は？', choices: ['do a party', 'have a party / throw a party', 'make a party', 'open a party'], correct: 1,
+      explain: 'have a party / throw a party = パーティーを開く。"Let\'s throw a party for her birthday!"（彼女の誕生日にパーティーを開こう！）。do a party や make a party とは言わない。' },
+    { id: 'g92', q: '「急がないと遅刻するよ」の正しい形は？', choices: ['Hurry up and you\'ll be late', "Hurry up or you'll be late", 'Hurry up so you\'ll be late', 'Hurry up but you\'ll be late'], correct: 1,
+      explain: '命令文 + or + 主語 will ~ = 〜しろ、さもないと…するぞ。"Study hard, or you\'ll fail."（勉強しないと落ちるよ）。逆に「〜すれば…」は命令文 + and（"Hurry up, and you\'ll catch the train."）。' },
+    { id: 'g93', q: '「彼は払うと言い張った」の正しい前置詞は？', choices: ['insisted to pay', 'insisted on paying', 'insisted for paying', 'insisted in pay'], correct: 1,
+      explain: 'insist on + 動名詞（~ing）= 〜すると言い張る。"She insisted on coming with us."（彼女は一緒に来ると言い張った）。前置詞 on の後は ~ing。' },
+    { id: 'g94', q: '「自分のことしか考えない」の正しい文は？', choices: ['They think only themselves', 'They think only of themselves', 'They think only for themselves', 'They only think themselves'], correct: 1,
+      explain: 'think of ~ = 〜のことを考える。"think only of themselves" で「自分のことしか考えない」。think の後に of が必要。"Think of others, not just yourself."（自分だけでなく他人のことも考えて）。' },
+    { id: 'g95', q: '「うまくできなかった、質問が難しかったから」の正しい文は？', choices: ["I couldn't do well. Because the questions were difficult.", "I couldn't do well, maybe because the questions were difficult.", 'I couldn\'t do well. Because difficult questions.', "Because the questions were difficult, I can't do well."], correct: 1,
+      explain: '英語では Because だけで文を始めない（前の文とつなげる）。"I was late because I missed the bus."（バスを逃して遅刻した）。maybe because で「〜だからかも」と理由をやわらかく添えられる。' },
+    { id: 'g96', q: '「Because で文を始める」のは正しい？', choices: ['いつでもOK', '基本はNG（前の文とつなげる）', '疑問文だけOK', '過去形だけOK'], correct: 1,
+      explain: '書き言葉では Because + 文だけで終わるのは基本NG。"Why were you late?" への返事など会話では単独もありだが、日記や作文では "..., because ~" と前の文につなげるのが安全。' },
+    { id: 'g97', q: '「明日は休みだ」の正しい文は？', choices: ['Tomorrow is the day off', 'Tomorrow is my day off', 'Tomorrow is day off', 'Tomorrow is a day off'], correct: 1,
+      explain: 'my day off = 自分の休みの日。"I have a day off tomorrow."（明日は休みだ）も自然。day off は「仕事・学校が休みの日」。the day off だと特定の休みを指して少し不自然。' },
+    { id: 'g98', q: '「先週行かなかったサウナ」の正しい語順は？', choices: ['the sauna where I didn\'t go last week', 'the sauna I didn\'t go last week where', 'the sauna last week where I didn\'t go', 'where the sauna I didn\'t go last week'], correct: 0,
+      explain: '関係副詞 where + 文 が名詞の後ろから説明する。"the sauna where I didn\'t go last week"（先週行かなかったサウナ）。情報を詰め込みすぎる時は2文に分けると自然。' },
+    { id: 'g99', q: '「仕事を始める」の正しい形は？', choices: ['start the work', 'start work', 'start a work', 'start the works'], correct: 1,
+      explain: 'work（仕事）は数えない名詞なので a も the もつけない。"I start work at 9."（9時に仕事を始める）。"go to work"（出勤する）も同じく無冠詞。作品の意味の時だけ a work / works。' },
+    { id: 'g100', q: '「東京駅で」の正しい前置詞は？', choices: ['in Tokyo Station', 'at Tokyo Station', 'on Tokyo Station', 'to Tokyo Station'], correct: 1,
+      explain: 'at + 駅・場所の一点 = 〜で。"I\'ll meet you at the station."（駅で会おう）。in Tokyo Station は「駅舎の中」を特に強調する時だけ。待ち合わせや場所を示すなら at が自然。' },
+    { id: 'g101', q: '「ちょうどいい量のストレス」を英語で？', choices: ['suitable stress', 'just the right amount of stress', 'good amount stress', 'just right stress'], correct: 1,
+      explain: 'just the right amount of ~ = ちょうどいい量の〜。"Add just the right amount of salt."（ちょうどいい量の塩を加えて）。"with just the right amount of stress"（程よいストレスで）。' },
+    { id: 'g102', q: '「apply for」と「sign up for」の違いは？', choices: ['同じ意味', 'apply for = 選考がある応募、sign up for = 誰でもできる登録', 'apply for = 無料、sign up for = 有料', 'apply for = 登録、sign up for = 応募'], correct: 1,
+      explain: 'apply for ~ = （選考のある）応募（仕事・奨学金など）。sign up for ~ = （誰でもできる）登録（授業・イベント・メルマガなど）。"apply for a job"（仕事に応募）vs "sign up for a class"（授業に登録）。' }
+  ]
+};
+
+const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length;
+document.getElementById('total-badge').textContent = TOTAL + '問';
+
+const MASTERY_THRESHOLD = 3;
+
+let state = { mode: null, questions: [], idx: 0, score: 0, answered: false, picked: -1, history: [] };
+let stats = { played: 0, best: 0, totalCorrect: 0 };
+let mastery = {}; // {id: streak}
+
+function loadData() {
+  try {
+    const s = localStorage.getItem('eng-quiz-stats');
+    if (s) stats = JSON.parse(s);
+  } catch (e) {}
+  try {
+    const m = localStorage.getItem('eng-quiz-mastery');
+    if (m) mastery = JSON.parse(m);
+  } catch (e) {}
+}
+
+function saveStats() {
+  try { localStorage.setItem('eng-quiz-stats', JSON.stringify(stats)); } catch (e) {}
+}
+function saveMastery() {
+  try { localStorage.setItem('eng-quiz-mastery', JSON.stringify(mastery)); } catch (e) {}
+}
+
+function resetMastery() {
+  if (confirm('マスター記録（連続正解の進捗）をリセットしますか？\nスコア記録は残ります。')) {
+    mastery = {};
+    saveMastery();
+    render();
+  }
+}
+
+// 記録をコード化（デバイス間共有用）
+function makeSyncCode() {
+  const data = { v: 1, mastery, stats };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+}
+
+function applySyncCode(code) {
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    if (!data || (!data.mastery && !data.stats)) throw new Error('invalid');
+    let importedMastered = 0, currentMastered = 0;
+    const allIds = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar].map(q => q.id);
+    if (data.mastery) {
+      allIds.forEach(id => { if ((data.mastery[id]||0) >= MASTERY_THRESHOLD) importedMastered++; });
+      allIds.forEach(id => { if ((mastery[id]||0) >= MASTERY_THRESHOLD) currentMastered++; });
+    }
+    const msg = `読み込むと、今の記録は上書きされます。\n\n読み込むコードのマスター数: ${importedMastered}問\n今の端末のマスター数: ${currentMastered}問\n\n続けますか？`;
+    if (!confirm(msg)) return;
+    if (data.mastery) { mastery = data.mastery; saveMastery(); }
+    if (data.stats) { stats = data.stats; saveStats(); }
+    state.mode = null;
+    render();
+    alert('記録を読み込みました！🎉');
+  } catch (e) {
+    alert('コードが正しくないようです。コード全体をコピーできているか確認してください。');
+  }
+}
+
+function openSync() { state.mode = 'sync'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function getStreak(id) { return mastery[id] || 0; }
+function isMastered(id) { return getStreak(id) >= MASTERY_THRESHOLD; }
+
+function getAvailable(category) {
+  if (category === 'mix') {
+    return [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar].filter(q => !isMastered(q.id));
+  }
+  return QUESTIONS[category].filter(q => !isMastered(q.id));
+}
+
+function getMasteryStats() {
+  const all = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar];
+  const mastered = all.filter(q => isMastered(q.id)).length;
+  return { mastered, total: all.length, pct: Math.round(mastered / all.length * 100) };
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// 出題のたびに選択肢をシャッフルし、正解位置をばらけさせる
+// 「どちらも〜」のような他の選択肢を参照するメタ選択肢は最後に固定する
+function shuffleChoices(q) {
+  const correctText = q.choices[q.correct];
+  const metaPattern = /どちらも|両方|いずれも/;
+  const movable = q.choices.filter(c => !metaPattern.test(c));
+  const fixed = q.choices.filter(c => metaPattern.test(c));
+  const newChoices = [...shuffle(movable), ...fixed];
+  return { ...q, choices: newChoices, correct: newChoices.indexOf(correctText) };
+}
+
+function startMode(mode) {
+  const available = getAvailable(mode);
+  if (available.length === 0) {
+    alert('このカテゴリは全問マスター済みです！🎉\nマスター記録をリセットすると再挑戦できます。');
+    return;
+  }
+  const limit = mode === 'mix' ? 15 : 10;
+  const qs = shuffle(available).slice(0, Math.min(limit, available.length)).map(shuffleChoices);
+  state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, history: [] };
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function pick(i) {
+  if (state.answered) return;
+  state.answered = true;
+  state.picked = i;
+  const q = state.questions[state.idx];
+  const ok = i === q.correct;
+  if (ok) state.score++;
+  
+  // Update mastery
+  const prevStreak = getStreak(q.id);
+  const newStreak = ok ? prevStreak + 1 : 0;
+  mastery[q.id] = newStreak;
+  saveMastery();
+  
+  state.history.push({
+    q: q.q, picked: q.choices[i], correct: q.choices[q.correct], ok, explain: q.explain,
+    prevStreak, newStreak, justMastered: ok && newStreak === MASTERY_THRESHOLD
+  });
+  render();
+  if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
+}
+
+function next() {
+  state.idx++;
+  state.answered = false;
+  state.picked = -1;
+  if (state.idx >= state.questions.length) {
+    stats.played++;
+    stats.totalCorrect += state.score;
+    const pct = Math.round(state.score / state.questions.length * 100);
+    if (pct > stats.best) stats.best = pct;
+    saveStats();
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  state.mode = null;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function render() {
+  const r = document.getElementById('root');
+  if (state.mode === 'sync') r.innerHTML = renderSync();
+  else if (state.mode === null) r.innerHTML = renderHome();
+  else if (state.idx >= state.questions.length) r.innerHTML = renderResult();
+  else r.innerHTML = renderQuestion();
+  attach();
+}
+
+function renderSync() {
+  const code = makeSyncCode();
+  const m = getMasteryStats();
+  return `
+    <p class="title" style="font-size:18px;font-weight:600;margin:0 0 4px;">🔄 デバイス間で記録を同期</p>
+    <p class="subtitle">スマホとPCなど、別の端末に記録を移すための画面です。自動同期はできないので、コードをコピーして手動で移します。</p>
+
+    <div style="margin-bottom:20px;">
+      <p style="font-size:14px;font-weight:600;margin:0 0 6px;">① この端末の記録を書き出す</p>
+      <p style="font-size:12px;color:#a8a59c;margin:0 0 8px;">下のコードを全部コピーして、もう一方の端末の「読み込む」欄に貼り付けてください。（現在マスター ${m.mastered}問）</p>
+      <textarea id="exportArea" readonly style="width:100%;height:90px;background:#232321;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#d4d2c9;font-size:11px;padding:10px;font-family:monospace;resize:none;box-sizing:border-box;">${code}</textarea>
+      <button class="btn" id="copyBtn" style="margin-top:8px;">📋 コードをコピー</button>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:14px;font-weight:600;margin:0 0 6px;">② 別の端末の記録を読み込む</p>
+      <p style="font-size:12px;color:#a8a59c;margin:0 0 8px;">もう一方の端末でコピーしたコードを下に貼り付けてください。貼り付けると自動で確認が出ます（出ない時は下のボタンを押してね）。</p>
+      <textarea id="importArea" placeholder="ここにコードを貼り付け..." style="width:100%;height:90px;background:#232321;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#f0eee7;font-size:11px;padding:10px;font-family:monospace;resize:none;box-sizing:border-box;"></textarea>
+      <button class="btn btn-primary" id="importBtn" style="margin-top:8px;">📥 この記録を読み込む</button>
+    </div>
+
+    <button class="btn" id="homeBtn" style="margin-top:8px;">ホームに戻る</button>
+  `;
+}
+
+function renderHome() {
+  const m = getMasteryStats();
+  const remaining = {
+    vocab: getAvailable('vocab').length,
+    phrase: getAvailable('phrase').length,
+    grammar: getAvailable('grammar').length,
+    mix: getAvailable('mix').length
+  };
+  
+  return `
+    <p class="subtitle">3回連続正解した問題はマスター済みとして出題されません。何度も繰り返して全問マスターを目指そう！</p>
+    <div class="mode-grid">
+      <button class="mode-btn" data-mode="vocab" ${remaining.vocab === 0 ? 'disabled' : ''}>
+        <div class="mode-icon">📖</div>
+        <div class="mode-name">単語</div>
+        <div class="mode-count">${remaining.vocab > 0 ? `残り${remaining.vocab}問 / 全${QUESTIONS.vocab.length}問` : '全問マスター済み'}</div>
+      </button>
+      <button class="mode-btn" data-mode="phrase" ${remaining.phrase === 0 ? 'disabled' : ''}>
+        <div class="mode-icon">💬</div>
+        <div class="mode-name">フレーズ</div>
+        <div class="mode-count">${remaining.phrase > 0 ? `残り${remaining.phrase}問 / 全${QUESTIONS.phrase.length}問` : '全問マスター済み'}</div>
+      </button>
+      <button class="mode-btn" data-mode="grammar" ${remaining.grammar === 0 ? 'disabled' : ''}>
+        <div class="mode-icon">✏️</div>
+        <div class="mode-name">文法</div>
+        <div class="mode-count">${remaining.grammar > 0 ? `残り${remaining.grammar}問 / 全${QUESTIONS.grammar.length}問` : '全問マスター済み'}</div>
+      </button>
+      <button class="mode-btn" data-mode="mix" ${remaining.mix === 0 ? 'disabled' : ''}>
+        <div class="mode-icon">✨</div>
+        <div class="mode-name">ミックス</div>
+        <div class="mode-count">${remaining.mix > 0 ? '15問' : '全問マスター済み'}</div>
+      </button>
+    </div>
+    
+    <div class="mastery-bar">
+      <div class="mastery-row">
+        <span class="mastery-label">🏆 マスター進捗</span>
+        <span class="mastery-value">${m.mastered} / ${m.total} 問 (${m.pct}%)</span>
+      </div>
+      <div class="mastery-progress"><div class="mastery-fill" style="width: ${m.pct}%"></div></div>
+      <div class="mastery-hint">3回連続正解で「マスター」扱いになり、出題されなくなります。</div>
+      <button class="reset-btn" id="resetBtn">マスター記録をリセット</button>
+    </div>
+
+    <button class="btn" id="syncBtn" style="margin-top:12px;">🔄 デバイス間で記録を同期</button>
+    
+    <div class="stats" style="margin-top: 12px;">
+      <div class="stat">
+        <div class="stat-num">${stats.played}</div>
+        <div class="stat-lbl">プレイ回数</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">${stats.best}%</div>
+        <div class="stat-lbl">ベスト</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">${stats.totalCorrect}</div>
+        <div class="stat-lbl">合計正解数</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderQuestion() {
+  const q = state.questions[state.idx];
+  const total = state.questions.length;
+  const pct = Math.round((state.idx) / total * 100);
+  const modeName = { vocab: '単語', phrase: 'フレーズ', grammar: '文法', mix: 'ミックス' }[state.mode];
+  const streak = getStreak(q.id);
+  const streakTag = streak > 0 ? `<span class="q-mastery-tag">連続正解 ${streak}/${MASTERY_THRESHOLD}</span>` : '';
+  
+  let choicesHTML = q.choices.map((c, i) => {
+    let cls = 'choice';
+    if (state.answered) {
+      if (i === q.correct) cls += ' correct';
+      else if (i === state.picked) cls += ' wrong';
+      else cls += ' dim';
+    }
+    return `<button class="${cls}" data-pick="${i}" ${state.answered ? 'disabled' : ''}>${esc(c)}</button>`;
+  }).join('');
+  
+  let fbHTML = '';
+  if (state.answered) {
+    const ok = state.picked === q.correct;
+    const last = state.history[state.history.length - 1];
+    let masteryNote = '';
+    if (ok) {
+      if (last.justMastered) {
+        masteryNote = `<span class="fb-mastery">🎉 マスター達成！この問題はもう出題されません。</span>`;
+      } else {
+        masteryNote = `<span class="fb-mastery">連続正解 ${last.newStreak}/${MASTERY_THRESHOLD} ${last.newStreak >= 1 && last.newStreak < MASTERY_THRESHOLD ? '（あと ' + (MASTERY_THRESHOLD - last.newStreak) + ' 回でマスター）' : ''}</span>`;
+      }
+    } else if (last.prevStreak > 0) {
+      masteryNote = `<span class="fb-mastery">連続正解はリセットされました（${last.prevStreak} → 0）</span>`;
+    }
+    fbHTML = `
+      <div class="feedback ${ok ? 'ok' : 'ng'}">
+        <div class="fb-label">${ok ? '✓ 正解！' : '✗ 残念...'}</div>
+        ${esc(q.explain)}
+        ${masteryNote}
+      </div>
+      <button class="btn btn-primary" id="nextBtn">${state.idx + 1 === total ? '結果を見る' : '次の問題へ'}</button>
+    `;
+  }
+  
+  return `
+    <div class="q-head">
+      <span>${modeName} · ${state.idx + 1} / ${total}</span>
+      <span class="streak">🔥 ${state.score}</span>
+    </div>
+    <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
+    <p class="q-text">${esc(q.q)}${streakTag}</p>
+    <p class="q-hint">4つの中から1つ選んでください</p>
+    <div class="choices">${choicesHTML}</div>
+    ${fbHTML}
+    <button class="btn" id="homeBtn" style="margin-top: 16px;">ホームに戻る</button>
+  `;
+}
+
+function renderResult() {
+  const total = state.questions.length;
+  const pct = Math.round(state.score / total * 100);
+  const newMasters = state.history.filter(h => h.justMastered).length;
+  let msg;
+  if (pct === 100) msg = 'パーフェクト！すばらしい！🎉';
+  else if (pct >= 80) msg = 'よくできました！もう少しで満点だね';
+  else if (pct >= 60) msg = 'いい調子！間違えた問題を見直そう';
+  else msg = '解説を読んでじっくり復習しよう';
+  
+  const reviewHTML = state.history.map(h => `
+    <div class="review-item">
+      <div><span class="review-mark">${h.ok ? '✓' : '✗'}</span>${esc(h.q)}${h.justMastered ? ' <span class="q-mastery-tag">マスター達成！</span>' : ''}</div>
+      ${!h.ok ? `<div class="review-correct">正解: ${esc(h.correct)}</div>` : ''}
+    </div>
+  `).join('');
+  
+  const masterMsg = newMasters > 0 ? `<div class="score-msg" style="color: #C0DD97; font-weight: 600;">🏆 新たに ${newMasters} 問マスター達成！</div>` : '';
+  
+  return `
+    <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">結果</p>
+    <div class="score-num">${state.score} / ${total}</div>
+    <div class="score-msg">${msg}<br>正答率 ${pct}%</div>
+    ${masterMsg}
+    <div class="btn-row">
+      <button class="btn btn-primary" id="retryBtn">もう一度</button>
+      <button class="btn" id="homeBtn">ホームに戻る</button>
+    </div>
+    <div class="review">
+      <div class="review-h">問題を振り返る</div>
+      ${reviewHTML}
+    </div>
+  `;
+}
+
+function attach() {
+  document.querySelectorAll('[data-mode]').forEach(b => {
+    if (b.disabled) return;
+    b.onclick = () => startMode(b.dataset.mode);
+  });
+  document.querySelectorAll('[data-pick]').forEach(b => {
+    b.onclick = () => pick(parseInt(b.dataset.pick));
+  });
+  const nb = document.getElementById('nextBtn'); if (nb) nb.onclick = next;
+  const hb = document.getElementById('homeBtn'); if (hb) hb.onclick = goHome;
+  const rb = document.getElementById('retryBtn'); if (rb) rb.onclick = () => {
+    const m = state.mode;
+    const available = getAvailable(m);
+    if (available.length === 0) { goHome(); return; }
+    startMode(m);
+  };
+  const resetB = document.getElementById('resetBtn'); if (resetB) resetB.onclick = resetMastery;
+  const syncB = document.getElementById('syncBtn'); if (syncB) syncB.onclick = openSync;
+  const copyB = document.getElementById('copyBtn');
+  if (copyB) copyB.onclick = () => {
+    const ta = document.getElementById('exportArea');
+    ta.select();
+    ta.setSelectionRange(0, 99999);
+    const done = () => { copyB.textContent = '✓ コピーしました！'; setTimeout(() => { copyB.textContent = '📋 コードをコピー'; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(ta.value).then(done).catch(() => { try { document.execCommand('copy'); done(); } catch(e){} });
+    } else {
+      try { document.execCommand('copy'); done(); } catch(e){}
+    }
+  };
+  const importB = document.getElementById('importBtn');
+  if (importB) importB.onclick = () => {
+    const ta = document.getElementById('importArea');
+    if (!ta.value.trim()) { alert('コードを貼り付けてください。'); return; }
+    applySyncCode(ta.value);
+  };
+  const importArea = document.getElementById('importArea');
+  if (importArea) {
+    // 貼り付けたら自動で読み込み確認（ボタンを押さなくてもOK）
+    importArea.onpaste = () => {
+      setTimeout(() => { if (importArea.value.trim()) applySyncCode(importArea.value); }, 120);
+    };
+  }
+}
+
+loadData();
+render();
+</script>
+</body>
+</html>
