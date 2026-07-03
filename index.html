@@ -397,7 +397,9 @@ const QUESTIONS = {
     { id: 'v148', q: '「criticize」の意味は？', choices: ['ほめる', '批判する・あら探しする', '無視する', '応援する'], correct: 1,
       explain: 'criticize = 批判する。名詞 criticism（批判）、critic（批評家）。"Don\'t criticize others too much."（人を批判しすぎないで）。アメリカ式スペルは criticize、イギリス式は criticise。' },
     { id: 'v149', q: '「herbicide」の意味は？', choices: ['肥料', '除草剤', '殺虫剤', '種'], correct: 1,
-      explain: 'herbicide = 除草剤（herb 草 + cide 殺す）。-cide は「殺すもの」を表す語尾。pesticide（殺虫剤）、insecticide（殺虫剤）も仲間。"This crop resists herbicides."（この作物は除草剤に強い）。' }
+      explain: 'herbicide = 除草剤（herb 草 + cide 殺す）。-cide は「殺すもの」を表す語尾。pesticide（殺虫剤）、insecticide（殺虫剤）も仲間。"This crop resists herbicides."（この作物は除草剤に強い）。' },
+    { id: 'v150', q: '「テストプレイをする」を英語1語で言うと？', choices: ['play the game test', 'playtest', 'test play', 'game play'], correct: 1,
+      explain: 'playtest（動詞）= テストプレイをする。play + test が1語になった言葉。"I playtested the game today."（今日そのゲームをテストプレイした）。"play the game test" は不自然な語順なので注意。ゲーム開発でよく使う単語。' }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -679,7 +681,15 @@ const QUESTIONS = {
     { id: 'p139', q: '「（選考のある）仕事に応募した」を英語で？', choices: ['I applied the job', 'I applied for the job', 'I applied to the job', 'I signed up the job'], correct: 1,
       explain: 'apply for ~ = 〜に応募する（選考がある）。"She applied for a scholarship."（彼女は奨学金に応募した）。誰でも登録できるものは sign up for（sign up for a class 授業に登録する）。' },
     { id: 'p140', q: '「1日で全部終わらせた」を英語で？', choices: ['on a day', 'in one day', 'at one day', 'for one day'], correct: 1,
-      explain: 'in one day = 1日で（かかった時間）。"I read the whole book in one day."（1日で本を読み切った）。in は「〜という時間の中で」。on a day とは言わない。' }
+      explain: 'in one day = 1日で（かかった時間）。"I read the whole book in one day."（1日で本を読み切った）。in は「〜という時間の中で」。on a day とは言わない。' },
+    { id: 'p141', q: '「各キャラクターに愛着を持つ」を自然に言うと？', choices: ['have an attachment with each character', 'feel attached to each character', 'feel attachment with each character', 'be attach to each character'], correct: 1,
+      explain: 'feel attached to ~ = 〜に愛着を持つ。"Players feel attached to each character."（プレイヤーは各キャラに愛着を持つ）。"have an attachment with" は不自然。attached は「くっついた」→気持ちがくっついている＝愛着があるイメージ。' },
+    { id: 'p142', q: '「そのプロジェクトの一員になれて嬉しい」を自然に言うと？', choices: ['glad to join it', 'happy to be part of it', 'happy to join in it', 'glad to be a part'], correct: 1,
+      explain: "be part of ~ = 〜の一員である。'I'm happy to be part of it.'（その一員になれて嬉しい）。join も間違いではないが、「参加している状態」を表すには be part of が自然。" },
+    { id: 'p143', q: '「9時ごろ家に着く」を自然に言うと？', choices: ['the time I arrive at home is 9', 'I get home around 9 pm', 'I arrive to home about 9', 'I reach home in 9 pm'], correct: 1,
+      explain: "get home = 家に着く（home は副詞なので to は不要）。around 9 pm = 9時ごろ。'I get home around 9 pm.'が自然。'the time I arrive at home is 21 o clock' のような言い方や24時間表記は日常会話では不自然。" },
+    { id: 'p144', q: '「必要なものを持っていく」を自然に言うと？', choices: ['bring something to need', 'bring the things I need', 'bring the need things', 'bring things to needing'], correct: 1,
+      explain: "the things I need = 私が必要なもの（関係代名詞that省略）。'I'll bring the things I need to the office.'（必要なものを会社に持っていく）。'something to need' は文法的におかしい表現なので注意。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -885,7 +895,17 @@ const QUESTIONS = {
     { id: 'g101', q: '「ちょうどいい量のストレス」を英語で？', choices: ['suitable stress', 'just the right amount of stress', 'good amount stress', 'just right stress'], correct: 1,
       explain: 'just the right amount of ~ = ちょうどいい量の〜。"Add just the right amount of salt."（ちょうどいい量の塩を加えて）。"with just the right amount of stress"（程よいストレスで）。' },
     { id: 'g102', q: '「apply for」と「sign up for」の違いは？', choices: ['同じ意味', 'apply for = 選考がある応募、sign up for = 誰でもできる登録', 'apply for = 無料、sign up for = 有料', 'apply for = 登録、sign up for = 応募'], correct: 1,
-      explain: 'apply for ~ = （選考のある）応募（仕事・奨学金など）。sign up for ~ = （誰でもできる）登録（授業・イベント・メルマガなど）。"apply for a job"（仕事に応募）vs "sign up for a class"（授業に登録）。' }
+      explain: 'apply for ~ = （選考のある）応募（仕事・奨学金など）。sign up for ~ = （誰でもできる）登録（授業・イベント・メルマガなど）。"apply for a job"（仕事に応募）vs "sign up for a class"（授業に登録）。' },
+    { id: 'g103', q: '「新しい会社で働く」の前置詞と冠詞は？', choices: ['in new company', 'at a new company', 'in a new company', 'at new company'], correct: 1,
+      explain: '会社などの組織で「働いている・所属している」ときは前置詞 at を使う（in は建物の中というニュアンス）。また可算名詞が単数のときは冠詞 a が必要。"I work at a new company."が正解。' },
+    { id: 'g104', q: '「少し遅い」の正しい語順は？', choices: ['late a little', 'a little late', 'little a late', 'a late little'], correct: 1,
+      explain: 'a little / a bit（少し）などの程度を表す語は、形容詞の前に置く。"a little late"（少し遅い）が正しい。"late a little" は語順が逆で誤り。' },
+    { id: 'g105', q: '「計画を立てる」の正しい形は？', choices: ['make plan', 'make a plan', 'make the plans', 'making plan'], correct: 1,
+      explain: "plan（計画）は可算名詞なので、単数で使うときは冠詞 a が必要。'I'll make a plan.'（計画を立てよう）。無冠詞の 'make plan' は誤り。" },
+    { id: 'g106', q: '「いつ勉強できるかの計画」の前置詞は？', choices: ['a plan about when', 'a plan for when', 'a plan of when', 'a plan on when'], correct: 1,
+      explain: '「〜のための計画」は plan for ~ を使うのが自然。"a plan for when I can study"（いつ勉強できるかの計画）。plan about は不自然。' },
+    { id: 'g107', q: '「each」の後ろに来る名詞の形は？', choices: ['each characters（複数形）', 'each character（単数形）', 'どちらでもよい', 'each の後に名詞は不要'], correct: 1,
+      explain: 'each（それぞれの）の後ろは必ず単数形の名詞が来る。"each character"（それぞれのキャラクター）が正しい。"each characters" は誤り。every も同じルール（every day など）。' }
   ]
 };
 
