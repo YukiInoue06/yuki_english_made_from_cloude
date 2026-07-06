@@ -399,7 +399,13 @@ const QUESTIONS = {
     { id: 'v149', q: '「herbicide」の意味は？', choices: ['肥料', '除草剤', '殺虫剤', '種'], correct: 1,
       explain: 'herbicide = 除草剤（herb 草 + cide 殺す）。-cide は「殺すもの」を表す語尾。pesticide（殺虫剤）、insecticide（殺虫剤）も仲間。"This crop resists herbicides."（この作物は除草剤に強い）。' },
     { id: 'v150', q: '「テストプレイをする」を英語1語で言うと？', choices: ['play the game test', 'playtest', 'test play', 'game play'], correct: 1,
-      explain: 'playtest（動詞）= テストプレイをする。play + test が1語になった言葉。"I playtested the game today."（今日そのゲームをテストプレイした）。"play the game test" は不自然な語順なので注意。ゲーム開発でよく使う単語。' }
+      explain: 'playtest（動詞）= テストプレイをする。play + test が1語になった言葉。"I playtested the game today."（今日そのゲームをテストプレイした）。"play the game test" は不自然な語順なので注意。ゲーム開発でよく使う単語。' },
+    { id: 'v151', q: '「hardly」の意味は？', choices: ['一生懸命に', 'ほとんど〜ない', 'かろうじて成功して', 'とても難しく'], correct: 1,
+      explain: 'hardly = ほとんど〜ない（否定の意味）。hard（一生懸命）と形が似ているが意味は全く別なので注意。"I could hardly hear him."（彼の声がほとんど聞こえなかった）。「乗り越えた」のつもりで "got over hardly" と言うと「ほとんど乗り越えられなかった」と逆の意味になる。' },
+    { id: 'v152', q: '「weak」の意味は？', choices: ['1週間の期間', '弱い、力がない', '目を覚ました', '奇妙な、変な'], correct: 1,
+      explain: 'weak = 弱い。week（週）と発音は同じだがスペルが違うので書くとき注意。"The final boss was weak."（ラスボスは弱かった）。反対語は strong（強い）。' },
+    { id: 'v153', q: '「tough」の意味は？', choices: ['やわらかい、優しい', '大変な、きつい', '静かな、穏やかな', '短い、簡単な'], correct: 1,
+      explain: 'tough = 大変な、きつい（発音はタフ）。難しくて骨が折れることに使う。"I got through the tough class."（大変な授業を乗り切った）。「丈夫な・かたい」の意味もある（a tough steak = かたいステーキ）。' }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -689,7 +695,15 @@ const QUESTIONS = {
     { id: 'p143', q: '「9時ごろ家に着く」を自然に言うと？', choices: ['the time I arrive at home is 9', 'I get home around 9 pm', 'I arrive to home about 9', 'I reach home in 9 pm'], correct: 1,
       explain: "get home = 家に着く（home は副詞なので to は不要）。around 9 pm = 9時ごろ。'I get home around 9 pm.'が自然。'the time I arrive at home is 21 o clock' のような言い方や24時間表記は日常会話では不自然。" },
     { id: 'p144', q: '「必要なものを持っていく」を自然に言うと？', choices: ['bring something to need', 'bring the things I need', 'bring the need things', 'bring things to needing'], correct: 1,
-      explain: "the things I need = 私が必要なもの（関係代名詞that省略）。'I'll bring the things I need to the office.'（必要なものを会社に持っていく）。'something to need' は文法的におかしい表現なので注意。" }
+      explain: "the things I need = 私が必要なもの（関係代名詞that省略）。'I'll bring the things I need to the office.'（必要なものを会社に持っていく）。'something to need' は文法的におかしい表現なので注意。" },
+    { id: 'p145', q: '「作るのが面倒だ」を自然に言うと？', choices: ["It's hassled to make", "It's a pain to make", "It's trouble to make", "It's annoyed to make"], correct: 1,
+      explain: "It's a pain to ~ = 〜するのが面倒だ（口語でよく使う）。pain は「痛み」だが、a pain で「面倒なこと・厄介なこと」を表す。'It's a pain to make design documents.'（仕様書を作るのは面倒だ）。hassled や annoyed は人の気持ちを表す語なので、この形では不自然。" },
+    { id: 'p146', q: '「大変な授業を乗り切った」を自然に言うと？', choices: ['I got over the class', 'I got through the class', 'I got off the class', 'I got out the class'], correct: 1,
+      explain: "get through ~ = （大変な期間・仕事）を最後までやり切る。'I got through the tough group class.'（大変なグループ授業を乗り切った）。get over ~ は「（病気・失恋など）から立ち直る」で意味が違う。" },
+    { id: 'p147', q: '「最近（このごろ）〜している」と今の習慣を言うときに自然なのは？', choices: ['Recently, I enjoy ~', 'These days, I enjoy ~', 'Now days, I enjoy ~', 'In recent, I enjoy ~'], correct: 1,
+      explain: "These days = 最近、このごろ（今も続いている習慣に使う）。'These days, I enjoy watching streams.'（最近は配信を見るのが楽しい）。Recently は完了形（have done）と使うことが多く、今の習慣には These days が自然。" },
+    { id: 'p148', q: '「（ゲームで）マスターボールのランクに到達した」を自然に言うと？', choices: ['I achieved the rank', 'I reached the rank', 'I arrived the rank', 'I got up the rank'], correct: 1,
+      explain: "reach ~ = （ある段階・ランク）に到達する。'I reached the Master Ball rank.'（マスターボールのランクに到達した）。achieve は「目標を達成する」で使えるが、ランクには reach が自然。arrive は場所に着くときで、後ろに at が必要。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -905,7 +919,15 @@ const QUESTIONS = {
     { id: 'g106', q: '「いつ勉強できるかの計画」の前置詞は？', choices: ['a plan about when', 'a plan for when', 'a plan of when', 'a plan on when'], correct: 1,
       explain: '「〜のための計画」は plan for ~ を使うのが自然。"a plan for when I can study"（いつ勉強できるかの計画）。plan about は不自然。' },
     { id: 'g107', q: '「each」の後ろに来る名詞の形は？', choices: ['each characters（複数形）', 'each character（単数形）', 'どちらでもよい', 'each の後に名詞は不要'], correct: 1,
-      explain: 'each（それぞれの）の後ろは必ず単数形の名詞が来る。"each character"（それぞれのキャラクター）が正しい。"each characters" は誤り。every も同じルール（every day など）。' }
+      explain: 'each（それぞれの）の後ろは必ず単数形の名詞が来る。"each character"（それぞれのキャラクター）が正しい。"each characters" は誤り。every も同じルール（every day など）。' },
+    { id: 'g108', q: '「日曜日に出かける」の正しい前置詞は？', choices: ['at Sunday', 'on Sunday', 'in Sunday', 'to Sunday'], correct: 1,
+      explain: '曜日には前置詞 on を使う。"I go out on Sunday."（日曜日に出かける）。時間の前置詞は、曜日・日付には on、時刻には at、月・年には in を使い分ける。' },
+    { id: 'g109', q: '「サブウェイ（店）で食べた」の正しい前置詞は？', choices: ['in Subway', 'at Subway', 'on Subway', 'to Subway'], correct: 1,
+      explain: 'お店などの場所「〜で」には at を使う。"I ate lunch at Subway."（サブウェイで昼食を食べた）。at は「地点」を表す。in Subway だと「建物の中」のニュアンスが強くなり、店で食事する意味には at が自然。' },
+    { id: 'g110', q: '「リスニングもスピーキングも上達しない」の否定文で正しいのは？', choices: ["I'm not getting better at listening and speaking", "I'm not getting better at listening or speaking", "I'm not getting better at listening also speaking", "I'm not getting better at listening with speaking"], correct: 1,
+      explain: "否定文で「AもBも〜ない」と言うときは and ではなく or を使う。'I'm not getting better at listening or speaking.'（リスニングもスピーキングも上達しない）。肯定文の and が、否定文では or に変わる点に注意。" },
+    { id: 'g111', q: '「その仕様書」のように特定のものを指すときの冠詞は？', choices: ['a specification', 'the specification', '冠詞なしで specification', "specification's"], correct: 1,
+      explain: '話し手と聞き手の両方が「どれのことか分かっている特定のもの」には the を使う。"I started the specification."（例の仕様書に取りかかった）。初めて話題に出す不特定のものなら a を使うが、すでに分かっているものには the。' }
   ]
 };
 
