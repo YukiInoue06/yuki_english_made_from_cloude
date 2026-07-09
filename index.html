@@ -405,7 +405,13 @@ const QUESTIONS = {
     { id: 'v152', q: '「weak」の意味は？', choices: ['1週間の期間', '弱い、力がない', '目を覚ました', '奇妙な、変な'], correct: 1,
       explain: 'weak = 弱い。week（週）と発音は同じだがスペルが違うので書くとき注意。"The final boss was weak."（ラスボスは弱かった）。反対語は strong（強い）。' },
     { id: 'v153', q: '「tough」の意味は？', choices: ['やわらかい、優しい', '大変な、きつい', '静かな、穏やかな', '短い、簡単な'], correct: 1,
-      explain: 'tough = 大変な、きつい（発音はタフ）。難しくて骨が折れることに使う。"I got through the tough class."（大変な授業を乗り切った）。「丈夫な・かたい」の意味もある（a tough steak = かたいステーキ）。' }
+      explain: 'tough = 大変な、きつい（発音はタフ）。難しくて骨が折れることに使う。"I got through the tough class."（大変な授業を乗り切った）。「丈夫な・かたい」の意味もある（a tough steak = かたいステーキ）。' },
+    { id: 'v154', q: '「設計資料（仕様書）」を英語で言うとき自然なのは？', choices: ['design material', 'design document', 'design paper', 'design textbook'], correct: 1,
+      explain: 'document = 書類、資料。仕事の「資料・書類」は document が定番。"I made a design document."（設計資料を作った）。material は「素材・教材」のイメージが強いので、仕事の資料には使わない。' },
+    { id: 'v155', q: '「（お金が）かかる」を表す動詞は？', choices: ['take', 'cost', 'spend', 'pay'], correct: 1,
+      explain: 'cost = （お金が）かかる。主語はモノ。"It costs 500 yen."（500円かかる）。take は「（時間が）かかる」で、"It takes 30 minutes."（30分かかる）。お金は cost、時間は take と覚える。' },
+    { id: 'v156', q: '「grateful」の意味は？', choices: ['うれしい、楽しい', '感謝している', '素晴らしい、偉大な', '安心した、ほっとした'], correct: 1,
+      explain: 'grateful = 感謝している（thankful とほぼ同じ意味）。"I am grateful to them."（彼らに感謝している）。great（偉大な）とスペルが似ているが別の単語なので注意。' }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -703,7 +709,17 @@ const QUESTIONS = {
     { id: 'p147', q: '「最近（このごろ）〜している」と今の習慣を言うときに自然なのは？', choices: ['Recently, I enjoy ~', 'These days, I enjoy ~', 'Now days, I enjoy ~', 'In recent, I enjoy ~'], correct: 1,
       explain: "These days = 最近、このごろ（今も続いている習慣に使う）。'These days, I enjoy watching streams.'（最近は配信を見るのが楽しい）。Recently は完了形（have done）と使うことが多く、今の習慣には These days が自然。" },
     { id: 'p148', q: '「（ゲームで）マスターボールのランクに到達した」を自然に言うと？', choices: ['I achieved the rank', 'I reached the rank', 'I arrived the rank', 'I got up the rank'], correct: 1,
-      explain: "reach ~ = （ある段階・ランク）に到達する。'I reached the Master Ball rank.'（マスターボールのランクに到達した）。achieve は「目標を達成する」で使えるが、ランクには reach が自然。arrive は場所に着くときで、後ろに at が必要。" }
+      explain: "reach ~ = （ある段階・ランク）に到達する。'I reached the Master Ball rank.'（マスターボールのランクに到達した）。achieve は「目標を達成する」で使えるが、ランクには reach が自然。arrive は場所に着くときで、後ろに at が必要。" },
+    { id: 'p149', q: '日記で「みんなに感謝している」と書くとき自然なのは？', choices: ['I appreciate it', "I'm thankful to them", 'I thank them', 'I have thanks'], correct: 1,
+      explain: "be thankful to 人 = 〜に感謝している（気持ちを表す）。'I'm thankful to them.'（みんなに感謝している）。I appreciate it. は相手に直接「ありがとう」と言うときの表現なので、日記で第三者への感謝を書くには不自然。" },
+    { id: 'p150', q: '「仕事で（職場で）」を表す自然な言い方は？', choices: ['on my work', 'at work', 'in my work', 'to work'], correct: 1,
+      explain: "at work = 仕事中に、職場で（冠詞なしの決まった言い方）。'I finished a task at work.'（仕事で作業を終えた）。on my work とは言わない。at school（学校で）、at home（家で）と同じ形。" },
+    { id: 'p151', q: '「これからは（今後は）忙しくなる」の「これからは」は？', choices: ['from now', 'from now on', 'after now', 'since now'], correct: 1,
+      explain: "from now on = これから先ずっと、今後は。'I'll be busy from now on.'（これからは忙しくなる）。on を付け忘れやすいので注意。" },
+    { id: 'p152', q: '「（だんだん）好きになった」を自然に言うと？', choices: ['I got loving it', 'I came to love it', 'I became loving it', 'I turned to love it'], correct: 1,
+      explain: "come to + 動詞の原形 = （だんだん）〜するようになる（気持ちの変化）。'I came to love all the Pokémon.'（ポケモンが全部好きになった）。got loving や became loving は文法的に誤り。" },
+    { id: 'p153', q: '「長い間それを見ていない」の「長い間」は？', choices: ['for long while', 'for a long while', 'in a long while', 'during long while'], correct: 1,
+      explain: "for a long while = 長い間（while は可算名詞なので a が必要）。'I haven't watched it for a long while.'（長い間それを見ていない）。for a long time も同じ意味でよく使う。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -927,7 +943,15 @@ const QUESTIONS = {
     { id: 'g110', q: '「リスニングもスピーキングも上達しない」の否定文で正しいのは？', choices: ["I'm not getting better at listening and speaking", "I'm not getting better at listening or speaking", "I'm not getting better at listening also speaking", "I'm not getting better at listening with speaking"], correct: 1,
       explain: "否定文で「AもBも〜ない」と言うときは and ではなく or を使う。'I'm not getting better at listening or speaking.'（リスニングもスピーキングも上達しない）。肯定文の and が、否定文では or に変わる点に注意。" },
     { id: 'g111', q: '「その仕様書」のように特定のものを指すときの冠詞は？', choices: ['a specification', 'the specification', '冠詞なしで specification', "specification's"], correct: 1,
-      explain: '話し手と聞き手の両方が「どれのことか分かっている特定のもの」には the を使う。"I started the specification."（例の仕様書に取りかかった）。初めて話題に出す不特定のものなら a を使うが、すでに分かっているものには the。' }
+      explain: '話し手と聞き手の両方が「どれのことか分かっている特定のもの」には the を使う。"I started the specification."（例の仕様書に取りかかった）。初めて話題に出す不特定のものなら a を使うが、すでに分かっているものには the。' },
+    { id: 'g112', q: '「簡単な仕様」を正しく言うと？', choices: ["it's easily specification", "it's a simple specification", "it's easy specification", "it's simply specification"], correct: 1,
+      explain: "easily / simply は副詞（簡単に）で、名詞を説明できない。名詞を説明するのは形容詞の easy / simple（簡単な）。さらに可算名詞なので冠詞 a も必要。'It's a simple specification.'（簡単な仕様だ）が正しい。" },
+    { id: 'g113', q: '「私も楽しみにしている」の正しい文は？', choices: ['I also looking forward to it.', "I'm also looking forward to it.", 'I also look forward it.', "I'm also look forward to it."], correct: 1,
+      explain: "looking は現在進行形なので、be動詞（am/is/are）が必ず必要。'I'm also looking forward to it.'（私もそれを楽しみにしている）。be動詞の抜けは書くときに起きやすいミス。" },
+    { id: 'g114', q: '「（長い間）まだ見ていない」の正しい形は？', choices: ["I hadn't it.", "I haven't watched it.", "I don't watched it.", "I haven't watch it."], correct: 1,
+      explain: "「まだ〜していない」は現在完了の否定形 haven't + 過去分詞。'I haven't watched it.'（まだ見ていない）。動詞（watched）を忘れて hadn't it とだけ書かないよう注意。haven't の後は必ず過去分詞。" },
+    { id: 'g115', q: '「AをBに変える」の正しい形は？', choices: ['change A with B', 'change A into B', 'change A on B', 'change A from B'], correct: 1,
+      explain: "change A into B = AをBに変える。'I'll change lunch into Subway.'（昼食をサブウェイに変える）。change A to B も使える。with や on は誤り。" }
   ]
 };
 
