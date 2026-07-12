@@ -411,7 +411,13 @@ const QUESTIONS = {
     { id: 'v155', q: '「（お金が）かかる」を表す動詞は？', choices: ['take', 'cost', 'spend', 'pay'], correct: 1,
       explain: 'cost = （お金が）かかる。主語はモノ。"It costs 500 yen."（500円かかる）。take は「（時間が）かかる」で、"It takes 30 minutes."（30分かかる）。お金は cost、時間は take と覚える。' },
     { id: 'v156', q: '「grateful」の意味は？', choices: ['うれしい、楽しい', '感謝している', '素晴らしい、偉大な', '安心した、ほっとした'], correct: 1,
-      explain: 'grateful = 感謝している（thankful とほぼ同じ意味）。"I am grateful to them."（彼らに感謝している）。great（偉大な）とスペルが似ているが別の単語なので注意。' }
+      explain: 'grateful = 感謝している（thankful とほぼ同じ意味）。"I am grateful to them."（彼らに感謝している）。great（偉大な）とスペルが似ているが別の単語なので注意。' },
+    { id: 'v157', q: '「implement」の意味は？', choices: ['想像する', '実装する、実行に移す', '改善する', '削除する'], correct: 1,
+      explain: "implement = 実装する、（計画などを）実行に移す。ゲーム開発でよく使う。'I'll implement the new feature.'（新しい機能を実装する）。名詞では「道具」の意味もある。make it（作る）より意味がはっきりする。" },
+    { id: 'v158', q: '「excel」の意味は？', choices: ['失敗する', '（人より）秀でる、優れる', '説明する', '交換する'], correct: 1,
+      explain: 'excel = （人より）秀でる、優れる。ex（外へ）+ cel（高くそびえる）が語源で「抜きん出る」イメージ。"She excels at math."（彼女は数学が得意だ）。形容詞は excellent（優れた）。' },
+    { id: 'v159', q: '「worth」の意味は？', choices: ['〜の重さがある', '〜の価値がある', '〜を心配する', '〜を避ける'], correct: 1,
+      explain: "worth = 〜の価値がある。'This book is worth reading.'（この本は読む価値がある）。worth のあとは名詞か動名詞（-ing）が来る。'It's worth it.'（その価値はある）は会話でよく使う。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -719,7 +725,15 @@ const QUESTIONS = {
     { id: 'p152', q: '「（だんだん）好きになった」を自然に言うと？', choices: ['I got loving it', 'I came to love it', 'I became loving it', 'I turned to love it'], correct: 1,
       explain: "come to + 動詞の原形 = （だんだん）〜するようになる（気持ちの変化）。'I came to love all the Pokémon.'（ポケモンが全部好きになった）。got loving や became loving は文法的に誤り。" },
     { id: 'p153', q: '「長い間それを見ていない」の「長い間」は？', choices: ['for long while', 'for a long while', 'in a long while', 'during long while'], correct: 1,
-      explain: "for a long while = 長い間（while は可算名詞なので a が必要）。'I haven't watched it for a long while.'（長い間それを見ていない）。for a long time も同じ意味でよく使う。" }
+      explain: "for a long while = 長い間（while は可算名詞なので a が必要）。'I haven't watched it for a long while.'（長い間それを見ていない）。for a long time も同じ意味でよく使う。" },
+    { id: 'p154', q: '「来週それを作り始める（実装を始める）」を自然に言うと？', choices: ["I'll make it next week", "I'll start building it next week", "I'll build up it next week", "I'll making it next week"], correct: 1,
+      explain: "start building ~ = 〜を作り始める。'I'll start building it next week.'（来週から作り始める）。make it だけだと「資料を作る」など別の意味と混同しやすいので、実装なら start building / start implementing がはっきりする。" },
+    { id: 'p155', q: '「〜できる可能性が高い」を自然に言うと？', choices: ['there are it frequently', 'there is a good chance I can ~', 'it has high possible', 'there is many chance to ~'], correct: 1,
+      explain: "there is a good chance (that) ~ = 〜という可能性が高い（定番パターン）。'There is a good chance I can see them.'（彼らに会える可能性が高い）。シンプルに I often ~（よく〜する）と言い換えてもよい。" },
+    { id: 'p156', q: '「友達と集まって何かする」の「集まって」を自然に言うと？', choices: ['gather with friends', 'get together with friends', 'meet up together', 'collect with friends'], correct: 1,
+      explain: "get together = （人が）集まる、集まって過ごす。'It's fun to get together and do something with friends.'（友達と集まって何かするのは楽しい）。gather は「物を集める」寄りで、人が集まって遊ぶニュアンスには get together が自然。" },
+    { id: 'p157', q: '「今日も（昨日に続いて）EWCを観る」の「今日も」は？', choices: ['also today', 'again today', 'too today', 'more today'], correct: 1,
+      explain: "again today = 今日もまた（昨日に続いて同じことをする）。'I'll watch EWC again today.'（今日もEWCを観る）。also は「〜もまた（別のことも）」という意味なので、「昨日に続いて今日も」には again today が合う。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -951,7 +965,15 @@ const QUESTIONS = {
     { id: 'g114', q: '「（長い間）まだ見ていない」の正しい形は？', choices: ["I hadn't it.", "I haven't watched it.", "I don't watched it.", "I haven't watch it."], correct: 1,
       explain: "「まだ〜していない」は現在完了の否定形 haven't + 過去分詞。'I haven't watched it.'（まだ見ていない）。動詞（watched）を忘れて hadn't it とだけ書かないよう注意。haven't の後は必ず過去分詞。" },
     { id: 'g115', q: '「AをBに変える」の正しい形は？', choices: ['change A with B', 'change A into B', 'change A on B', 'change A from B'], correct: 1,
-      explain: "change A into B = AをBに変える。'I'll change lunch into Subway.'（昼食をサブウェイに変える）。change A to B も使える。with や on は誤り。" }
+      explain: "change A into B = AをBに変える。'I'll change lunch into Subway.'（昼食をサブウェイに変える）。change A to B も使える。with や on は誤り。" },
+    { id: 'g116', q: '「AはBより楽しい」の正しい比較級は？', choices: ['A is fun better than B', 'A is more fun than B', 'A is funner than B', 'A is more fun better than B'], correct: 1,
+      explain: "fun の比較級は more fun。「AはBより楽しい」= A is more fun than B。better than を後ろに付ける形（fun better than）は英語にはない。長めの形容詞は more をつけて比較級を作る。" },
+    { id: 'g117', q: '「秋葉原は新宿より楽しい街だ」で正しいのは？', choices: ['Akihabara is a fun town better than Shinjuku', 'Akihabara is a more fun town than Shinjuku', 'Akihabara is funner town than Shinjuku', 'Akihabara is a fun more town than Shinjuku'], correct: 1,
+      explain: "a more fun town than ~ = 〜より楽しい街。比較級 more fun は名詞（town）の前に置き、比較する相手は than ~ で表す。better than を余分に付けないよう注意（これはゆうきさんの反復ポイント）。" },
+    { id: 'g118', q: '「久々の予定のない休み」を自然に言うと？', choices: ['a day off which I have no plan for a long while', 'my first day off with no plans in a long time', 'a day off no plan long time', 'the day off which no plans in long'], correct: 1,
+      explain: "「久々の〜」= my first ~ in a long time（長い間で初めての〜）。'my first day off with no plans in a long time'（久々の予定のない休み）。関係代名詞(which/that)を重ねず、シンプルな形にするのが自然。" },
+    { id: 'g119', q: '「今日も観る」を also で表すのが不自然な理由は？', choices: ['also は否定文でしか使えないから', 'also は「別のこともする」の意味で、「昨日に続いて今日も」には合わないから', 'also は文末に置けないから', 'also は過去形と使えないから'], correct: 1,
+      explain: "also = 〜もまた（別のことも追加する）。「昨日に続いて今日も同じことをする」は again today が正しい。'I'll watch it again today.'（今日もまた観る）。also を使うと「（他のことに加えて）それも観る」という違う意味になる。" }
   ]
 };
 
