@@ -423,7 +423,15 @@ const QUESTIONS = {
     { id: 'v161', q: '料理にかける「ソース」の正しいスペルは？', choices: ['source', 'sauce', 'soruce', 'sose'], correct: 1,
       explain: "sauce = （料理の）ソース。'I put sauce on the hamburg steak.'（ハンバーグにソースをかけた）。source（源・出典）とスペルも意味も違うので注意。発音はどちらも「ソース」に近い。" },
     { id: 'v162', q: '「長期休暇（連休）」を表す自然な言い方は？', choices: ['a special holiday', 'a long holiday', 'a big holiday', 'a many holiday'], correct: 1,
-      explain: "a long holiday = 長期休暇、連休。'I have a long holiday in August.'（8月に長期休暇がある）。special holiday は「特別な祝日」の意味になり、連休を表すには long が自然。" }
+      explain: "a long holiday = 長期休暇、連休。'I have a long holiday in August.'（8月に長期休暇がある）。special holiday は「特別な祝日」の意味になり、連休を表すには long が自然。" },
+    { id: 'v163', q: '「obtain」の意味は？', choices: ['あきらめる', '手に入れる、得る', '交換する', '維持する'], correct: 1,
+      explain: "obtain = 手に入れる、得る（get のかたい版）。'I obtained a ticket.'（チケットを手に入れた）。ビジネスや書き言葉でよく使うフォーマルな語。中学英語なら get で言い換えられる。" },
+    { id: 'v164', q: '「detour」の意味は？', choices: ['近道', '回り道、遠回り', '一本道', '行き止まり'], correct: 1,
+      explain: "detour = 回り道、遠回り。de（離れて）+ tour（進む）が語源。'We took a detour.'（回り道をした）。工事などで「迂回路」の意味でも使う。反対のイメージは shortcut（近道）。" },
+    { id: 'v165', q: '「beverage」の意味は？', choices: ['食べ物', '飲み物', '食器', '調味料'], correct: 1,
+      explain: "beverage = 飲み物（drink のかたい版）。'We serve hot beverages.'（温かい飲み物を提供します）。メニューやお店でよく見る語。中学英語なら drink で言い換えられる。" },
+    { id: 'v166', q: '「悲しみ・喪」を表す語で、morning と間違えやすいのは？', choices: ['moning', 'mourning', 'morningg', 'mouring'], correct: 1,
+      explain: "mourning = 悲しみ、喪（人の死を悲しむこと）。morning（朝）と発音が同じで、スペルに u が入る点が違う。'a period of mourning'（喪の期間）。書くときの取り違えに注意。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -746,10 +754,18 @@ const QUESTIONS = {
       explain: "end up ~ing = （あれこれあって）最終的に〜することになる。'I ended up staying home.'（結局家にいることになった）。turn out と近いが、end up は「行き着いた結果」を表し、日常会話でとてもよく使う。" },
     { id: 'p160', q: '「注文する」を自然に言うと？', choices: ['make an order', 'place an order', 'put an order', 'do an order'], correct: 1,
       explain: "place an order = 注文する（お店・ネットで）。'I placed an order online.'（ネットで注文した）。order は動詞でも使えるが、'place an order' はていねいで自然な決まった言い方。" },
-    { id: 'p161', q: '相手の言い分に「まあいいでしょう／なるほど納得」と返すときは？', choices: ['fair enough', 'enough fair', 'fairly enough', 'fair well'], correct: 1,
+    { id: 'p161', q: '相手の言い分に「まあいいでしょう／なるほど納得」と返すときは？', choices: ['fair enough', 'enough fair', 'fairly enough', 'fair well'], correct: 0,
       explain: "fair enough = まあいいでしょう、なるほど（相手の言い分に一応納得する返事）。'Fair enough, let's do it your way.'（なるほど、君のやり方でいこう）。完全な同意ではなく「一理あるね」というニュアンス。" },
     { id: 'p162', q: '「勉強する時間を作る」を自然に言うと？', choices: ['make the time studying', 'make time to study', 'make time studying', 'take the time study'], correct: 1,
-      explain: "make time to + 動詞 = 〜する時間を作る。'I want to make time to study English.'（英語を勉強する時間を作りたい）。to study（不定詞）で「勉強するために」を表す。make the time studying は誤り。" }
+      explain: "make time to + 動詞 = 〜する時間を作る。'I want to make time to study English.'（英語を勉強する時間を作りたい）。to study（不定詞）で「勉強するために」を表す。make the time studying は誤り。" },
+    { id: 'p163', q: '「（練習して）歌えるようになる」を自然に言うと？', choices: ['learn singing', 'learn to sing', 'learn how sing', 'study to sing'], correct: 1,
+      explain: "learn to + 動詞 = （練習して）〜できるようになる。'I want to learn to sing this song.'（この歌を歌えるようになりたい）。learn singing より learn to sing が自然。to のあとは動詞の原形。" },
+    { id: 'p164', q: '「（友達が）〜してくれて嬉しい」を自然に言うと？', choices: ['I join that he came', "I'm glad that he came", 'I glad he came', 'I happy that he come'], correct: 1,
+      explain: "be glad that + 文 = 〜で嬉しい。'I'm glad that he came.'（彼が来てくれて嬉しい）。他人の行動を喜ぶときは join（参加する）ではなく glad that ~ を使う。glad の前に be動詞が必要。" },
+    { id: 'p165', q: '「新幹線のチケットを予約する」を正しく言うと？', choices: ['book the Shinkansen', 'book Shinkansen tickets', 'book a Shinkansen ticket ride', 'reserve Shinkansen'], correct: 1,
+      explain: "book Shinkansen tickets = 新幹線のチケットを予約する。'I need to book Shinkansen tickets.'（新幹線のチケットを取らないと）。'book the Shinkansen' だと「新幹線そのもの（車両）を予約」という不自然な意味になるので、tickets を付ける。" },
+    { id: 'p166', q: '「締め切りに間に合う」を自然に言うと？', choices: ['catch the deadline', 'meet the deadline', 'reach the deadline', 'keep the deadline'], correct: 1,
+      explain: "meet the deadline = 締め切りに間に合う。meet は「（条件・基準）を満たす」の意味。'I met the deadline.'（締め切りに間に合った）。meet the requirements（条件を満たす）も同じ使い方。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -997,7 +1013,15 @@ const QUESTIONS = {
     { id: 'g122', q: '「12時までに寝る」の「〜までに（〆切）」の前置詞は？', choices: ['at midnight', 'by midnight', 'until midnight', 'in midnight'], correct: 1,
       explain: "by = 〜までに（その時までに動作を終える＝〆切）。'I'll go to bed by midnight.'（12時までに寝る）。until は「〜までずっと（継続）」なので意味が違う。〆切には by を使う。" },
     { id: 'g123', q: '「それらは美味しい」を自然に言うと？', choices: ['They are good taste.', 'They taste good.', 'They are taste good.', 'They taste well.'], correct: 1,
-      explain: "taste は「〜の味がする」という動詞で、後ろに形容詞が来る。'They taste good.'（それらは美味しい）。'are good taste' は誤り。taste（味がする）+ good（形容詞）で「美味しい」。look good（良く見える）と同じ形。" }
+      explain: "taste は「〜の味がする」という動詞で、後ろに形容詞が来る。'They taste good.'（それらは美味しい）。'are good taste' は誤り。taste（味がする）+ good（形容詞）で「美味しい」。look good（良く見える）と同じ形。" },
+    { id: 'g124', q: '「〜したいと思った」を過去のこととして言うとき正しいのは？', choices: ['I thought I want to sing.', 'I wanted to sing.', 'I think I wanted to sing.', 'I thought I want singing.'], correct: 1,
+      explain: "過去の気持ちは過去形でそろえる。'I wanted to sing.'（歌いたいと思った）。'I thought I want' のように、過去（thought）と現在（want）が混ざるのは時制がそろっておらず不自然。シンプルに wanted でOK。" },
+    { id: 'g125', q: "s で終わる複数名詞（バンド名 Imagine Dragons）の所有格は？", choices: ["Imagine Dragons's song", "Imagine Dragons' song", "Imagine Dragon's song", "Imagine Dragons song's"], correct: 1,
+      explain: "s で終わる語の所有格は、アポストロフィだけを付ける（'s ではなく ' のみ）。'Imagine Dragons' song'（イマジン・ドラゴンズの曲）。複数形やsで終わる名前は ' だけにするのがルール。" },
+    { id: 'g126', q: '「3日間の休み」の正しい形は？', choices: ['three day off', 'three days off', 'three days offs', 'three off days'], correct: 1,
+      explain: "day off（休日）を複数にするときは day を複数形にして days off。'I have three days off.'（3日間の休みがある）。off ではなく day のほうに s を付けるのがポイント。" },
+    { id: 'g127', q: '「確かに（本当に）言いましたよね」と強調するときの形は？', choices: ['You are mention it.', 'You did mention it.', 'You did mentioned it.', 'You do mentioned it.'], correct: 1,
+      explain: "did + 動詞の原形 = 確かに〜した（強調）。'You did mention it.'（確かに言いましたよね）。did のあとは必ず原形（mention）。過去の動作を「本当に〜した」と念押しするときに使う。" }
   ]
 };
 
