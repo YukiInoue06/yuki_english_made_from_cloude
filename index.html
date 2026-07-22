@@ -431,7 +431,15 @@ const QUESTIONS = {
     { id: 'v165', q: '「beverage」の意味は？', choices: ['食べ物', '飲み物', '食器', '調味料'], correct: 1,
       explain: "beverage = 飲み物（drink のかたい版）。'We serve hot beverages.'（温かい飲み物を提供します）。メニューやお店でよく見る語。中学英語なら drink で言い換えられる。" },
     { id: 'v166', q: '「悲しみ・喪」を表す語で、morning と間違えやすいのは？', choices: ['moning', 'mourning', 'morningg', 'mouring'], correct: 1,
-      explain: "mourning = 悲しみ、喪（人の死を悲しむこと）。morning（朝）と発音が同じで、スペルに u が入る点が違う。'a period of mourning'（喪の期間）。書くときの取り違えに注意。" }
+      explain: "mourning = 悲しみ、喪（人の死を悲しむこと）。morning（朝）と発音が同じで、スペルに u が入る点が違う。'a period of mourning'（喪の期間）。書くときの取り違えに注意。" },
+    { id: 'v167', q: '「ゲームをクリアした」の「クリアする」を表す動詞は？', choices: ['bite', 'beat', 'clear', 'break'], correct: 1,
+      explain: "beat = （ゲームを）クリアする、やっつける。'I beat the game.'（ゲームをクリアした）。bite（噛む）とスペルが似ているので注意。日本語の「クリアする」を clear と直訳しがちだが、英語では beat か finish が自然。" },
+    { id: 'v168', q: '「ordinary」の意味は？', choices: ['特別な、珍しい', '平凡な、ふつうの', '複雑な、難しい', '古い、時代遅れの'], correct: 1,
+      explain: "ordinary = 平凡な、ふつうの（形容詞）。'The action was ordinary.'（アクションは平凡だった）。normally は「ふだんは」という副詞なので、名詞を説明するときは形容詞の ordinary を使う。" },
+    { id: 'v169', q: '「燭台（キャンドル立て）」の正しい複数形は？', choices: ['candlesholders', 'candleholders', 'candleholder', 'candlesholder'], correct: 1,
+      explain: "複合名詞（2つの語がくっついた名詞）を複数形にするときは、最後にだけ s を付ける。candleholder → candleholders。前の語（candle）に s は付けない。toothbrushes（歯ブラシ）も同じルール。" },
+    { id: 'v170', q: '「リフレッシュできる（気分が晴れる）」の正しい形は？', choices: ['can be refresh', 'can be refreshed', 'can be refreshing me', 'can refresh be'], correct: 1,
+      explain: "「自分がリフレッシュされる」は受け身なので be + 過去分詞（refreshed）。'I can be refreshed at the sauna.'（サウナでリフレッシュできる）。be のあとに原形（refresh）は置けない。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -765,7 +773,15 @@ const QUESTIONS = {
     { id: 'p165', q: '「新幹線のチケットを予約する」を正しく言うと？', choices: ['book the Shinkansen', 'book Shinkansen tickets', 'book a Shinkansen ticket ride', 'reserve Shinkansen'], correct: 1,
       explain: "book Shinkansen tickets = 新幹線のチケットを予約する。'I need to book Shinkansen tickets.'（新幹線のチケットを取らないと）。'book the Shinkansen' だと「新幹線そのもの（車両）を予約」という不自然な意味になるので、tickets を付ける。" },
     { id: 'p166', q: '「締め切りに間に合う」を自然に言うと？', choices: ['catch the deadline', 'meet the deadline', 'reach the deadline', 'keep the deadline'], correct: 1,
-      explain: "meet the deadline = 締め切りに間に合う。meet は「（条件・基準）を満たす」の意味。'I met the deadline.'（締め切りに間に合った）。meet the requirements（条件を満たす）も同じ使い方。" }
+      explain: "meet the deadline = 締め切りに間に合う。meet は「（条件・基準）を満たす」の意味。'I met the deadline.'（締め切りに間に合った）。meet the requirements（条件を満たす）も同じ使い方。" },
+    { id: 'p167', q: '「そのゲームは（遊んで）楽しかった」を自然に言うと？', choices: ['The game was interesting', 'The game was fun', 'The game was funny', 'The game was enjoy'], correct: 1,
+      explain: "fun = （体験して）楽しい。ゲーム・遊び・イベントには fun が自然。interesting は「（頭で）興味深い」で、内容や話に使う。funny は「面白い（笑える）」なので意味が違う。" },
+    { id: 'p168', q: '「100点満点中70点」を英語で言うと？', choices: ['70 points in 100', '70 out of 100', '70 of 100 points', '70 per 100'], correct: 1,
+      explain: "X out of Y = Y点満点中X点。'I'd give it 70 out of 100.'（100点満点で70点というところ）。out of は「〜のうち」を表す。評価を言うときの定番の形。" },
+    { id: 'p169', q: '「それらを書き留めておく」を自然に言うと？', choices: ['I will note', 'I will write them down', 'I will note down it', 'I will writing them'], correct: 1,
+      explain: "write ~ down = 〜を書き留める。'I'll write them down.'（それらを書き留めておく）。note も「書き留める」だが目的語が必要で、単独の 'I will note' は不自然。them は down の前に置く。" },
+    { id: 'p170', q: '「もしお役に立つなら（よろしければ）」と丁寧に申し出るときは？', choices: ['if that will help', 'if that would help', 'if that helps you', 'if that is help'], correct: 1,
+      explain: "if that would help = もしそれがお役に立つなら（ていねいな申し出）。would を使うと控えめでやわらかい響きになる。'I can send it to you, if that would help.'（よければ送りますよ）。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1021,7 +1037,15 @@ const QUESTIONS = {
     { id: 'g126', q: '「3日間の休み」の正しい形は？', choices: ['three day off', 'three days off', 'three days offs', 'three off days'], correct: 1,
       explain: "day off（休日）を複数にするときは day を複数形にして days off。'I have three days off.'（3日間の休みがある）。off ではなく day のほうに s を付けるのがポイント。" },
     { id: 'g127', q: '「確かに（本当に）言いましたよね」と強調するときの形は？', choices: ['You are mention it.', 'You did mention it.', 'You did mentioned it.', 'You do mentioned it.'], correct: 1,
-      explain: "did + 動詞の原形 = 確かに〜した（強調）。'You did mention it.'（確かに言いましたよね）。did のあとは必ず原形（mention）。過去の動作を「本当に〜した」と念押しするときに使う。" }
+      explain: "did + 動詞の原形 = 確かに〜した（強調）。'You did mention it.'（確かに言いましたよね）。did のあとは必ず原形（mention）。過去の動作を「本当に〜した」と念押しするときに使う。" },
+    { id: 'g128', q: '「脱出ゲーム（escape game）」に付く冠詞は？', choices: ['a escape game', 'an escape game', 'the escape game only', '冠詞は不要'], correct: 1,
+      explain: "a か an かは「次に来る音」で決まる。escape は母音の音（エ）で始まるので an を使う。'I went to an escape game.'（脱出ゲームに行った）。スペルではなく発音で判断するのがポイント。" },
+    { id: 'g129', q: '「買い物に行く」の正しい形は？', choices: ['go to shopping', 'go shopping', 'go for shop', 'go to shop it'], correct: 1,
+      explain: "go + ~ing = 〜しに行く（to は付けない）。'I went shopping.'（買い物に行った）。go swimming（泳ぎに行く）、go fishing（釣りに行く）も同じ形。" },
+    { id: 'g130', q: '「（前から決めていて）〜するつもり」を表す形は？', choices: ['I will eat it tonight.', "I'm going to eat it tonight.", 'I am eat it tonight.', 'I go to eat it tonight.'], correct: 1,
+      explain: "be going to = 前から決めていた予定。'I'm going to eat hamburg steak tonight.'（今夜はハンバーグを食べる予定だ）。will はその場で決めたことや予測に使うので、決まっている予定には be going to が自然。" },
+    { id: 'g131', q: '「家に帰った」を自然に言うと？', choices: ['I went back to home.', 'I went home.', 'I went to home.', 'I returned to home.'], correct: 1,
+      explain: "home は副詞なので to は不要。'I went home.'（家に帰った）。back を付けなくても「帰る」の意味は伝わるので、シンプルに went home が自然。get home（家に着く）も同じく to は不要。" }
   ]
 };
 
