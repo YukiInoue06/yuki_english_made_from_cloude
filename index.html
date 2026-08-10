@@ -455,7 +455,9 @@ const QUESTIONS = {
     { id: 'v177', q: '「lately」の意味は？', choices: ['あとで、より遅く', '最近、このごろ', '遅刻して', '最後に'], correct: 1,
       explain: "lately = 最近、このごろ（現在完了と相性がよい）。'I've been busy lately.'（最近忙しい）。later（あとで、より遅く）と形が似ているが意味は別。「いつもより遅くまで働いた」なら worked later than usual。" },
     { id: 'v178', q: '「（ゲームや映画が）発売される・公開される」を自然に言うと？', choices: ['goes out', 'comes out', 'gets out', 'takes out'], correct: 1,
-      explain: "come out = 発売される、世に出る。'The new game comes out tomorrow.'（新作ゲームが明日発売される）。be released も同じ意味だが、会話では comes out がより自然でよく使う。" }
+      explain: "come out = 発売される、世に出る。'The new game comes out tomorrow.'（新作ゲームが明日発売される）。be released も同じ意味だが、会話では comes out がより自然でよく使う。" },
+    { id: 'v179', q: '「いつか（そのうち）行きたい」の「いつか」は？', choices: ['sometime ago', 'someday', 'anytime', 'one time'], correct: 1,
+      explain: "someday = いつか、そのうち（未来の漠然としたある日）。'I want to go to the Pokémon event someday.'（いつかポケモンイベントに行きたい）。sometimes（ときどき）とスペルが似ているので注意。過去の「いつか」は one day も使える。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -817,7 +819,13 @@ const QUESTIONS = {
     { id: 'p179', q: '「トイレの行列に並んでいる」を自然に言うと？', choices: ['standing on the toilets area', 'waiting in line for the restroom', 'lining at the toilet', 'waiting the restroom queue'], correct: 1,
       explain: "wait in line for ~ = 〜の列に並んで待つ。'I'm waiting in line for the restroom.'（トイレの列に並んでいる）。「トイレ」は restroom / bathroom が丁寧で自然。in line（列の中で）という言い方がポイント。" },
     { id: 'p180', q: '「彼女と一日を過ごした」を自然に言うと？', choices: ['I lived a day with her', 'I spent the day with her', 'I passed a day with her', 'I used the day with her'], correct: 1,
-      explain: "spend the day with 人 = 〜と一日を過ごす。'I spent the day with my girlfriend.'（彼女と一日過ごした）。spend（時間を使う・過ごす）が定番で、live（住む・生きる）は使えない。spend-spent-spent の変化にも注意。" }
+      explain: "spend the day with 人 = 〜と一日を過ごす。'I spent the day with my girlfriend.'（彼女と一日過ごした）。spend（時間を使う・過ごす）が定番で、live（住む・生きる）は使えない。spend-spent-spent の変化にも注意。" },
+    { id: 'p181', q: '「仕事で仙台に行く」を自然に言うと？', choices: ['I will work in Sendai', 'I will go to Sendai for work', 'I will go to work Sendai', 'I will working to Sendai'], correct: 1,
+      explain: "go to 場所 for work = 仕事で〜へ行く（出張のニュアンス）。'I'll go to Sendai for work tomorrow.'（明日仕事で仙台に行く）。'work in Sendai' だと「仙台で働いている（勤務地）」に聞こえるので、出張なら for work を付ける。" },
+    { id: 'p182', q: '「（コードの）バグを見つける」を自然に言うと？', choices: ['find out memory leaks', 'find memory leaks', 'look for out bugs', 'search out the bug'], correct: 1,
+      explain: "find = （物・問題を）見つける。'I couldn't find the memory leaks.'（メモリリークを見つけられなかった）。find out は「（情報・事実を）知る・突き止める」なので、物やバグそのものには find を使う。find out the truth（真実を知る）との違いに注意。" },
+    { id: 'p183', q: '「けっこう楽しい」の「けっこう」を自然に言うと？', choices: ['a pretty fun', 'pretty fun', 'pretty a fun', 'prettily fun'], correct: 1,
+      explain: "pretty + 形容詞 = けっこう〜、なかなか〜（口語の強調）。'The new game is pretty fun.'（新作はけっこう楽しい）。ここの pretty は「かわいい」ではなく副詞。'It was pretty fun.' のように冠詞は不要。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1099,7 +1107,19 @@ const QUESTIONS = {
     { id: 'g139', q: '「〜に興味がある」の正しい前置詞は？', choices: ['interested for', 'interested in', 'interested to', 'interested at'], correct: 1,
       explain: "be interested in ~ = 〜に興味がある（決まった前置詞）。'I'm interested in the new game.'（その新作ゲームに興味がある）。in を落としたり to にしたりしやすいので注意。TOEICのPart 5でも狙われる前置詞コロケーション。" },
     { id: 'g140', q: '「Switchでゲームをした」の「〜で（ゲーム機）」の前置詞は？', choices: ['by the Switch', 'on the Switch', 'in the Switch', 'with by Switch'], correct: 1,
-      explain: "ゲーム機・デバイス上で遊ぶ・見るは on を使う。'We played games on the Nintendo Switch.'（Switchでゲームをした）。on my phone（スマホで）、on PC（PCで）も同じ。by は交通手段（by car）に使う。" }
+      explain: "ゲーム機・デバイス上で遊ぶ・見るは on を使う。'We played games on the Nintendo Switch.'（Switchでゲームをした）。on my phone（スマホで）、on PC（PCで）も同じ。by は交通手段（by car）に使う。" },
+    { id: 'g141', q: '「新幹線に乗る」の正しい冠詞は？', choices: ['take Shinkansen', 'take the Shinkansen', 'take a Shinkansens', 'take that Shinkansen'], correct: 1,
+      explain: "特定の交通機関・路線には the を付ける。'I'll take the Shinkansen early tomorrow.'（明日朝早く新幹線に乗る）。take the train / take the bus も同じ。冠詞の抜けはゆうきさんの反復ポイントなので、乗り物＝the とセットで覚える。" },
+    { id: 'g142', q: '「明日の朝早く」の自然な語順は？', choices: ["tomorrow's early morning", 'early tomorrow morning', 'tomorrow early the morning', 'early in tomorrow morning'], correct: 1,
+      explain: "early tomorrow morning = 明日の朝早く（決まった語順）。'I have to leave early tomorrow morning.'（明日の朝早く出発しないといけない）。'tomorrow's early morning' とは言わない。late tonight（今夜遅く）も同じパターン。" },
+    { id: 'g143', q: '「私が作ったオートチェスゲーム」を自然に言うと？', choices: ['which I made the auto chess game', 'the auto chess game I made', 'the auto chess game which made I', 'I made that the auto chess game'], correct: 1,
+      explain: "the + 名詞 + I + 過去動詞 = 私が〜した…（接触節）。'the auto chess game I made'（私が作ったオートチェスゲーム）。which を使わずに名詞の直後に I made を置くのが会話で一番自然。'the movie I watched'（私が観た映画）と同じ型。" },
+    { id: 'g144', q: '「ポケモンイベントが開催される予定」を正しく言うと？', choices: ['A Pokémon event is going to hold', 'A Pokémon event is going to be held', 'A Pokémon event going to be hold', 'A Pokémon event will held'], correct: 1,
+      explain: "イベントは「開催される」側なので受け身：be going to be held。'A Pokémon event is going to be held in Yokohama.'（横浜でポケモンイベントが開催される予定）。hold-held-held の変化と、be + 過去分詞の形に注意。" },
+    { id: 'g145', q: '「（上司から）新しいタスクをもらった」を自然に言うと？', choices: ['I got to a new task', 'I was given a new task', 'I was got a new task', 'I gave a new task'], correct: 1,
+      explain: "be given ~ = 〜を与えられる（受け身）。'I was given a new task at work.'（仕事で新しいタスクをもらった）。I got a new task も使えるが、「与えられた」ニュアンスをはっきり出すなら was given が自然。I gave だと「私があげた」で逆になる。" },
+    { id: 'g146', q: '「早く寝る」の「早く」はどっち？', choices: ['go to bed quickly', 'go to bed early', 'go to bed fast', 'go to bed soon early'], correct: 1,
+      explain: "early = （時刻が）早く。'I need to go to bed early tonight.'（今夜は早く寝ないと）。quickly は「（動作が）素早く」なので、'go to bed quickly' だと「急いで布団に入る」という変な意味に。時刻の早さは early、動作の速さは quickly。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
@@ -1221,7 +1241,17 @@ const QUESTIONS = {
     { id: 't59', q: 'Registration for the workshop is available ------- no additional cost.', choices: ['at', 'in', 'for', 'with on'], correct: 0,
       explain: "正解: at。at no additional cost = 追加料金なしで（決まった言い方）。at no cost / at no charge（無料で）も同じ at の仲間。価格・費用の表現には at を使う（at a low price など）。訳：ワークショップへの登録は追加料金なしで可能です。" },
     { id: 't60', q: 'The store is conveniently located ------- walking distance of the station.', choices: ['within', 'in front', 'next', 'near to'], correct: 0,
-      explain: "正解: within。within walking distance of ~ = 〜から徒歩圏内に（決まった言い方）。t11の conveniently located とセットで、不動産・店舗紹介の定番表現。訳：その店は駅から徒歩圏内の便利な場所にある。" }
+      explain: "正解: within。within walking distance of ~ = 〜から徒歩圏内に（決まった言い方）。t11の conveniently located とセットで、不動産・店舗紹介の定番表現。訳：その店は駅から徒歩圏内の便利な場所にある。" },
+    { id: 't61', q: 'Please keep the conference room ------- after your meeting.', choices: ['clean', 'cleanly', 'cleaning', 'cleaned up it'], correct: 0,
+      explain: "正解: clean（形容詞）。keep + 目的語 + 形容詞 = 〜を…の状態に保つ。keep the room clean（部屋をきれいに保つ）。remain / stay / keep はどれも後ろに形容詞を取る仲間（t14・t46・t47の remain open / stable / stay open と同じファミリー）。訳：会議後は会議室をきれいにしておいてください。" },
+    { id: 't62', q: '------- the heavy traffic, the delivery truck arrived on time.', choices: ['Despite', 'In spite', 'Although', 'Because'], correct: 0,
+      explain: "正解: Despite。despite + 名詞（of は不要！）。in spite は of が必須（in spite of）なので、空所直後に of が無いこの文では使えない。t50（In spite of）との判別ポイント：of があれば In spite、無ければ Despite。訳：渋滞にもかかわらず、配送トラックは時間通りに到着した。" },
+    { id: 't63', q: 'Hotel guests can enjoy breakfast ------- no extra charge.', choices: ['at', 'in', 'for', 'with'], correct: 0,
+      explain: "正解: at。at no extra charge = 追加料金なしで。t59の at no additional cost と同じパターン：費用・価格の表現は at（at a low price / at no cost）。2回間違えている形なので、「無料系は at」で丸ごと覚える。訳：宿泊客は追加料金なしで朝食を楽しめる。" },
+    { id: 't64', q: 'The human resources office is ------- the fifth floor.', choices: ['on', 'in', 'at', 'over'], correct: 0,
+      explain: "正解: on。on the ___ floor = 〜階に。t27（located on the third floor）と同じ：階は必ず on。「建物の中」なら in the building、「階」なら on the floor。2回間違えたパターンの再演なので、ここで定着させる。訳：人事部は5階にある。" },
+    { id: 't65', q: 'Before leaving, please ------- that all computers are turned off.', choices: ['ensure', 'assure', 'insure', 'reassure that'], correct: 0,
+      explain: "正解: ensure。ensure that ~ = （物事）を確実にする。後ろが that節（人ではない）なので ensure。assure は assure 人 that ~ と「人」が必要（t51）。人なら assure、事なら ensure、保険なら insure の3点セットで整理。訳：退出前に、すべてのPCの電源が切れていることを確認してください。" }
   ]
 };
 
