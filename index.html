@@ -457,7 +457,9 @@ const QUESTIONS = {
     { id: 'v178', q: '「（ゲームや映画が）発売される・公開される」を自然に言うと？', choices: ['goes out', 'comes out', 'gets out', 'takes out'], correct: 1,
       explain: "come out = 発売される、世に出る。'The new game comes out tomorrow.'（新作ゲームが明日発売される）。be released も同じ意味だが、会話では comes out がより自然でよく使う。" },
     { id: 'v179', q: '「いつか（そのうち）行きたい」の「いつか」は？', choices: ['sometime ago', 'someday', 'anytime', 'one time'], correct: 1,
-      explain: "someday = いつか、そのうち（未来の漠然としたある日）。'I want to go to the Pokémon event someday.'（いつかポケモンイベントに行きたい）。sometimes（ときどき）とスペルが似ているので注意。過去の「いつか」は one day も使える。" }
+      explain: "someday = いつか、そのうち（未来の漠然としたある日）。'I want to go to the Pokémon event someday.'（いつかポケモンイベントに行きたい）。sometimes（ときどき）とスペルが似ているので注意。過去の「いつか」は one day も使える。" },
+    { id: 'v180', q: '「fatigue」の意味は？', choices: ['集中力', '疲労、疲れ', '筋肉', '興奮'], correct: 1,
+      explain: "fatigue = 疲労、（たまった）疲れ（tired よりかたい名詞）。'I felt fatigue after the long trip.'（長旅のあと疲労を感じた）。筋トレやゲーム（デバフ名）でもよく見る単語。日常会話なら I'm tired / exhausted で言い換えられる。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -825,7 +827,15 @@ const QUESTIONS = {
     { id: 'p182', q: '「（コードの）バグを見つける」を自然に言うと？', choices: ['find out memory leaks', 'find memory leaks', 'look for out bugs', 'search out the bug'], correct: 1,
       explain: "find = （物・問題を）見つける。'I couldn't find the memory leaks.'（メモリリークを見つけられなかった）。find out は「（情報・事実を）知る・突き止める」なので、物やバグそのものには find を使う。find out the truth（真実を知る）との違いに注意。" },
     { id: 'p183', q: '「けっこう楽しい」の「けっこう」を自然に言うと？', choices: ['a pretty fun', 'pretty fun', 'pretty a fun', 'prettily fun'], correct: 1,
-      explain: "pretty + 形容詞 = けっこう〜、なかなか〜（口語の強調）。'The new game is pretty fun.'（新作はけっこう楽しい）。ここの pretty は「かわいい」ではなく副詞。'It was pretty fun.' のように冠詞は不要。" }
+      explain: "pretty + 形容詞 = けっこう〜、なかなか〜（口語の強調）。'The new game is pretty fun.'（新作はけっこう楽しい）。ここの pretty は「かわいい」ではなく副詞。'It was pretty fun.' のように冠詞は不要。" },
+    { id: 'p184', q: '「今すぐ練習しなくちゃ！」の「〜しなくちゃ」を会話で自然に言うと？', choices: ['I got to practice', "I've got to practice", 'I get to practice', 'I have got practice'], correct: 1,
+      explain: "have got to + 動詞 = 〜しなくちゃ（have to の会話版）。'I've got to practice right now!'（今すぐ練習しなくちゃ！）。I got to だけだと「〜する機会を得た」の意味に。話すときは I've got to → I gotta と縮まる。" },
+    { id: 'p185', q: '「今日の朝、お墓参りに行った」の「今日の朝」を自然に言うと？', choices: ['in the morning today', 'this morning', 'today morning', 'at this morning'], correct: 1,
+      explain: "this morning = 今朝（1語で言える）。'We visited my family's grave this morning.'（今朝お墓参りに行った）。today と in the morning を両方使うと重複になる。this afternoon / this evening も同じ。ただし「今夜」は tonight（this night とは言わない）。" },
+    { id: 'p186', q: '「（もともと知っている）友達に会いに行く」の「会う」は？', choices: ['meet my friend', 'see my friend', 'know my friend', 'watch my friend'], correct: 1,
+      explain: "see = （知っている人に）会う。'I went to Hiroshima to see my friend.'（友達に会いに広島へ行った）。meet は「初めて会う」や「待ち合わせる」のニュアンスが強い。旧友との再会は see が自然。" },
+    { id: 'p187', q: '「台風が近づいている」を自然に言うと？', choices: ["It's coming typhoon", 'A typhoon is coming', 'The typhoon comes it', 'Typhoon is coming it'], correct: 1,
+      explain: "A typhoon is coming. = 台風が来ている・近づいている。台風を主語にして進行形にするのが自然。'It's coming typhoon' は語順が崩れた形。'A storm is coming.'（嵐が来る）も同じ型で、映画のセリフでも定番。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1119,7 +1129,17 @@ const QUESTIONS = {
     { id: 'g145', q: '「（上司から）新しいタスクをもらった」を自然に言うと？', choices: ['I got to a new task', 'I was given a new task', 'I was got a new task', 'I gave a new task'], correct: 1,
       explain: "be given ~ = 〜を与えられる（受け身）。'I was given a new task at work.'（仕事で新しいタスクをもらった）。I got a new task も使えるが、「与えられた」ニュアンスをはっきり出すなら was given が自然。I gave だと「私があげた」で逆になる。" },
     { id: 'g146', q: '「早く寝る」の「早く」はどっち？', choices: ['go to bed quickly', 'go to bed early', 'go to bed fast', 'go to bed soon early'], correct: 1,
-      explain: "early = （時刻が）早く。'I need to go to bed early tonight.'（今夜は早く寝ないと）。quickly は「（動作が）素早く」なので、'go to bed quickly' だと「急いで布団に入る」という変な意味に。時刻の早さは early、動作の速さは quickly。" }
+      explain: "early = （時刻が）早く。'I need to go to bed early tonight.'（今夜は早く寝ないと）。quickly は「（動作が）素早く」なので、'go to bed quickly' だと「急いで布団に入る」という変な意味に。時刻の早さは early、動作の速さは quickly。" },
+    { id: 'g147', q: '「とても特別な場所」を名詞まで言うとき正しいのは？', choices: ['so special place', 'such a special place', 'so a special place', 'such special a place'], correct: 1,
+      explain: "such a + 形容詞 + 名詞 = とても〜な…。'It was such a special place.'（とても特別な場所だった）。so は形容詞だけのとき（It was so special.）に使い、名詞まで続けるなら such a。後ろに名詞があるかどうかで使い分ける。" },
+    { id: 'g148', q: '「昨日は激しく雨が降った」を自然に言うと？', choices: ['It was heavy rain yesterday.', 'It rained heavily yesterday.', 'It rained heavy yesterday.', 'It was rain heavily yesterday.'], correct: 1,
+      explain: "動詞 rained を説明するのは副詞 heavily（激しく）。'It rained heavily yesterday.'。heavy（形容詞）を使うなら 'We had heavy rain.' と名詞 rain を説明する形にする。形容詞と副詞の使い分けは反復ポイント：動詞には -ly。" },
+    { id: 'g149', q: '「友達に会うために駅へ行く」の「会うために」は？', choices: ['go to the station and meet', 'go to the station to meet', 'go to the station for meet', 'go to the station meeting'], correct: 1,
+      explain: "to + 動詞の原形 = 〜するために（目的の不定詞）。'I'll go to Kurashiki Station to meet my friend.'（友達に会うために倉敷駅へ行く）。and meet だと「行って、それから会う」と2つの動作の羅列になり、目的のニュアンスが出ない。" },
+    { id: 'g150', q: '「食べ物と飲み物を楽しんだ」の「食べ物」の正しい形は？', choices: ['some foods and drinks', 'some food and drinks', 'a food and drinks', 'some foods and drink'], correct: 1,
+      explain: "food（食べ物）は数えられない名詞なので s を付けない：some food。'We had some food and drinks.'（食べ物と飲み物を楽しんだ）。foods は「食品の種類」を言うときだけ（Japanese foods = 日本の食品類）。drink は種類を数えられるので drinks でOK。" },
+    { id: 'g151', q: '「お墓参りに行った（家族のお墓）」を正しく言うと？', choices: ['visited grave', "visited my family's grave", 'visited to the grave family', 'visited a grave of family'], correct: 1,
+      explain: "名詞の前には冠詞や所有格が必要（ゆうきさんの反復ポイント）。'We visited my family's grave.'（家族のお墓参りに行った）。裸の grave だけでは使えない。誰のものか言える場合は my / my family's のような所有格を付けるのが自然。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
