@@ -459,7 +459,9 @@ const QUESTIONS = {
     { id: 'v179', q: '「いつか（そのうち）行きたい」の「いつか」は？', choices: ['sometime ago', 'someday', 'anytime', 'one time'], correct: 1,
       explain: "someday = いつか、そのうち（未来の漠然としたある日）。'I want to go to the Pokémon event someday.'（いつかポケモンイベントに行きたい）。sometimes（ときどき）とスペルが似ているので注意。過去の「いつか」は one day も使える。" },
     { id: 'v180', q: '「fatigue」の意味は？', choices: ['集中力', '疲労、疲れ', '筋肉', '興奮'], correct: 1,
-      explain: "fatigue = 疲労、（たまった）疲れ（tired よりかたい名詞）。'I felt fatigue after the long trip.'（長旅のあと疲労を感じた）。筋トレやゲーム（デバフ名）でもよく見る単語。日常会話なら I'm tired / exhausted で言い換えられる。" }
+      explain: "fatigue = 疲労、（たまった）疲れ（tired よりかたい名詞）。'I felt fatigue after the long trip.'（長旅のあと疲労を感じた）。筋トレやゲーム（デバフ名）でもよく見る単語。日常会話なら I'm tired / exhausted で言い換えられる。" },
+    { id: 'v181', q: '「一生懸命に働いた」の「一生懸命に」は？', choices: ['well', 'hard', 'good', 'hardly'], correct: 1,
+      explain: "hard = 一生懸命に、熱心に（副詞）。'I worked hard on my tasks.'（タスクを一生懸命こなした）。well は「上手に」なので意味がずれる。hardly は「ほとんど〜ない」で全く別の意味（v151参照）。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -835,7 +837,15 @@ const QUESTIONS = {
     { id: 'p186', q: '「（もともと知っている）友達に会いに行く」の「会う」は？', choices: ['meet my friend', 'see my friend', 'know my friend', 'watch my friend'], correct: 1,
       explain: "see = （知っている人に）会う。'I went to Hiroshima to see my friend.'（友達に会いに広島へ行った）。meet は「初めて会う」や「待ち合わせる」のニュアンスが強い。旧友との再会は see が自然。" },
     { id: 'p187', q: '「台風が近づいている」を自然に言うと？', choices: ["It's coming typhoon", 'A typhoon is coming', 'The typhoon comes it', 'Typhoon is coming it'], correct: 1,
-      explain: "A typhoon is coming. = 台風が来ている・近づいている。台風を主語にして進行形にするのが自然。'It's coming typhoon' は語順が崩れた形。'A storm is coming.'（嵐が来る）も同じ型で、映画のセリフでも定番。" }
+      explain: "A typhoon is coming. = 台風が来ている・近づいている。台風を主語にして進行形にするのが自然。'It's coming typhoon' は語順が崩れた形。'A storm is coming.'（嵐が来る）も同じ型で、映画のセリフでも定番。" },
+    { id: 'p188', q: '「彼女と過ごした」を正しく言うと？', choices: ['I spent with my girlfriend', 'I spent time with my girlfriend', 'I spent to my girlfriend', 'I spend my girlfriend'], correct: 1,
+      explain: "spend は「〜を使う」なので、何を使ったか（time / money）が必要。'I spent time with my girlfriend.'（彼女と過ごした）。目的語なしの 'I spent with ~' は文として成立しない。spend money on ~（〜にお金を使う）も同じ形。" },
+    { id: 'p189', q: '「TOEICを受ける」を正しく言うと？', choices: ['do TOEIC test', 'take the TOEIC test', 'have TOEIC test', 'get the TOEIC test'], correct: 1,
+      explain: "take a/the test = 試験を受ける（do は使わない）。'I'm going to take the TOEIC test this weekend.'（今週末TOEICを受ける）。TOEIC は全部大文字、前に the が必要。冠詞の付け忘れは反復ポイント。" },
+    { id: 'p190', q: '「まだクリアしてない」を自然に言うと？', choices: ["it has not finished yet", "I haven't beaten it yet", "it isn't finish yet", "I don't beat it yet"], correct: 1,
+      explain: "ゲームを終わらせるのは自分なので、主語は I。'I haven't beaten it yet.'（まだクリアしてない）。'it has not finished' だと「ゲームが自分で終わる」という変な意味になる。beat = クリアする（v167）、haven't + 過去分詞で「まだ〜していない」。" },
+    { id: 'p191', q: '「遅く帰るべきじゃない」を正しく言うと？', choices: ["I shouldn't come home lately", "I shouldn't come home late", "I shouldn't come lately home", "I shouldn't go home lately"], correct: 1,
+      explain: "late = 遅く（時間が遅い）。lately は「最近」という全く別の意味なので要注意。'I shouldn't come home late.'（遅く帰るべきじゃない）。今いる場所が家なら come home、外から家へ向かうなら go home を使う。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1139,7 +1149,15 @@ const QUESTIONS = {
     { id: 'g150', q: '「食べ物と飲み物を楽しんだ」の「食べ物」の正しい形は？', choices: ['some foods and drinks', 'some food and drinks', 'a food and drinks', 'some foods and drink'], correct: 1,
       explain: "food（食べ物）は数えられない名詞なので s を付けない：some food。'We had some food and drinks.'（食べ物と飲み物を楽しんだ）。foods は「食品の種類」を言うときだけ（Japanese foods = 日本の食品類）。drink は種類を数えられるので drinks でOK。" },
     { id: 'g151', q: '「お墓参りに行った（家族のお墓）」を正しく言うと？', choices: ['visited grave', "visited my family's grave", 'visited to the grave family', 'visited a grave of family'], correct: 1,
-      explain: "名詞の前には冠詞や所有格が必要（ゆうきさんの反復ポイント）。'We visited my family's grave.'（家族のお墓参りに行った）。裸の grave だけでは使えない。誰のものか言える場合は my / my family's のような所有格を付けるのが自然。" }
+      explain: "名詞の前には冠詞や所有格が必要（ゆうきさんの反復ポイント）。'We visited my family's grave.'（家族のお墓参りに行った）。裸の grave だけでは使えない。誰のものか言える場合は my / my family's のような所有格を付けるのが自然。" },
+    { id: 'g152', q: '「late」と「lately」の違いは？', choices: ['同じ意味で使える', 'late = 遅く、lately = 最近', 'late = 最近、lately = 遅く', 'late は名詞、lately は動詞'], correct: 1,
+      explain: "late = 遅く、遅い（時間）。lately = 最近、このごろ。形が似ているが意味は別物。'I came home late.'（遅く帰った）vs 'I've been busy lately.'（最近忙しい）。-ly が付くと副詞になるのが普通だが、late は例外で late 自体が副詞。" },
+    { id: 'g153', q: '「（もし〜なら）遅くなってしまう」と仮定の話をするとき正しいのは？', choices: ['it was late', 'it would be late', 'it is late', 'it will been late'], correct: 1,
+      explain: "would = （もし〜なら）〜だろう（仮定・想像）。まだ起きていないことを想像するときは would を使う。'If I keep playing, it would be late.'（このまま続けたら遅くなってしまう）。was は「実際に起きた過去」なので仮定には合わない。" },
+    { id: 'g154', q: '「家に帰る」で、今その家にいる場合に使うのは？', choices: ['go home', 'come home', 'go to home', 'come to home'], correct: 1,
+      explain: "come = 話し手のいる場所へ向かう。今すでに家にいて「（普段）遅く帰る」と話すなら come home。外にいて「これから帰る」なら go home。どちらも home は副詞なので to は不要。方向による使い分けは反復ポイント。" },
+    { id: 'g155', q: '「so」が続いて読みにくいとき、2つ目の強調語を何に変えると自然？', choices: ['very', 'really', 'too', 'much'], correct: 1,
+      explain: "'so ~, so I'm so hungry' のように so が重なると読みにくい。2つ目を really に変えるとスッキリする：'I worked hard, so I'm really hungry.'。really は so とほぼ同じ強さで、会話でも自然によく使う。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
