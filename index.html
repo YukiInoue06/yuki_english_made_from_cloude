@@ -461,7 +461,11 @@ const QUESTIONS = {
     { id: 'v180', q: '「fatigue」の意味は？', choices: ['集中力', '疲労、疲れ', '筋肉', '興奮'], correct: 1,
       explain: "fatigue = 疲労、（たまった）疲れ（tired よりかたい名詞）。'I felt fatigue after the long trip.'（長旅のあと疲労を感じた）。筋トレやゲーム（デバフ名）でもよく見る単語。日常会話なら I'm tired / exhausted で言い換えられる。" },
     { id: 'v181', q: '「一生懸命に働いた」の「一生懸命に」は？', choices: ['well', 'hard', 'good', 'hardly'], correct: 1,
-      explain: "hard = 一生懸命に、熱心に（副詞）。'I worked hard on my tasks.'（タスクを一生懸命こなした）。well は「上手に」なので意味がずれる。hardly は「ほとんど〜ない」で全く別の意味（v151参照）。" }
+      explain: "hard = 一生懸命に、熱心に（副詞）。'I worked hard on my tasks.'（タスクを一生懸命こなした）。well は「上手に」なので意味がずれる。hardly は「ほとんど〜ない」で全く別の意味（v151参照）。" },
+    { id: 'v182', q: '動詞の「poll」の意味は？', choices: ['投票を数える機械', '〜にアンケート・調査を行う', '発表する', '延期する'], correct: 1,
+      explain: "poll（動詞）= 〜に調査・アンケートを行う。'We polled 500 people.'（500人に調査した）。目的語を直接置くので to は不要（✗ polled to consumers）。名詞では「世論調査」の意味。" },
+    { id: 'v183', q: '動詞の「head」の意味は？', choices: ['頭を使って考える', '〜のトップを務める、率いる', '見出しをつける', '数を数える'], correct: 1,
+      explain: "head（動詞）= 〜のトップを務める、率いる。'Heading the budget committee was hard.'（予算委員会を率いるのは大変だった）。名詞の「頭」から「先頭に立つ」イメージ。head to ~（〜へ向かう）の使い方もある。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -845,7 +849,13 @@ const QUESTIONS = {
     { id: 'p190', q: '「まだクリアしてない」を自然に言うと？', choices: ["it has not finished yet", "I haven't beaten it yet", "it isn't finish yet", "I don't beat it yet"], correct: 1,
       explain: "ゲームを終わらせるのは自分なので、主語は I。'I haven't beaten it yet.'（まだクリアしてない）。'it has not finished' だと「ゲームが自分で終わる」という変な意味になる。beat = クリアする（v167）、haven't + 過去分詞で「まだ〜していない」。" },
     { id: 'p191', q: '「遅く帰るべきじゃない」を正しく言うと？', choices: ["I shouldn't come home lately", "I shouldn't come home late", "I shouldn't come lately home", "I shouldn't go home lately"], correct: 1,
-      explain: "late = 遅く（時間が遅い）。lately は「最近」という全く別の意味なので要注意。'I shouldn't come home late.'（遅く帰るべきじゃない）。今いる場所が家なら come home、外から家へ向かうなら go home を使う。" }
+      explain: "late = 遅く（時間が遅い）。lately は「最近」という全く別の意味なので要注意。'I shouldn't come home late.'（遅く帰るべきじゃない）。今いる場所が家なら come home、外から家へ向かうなら go home を使う。" },
+    { id: 'p192', q: '「〜できるようになるのは嬉しい」を自然に言うと？', choices: ["I'm great we can ~", "It's great that we'll be able to ~", "That's great we can able to ~", "It great that we will can ~"], correct: 1,
+      explain: "It's great that ~ = 〜ということは嬉しい・素晴らしい（形式主語のit）。'It's great that we'll be able to work together.'（一緒に働けるようになるのは嬉しい）。It に意味はなく、本当に言いたいのは that 以下。会話では that を省略することも多い。" },
+    { id: 'p193', q: '「この増額のおかげで」の「〜のおかげで」を1語で言うと？', choices: ['by this increase', 'with this increase', 'in this increase', 'to this increase'], correct: 1,
+      explain: "with = 〜によって、〜があることで（理由・手段）。'With this increase, we can do more.'（この増額のおかげでもっとできる）。with は「一緒に」だけでなく理由も表せる。'With more time, we can do better.'（もっと時間があればもっとうまくできる）。" },
+    { id: 'p194', q: '「思っていたより大変だった」を自然に言うと？', choices: ['It was harder than I thought it will be', 'It was more work than I thought it would be', 'It was more works than I thought', 'It was hard than I thought would'], correct: 1,
+      explain: "more work than I thought it would be = 思っていたより大変（仕事量が多い）。work は数えられない名詞なので works にしない。また thought（過去）に合わせて will → would にする（時制の一致）。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1157,7 +1167,15 @@ const QUESTIONS = {
     { id: 'g154', q: '「家に帰る」で、今その家にいる場合に使うのは？', choices: ['go home', 'come home', 'go to home', 'come to home'], correct: 1,
       explain: "come = 話し手のいる場所へ向かう。今すでに家にいて「（普段）遅く帰る」と話すなら come home。外にいて「これから帰る」なら go home。どちらも home は副詞なので to は不要。方向による使い分けは反復ポイント。" },
     { id: 'g155', q: '「so」が続いて読みにくいとき、2つ目の強調語を何に変えると自然？', choices: ['very', 'really', 'too', 'much'], correct: 1,
-      explain: "'so ~, so I'm so hungry' のように so が重なると読みにくい。2つ目を really に変えるとスッキリする：'I worked hard, so I'm really hungry.'。really は so とほぼ同じ強さで、会話でも自然によく使う。" }
+      explain: "'so ~, so I'm so hungry' のように so が重なると読みにくい。2つ目を really に変えるとスッキリする：'I worked hard, so I'm really hungry.'。really は so とほぼ同じ強さで、会話でも自然によく使う。" },
+    { id: 'g156', q: '「can」の未来形として正しいのは？', choices: ['will can', 'will be able to', 'will could', 'can will'], correct: 1,
+      explain: "助動詞は2つ並べられないので will can とは言えない。can の未来は will be able to を使う。'We will be able to poll consumers.'（消費者に調査できるようになる）。現在は can、過去は was/were able to。丸暗記でOK。" },
+    { id: 'g157', q: '「チームを率いることは大変だ」の動詞の形は？', choices: ['Heading the team are hard.', 'Heading the team is hard.', 'Heading the team were hard.', 'Head the team is hard.'], correct: 1,
+      explain: "動名詞（~ing）が主語のときは、かたまり全体を「1つのもの」として単数扱いにする。'Heading the team is hard.'（チームを率いるのは大変だ）。team につられて are にしないよう注意。'Cooking dinner takes time.' も同じ。" },
+    { id: 'g158', q: '「簡単だと思っていた」で正しいのは？', choices: ['I thought it will be easy.', 'I thought it would be easy.', 'I thought it is easy.', 'I think it would be easy.'], correct: 1,
+      explain: "主節が過去（thought）なら、その中身も過去に合わせて will → would にする（時制の一致）。'I thought it would be easy.'（簡単だろうと思っていた）。今そう思っているなら 'I think it will be easy.'。" },
+    { id: 'g159', q: '「仕事がたくさんある」の正しい形は？', choices: ['many works', 'a lot of work', 'a work', 'much works'], correct: 1,
+      explain: "work（仕事）は数えられない名詞なので、works や a work にしない。量を言うなら a lot of work / much work。'It was more work than I expected.'（思ったより仕事が多かった）。同じく hard work（きつい仕事）も a は付けない。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
