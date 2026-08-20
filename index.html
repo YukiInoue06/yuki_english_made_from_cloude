@@ -467,7 +467,11 @@ const QUESTIONS = {
     { id: 'v183', q: '動詞の「head」の意味は？', choices: ['頭を使って考える', '〜のトップを務める、率いる', '見出しをつける', '数を数える'], correct: 1,
       explain: "head（動詞）= 〜のトップを務める、率いる。'Heading the budget committee was hard.'（予算委員会を率いるのは大変だった）。名詞の「頭」から「先頭に立つ」イメージ。head to ~（〜へ向かう）の使い方もある。" },
     { id: 'v184', q: '「He will beat me.」が持つ2つの意味は？', choices: ['「私を助ける」と「私を待つ」', '「私を殴る」と「勝負で私に勝つ」', '「私を呼ぶ」と「私を探す」', '「私を教える」と「私を止める」'], correct: 1,
-      explain: "beat には「（人を）叩く・殴る」と「（勝負で）打ち負かす」の2つの意味がある。どちらかは文脈で判断する。'He beat me in the game.'（ゲームで私に勝った）vs 'He will beat me.'（私を殴るだろう）。ゲームを目的語にすると「クリアする」の意味になる（v167）。" }
+      explain: "beat には「（人を）叩く・殴る」と「（勝負で）打ち負かす」の2つの意味がある。どちらかは文脈で判断する。'He beat me in the game.'（ゲームで私に勝った）vs 'He will beat me.'（私を殴るだろう）。ゲームを目的語にすると「クリアする」の意味になる（v167）。" },
+    { id: 'v185', q: '「大きな音」と言うとき sound / noise に付ける形容詞は？', choices: ['big', 'loud', 'large', 'strong'], correct: 1,
+      explain: "音の大きさは loud を使う。big / large は物のサイズを表すので音には使わない。'I heard a loud noise.'（大きな音が聞こえた）。反対は quiet（静かな）。うるさい音は sound より noise の方が自然。" },
+    { id: 'v186', q: '「delay」のコアイメージは？', choices: ['前に押し出す', '予定より後ろにずれる', '完全に止まる', '順番を入れ替える'], correct: 1,
+      explain: "delay = 予定より後ろにずれる → 遅れ・遅延。電車では受け身にして 'The train is delayed.'（電車が遅れている）が定番。名詞では 'a 30-minute delay'（30分の遅れ）。駅のアナウンスでもよく聞く単語。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -861,7 +865,13 @@ const QUESTIONS = {
     { id: 'p195', q: '「200人が出席していた」をフォーマルに言うと？', choices: ['Two hundred people were attendance', 'Two hundred people were in attendance', 'Two hundred people were attended', 'Two hundred people in attend'], correct: 1,
       explain: "be in attendance = 出席している（フォーマルな言い方）。'Two hundred people were in attendance.'（200人が出席していた）。in attendance は前置詞句で、be動詞の後ろに置いて状態を表す。会話なら 'Two hundred people came.' でOK。" },
     { id: 'p196', q: '「（大会で）1位を取る」を自然に言うと？', choices: ['get the first', 'get first', 'take first place it', 'win the one'], correct: 1,
-      explain: "get first = 1位を取る（口語で the を付けない）。'If we don't get first today, ~'（今日1位を取れなかったら）。よりはっきり言うなら get first place / win first place。順位の話でよく使う形。" }
+      explain: "get first = 1位を取る（口語で the を付けない）。'If we don't get first today, ~'（今日1位を取れなかったら）。よりはっきり言うなら get first place / win first place。順位の話でよく使う形。" },
+    { id: 'p197', q: '「電車が遅れています」を、駅のアナウンスでも使う形で言うと？', choices: ['The train is delaying', 'The train is delayed', 'The train is on delay', 'The train has delayed it'], correct: 1,
+      explain: "be delayed = 遅延している（受け身の形）。'The train I always take is delayed.'（いつも乗る電車が遅れている）。late でも通じるが、交通機関の遅れは delayed が決まり文句。乗る動詞は take（go on とは言わない、g141）。" },
+    { id: 'p198', q: '「今日は仕事がはかどった」を自然に言うと？', choices: ['I worked on my tasks well', 'I got a lot of work done', 'I did my works very good', 'I made many work today'], correct: 1,
+      explain: "get + 目的語 + done = 〜を終わらせる。'I got a lot of work done today.'（今日は仕事がはかどった）。work は不可算名詞なので works とは言わない。シンプルに 'My work went well today.' でも自然。" },
+    { id: 'p199', q: '「3時に会議の予定が入っています」を自然に言うと？', choices: ["I'm scheduled for a meeting at three", "I'm scheduled a meeting at three", "I schedule for a meeting at three", "I'm on schedule a meeting at three"], correct: 0,
+      explain: "be scheduled for + 名詞 = 〜の予定が入っている。自分で決めたというより、予定表に組み込まれている受け身のイメージ。'I'm scheduled for surgery next Monday.'（来週手術の予定です）。日常会話では 'I have a meeting at three.' の方をよく使う。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1185,7 +1195,11 @@ const QUESTIONS = {
     { id: 'g160', q: '「もし今日勝てなかったら、彼は怒るだろう」の if の中の動詞は？', choices: ["if we won't win today", "if we don't win today", "if we didn't win today", "if we not win today"], correct: 1,
       explain: "if節（もし〜なら）の中では、未来のことでも現在形を使う。'If we don't win today, he will be angry.'（今日勝てなかったら彼は怒るだろう）。if の中に will は入れない。時（when）の節も同じルール。" },
     { id: 'g161', q: '「do not」を短くするとき正しいのは？', choices: ['dont', "don't", 'do nt', "don't've"], correct: 1,
-      explain: "短縮形にはアポストロフィ（'）が必要：do not → don't。省いた文字（o）の位置にアポストロフィを置くのがルール。同じく can not → can't、I am → I'm、it is → it's。書くときに忘れやすいポイント。" }
+      explain: "短縮形にはアポストロフィ（'）が必要：do not → don't。省いた文字（o）の位置にアポストロフィを置くのがルール。同じく can not → can't、I am → I'm、it is → it's。書くときに忘れやすいポイント。" },
+    { id: 'g162', q: '「3時に彼と会う予定です」— scheduled の後に動詞を続ける形は？', choices: ["I'm scheduled for meet him at three", "I'm scheduled to meet him at three", "I'm scheduled meeting him at three", "I'm scheduled for meeting him"], correct: 1,
+      explain: "be scheduled for + 名詞 / be scheduled to + 動詞の原形。動詞を続けたいときは to を使う。'I'm scheduled to meet him at three.'（3時に彼と会う予定）／'I'm scheduled for a meeting.'（会議の予定がある）。前置詞 for の後ろは必ず名詞。" },
+    { id: 'g163', q: '「オフィスの近くの公園で夏祭りがあった」— 正しい語順は？', choices: ['a summer festival near my office in the park', 'a summer festival in the park near my office', 'in the park a summer festival near my office', 'near my office a summer festival in the park'], correct: 1,
+      explain: "場所は「小さい情報 → 大きい情報」の順に並べる。ここでは in the park（祭りの場所）→ near my office（その公園がどこか）。逆にすると「公園の中にあるオフィスの近く」と読めて誤解される。時間の語順（p101）と同じ考え方。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
