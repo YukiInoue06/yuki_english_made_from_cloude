@@ -479,7 +479,11 @@ const QUESTIONS = {
     { id: 'v189', q: 'ポーランドでクリスマスに食べる、ビーツで作る赤いスープは？', choices: ['borscht', 'goulash', 'chowder', 'gazpacho'], correct: 0,
       explain: 'borscht（ボルシチ）= ビーツで作る赤いスープ。英語では beet soup とも言えます。"People eat borscht at Christmas in Poland."（ポーランドではクリスマスにボルシチを食べます）。' },
     { id: 'v190', q: '「食べることが大好きな人」を表す英単語は？', choices: ['foodie', 'cooker', 'eater', 'taster'], correct: 0,
-      explain: 'foodie = 食べ物が大好きな人、グルメ。"I am a foodie, so I always try local food."（食べるのが好きなので、いつも地元の料理を試します）。cooker は「調理器具」で、人を表す言葉ではありません。' }
+      explain: 'foodie = 食べ物が大好きな人、グルメ。"I am a foodie, so I always try local food."（食べるのが好きなので、いつも地元の料理を試します）。cooker は「調理器具」で、人を表す言葉ではありません。' },
+    { id: 'v191', q: '「（デッキなどを）微調整する」を自然に言うと？', choices: ['adjust a little', 'fine-tune', 'small change', 'fix up small'], correct: 1,
+      explain: "fine-tune = 微調整する、細かく詰める。'I need to fine-tune my deck.'（デッキを微調整する必要がある）。adjust でも通じるが、カードゲームや設定の細かい調整には fine-tune がぴったりの表現。" },
+    { id: 'v192', q: '「refreshed」の意味は？', choices: ['（説明が）明確な', '（気分が）さっぱりした、スッキリした', '（空が）晴れた', '（体が）だるい'], correct: 1,
+      explain: "refreshed = 気分がさっぱりした、スッキリした。'I felt refreshed after finishing my task.'（タスクを終えてスッキリした）。clear は「晴れた・明確な」で気分には使わない。relieved（ホッとした）も近い表現。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -899,7 +903,17 @@ const QUESTIONS = {
     { id: 'p208', q: '「もう一度言ってもらえますか？」の丁寧な言い方は？', choices: ['Could you say that again?', 'Please say again one more.', 'Say it again please more.', 'One more time you say?'], correct: 0,
       explain: 'Could you say that again? = もう一度言ってもらえますか。聞き取れなかった時は遠慮なく使いましょう。ゆっくり話してほしい時は "Could you speak more slowly?" です。' },
     { id: 'p209', q: '「Yeah」ばかり使わないために、相づちとして使えるのは？', choices: ['I see.', 'So what.', 'Of course not.', 'Never mind.'], correct: 0,
-      explain: 'I see. = なるほど。Right. や That makes sense. も同じように使えます。Yeah を文の切れ目ごとに入れるより、いくつか混ぜたほうが会話が締まって聞こえます。' }
+      explain: 'I see. = なるほど。Right. や That makes sense. も同じように使えます。Yeah を文の切れ目ごとに入れるより、いくつか混ぜたほうが会話が締まって聞こえます。' },
+    { id: 'p210', q: '「週末だ！」を正しく言うと？', choices: ["It's weekend!", "It's the weekend!", "It's a weekend!", "It's weekends!"], correct: 1,
+      explain: "the weekend = 週末（the を付けるのが決まり文句）。'It's the weekend!'（週末だ！）。冠詞の脱落はゆうきさんの最重要ポイントなので、名詞を書いたら「a か the はいる？」と確認するクセを。'The weekend is finally here!'（やっと週末だ）も使える。" },
+    { id: 'p211', q: '「2回目のレッスンを受けた」を正しく言うと？', choices: ['I took a lesson second time', 'I took a lesson for the second time', 'I took a lesson in second time', 'I took a second lesson time'], correct: 1,
+      explain: "for the + 序数 + time = 〜回目に。'I took an English lesson for the second time.'（2回目の英会話レッスンを受けた）。for the first time（初めて）とセットで覚える。for も the も省略しない。" },
+    { id: 'p212', q: '「ネットの接続が悪かった」を自然に言うと？', choices: ["the network wasn't connect well", 'the network connection was bad', 'the network was not connecting good', 'the network is bad connect'], correct: 1,
+      explain: "be動詞 + 動詞の原形（wasn't connect）は文法的に作れない。'The network connection was bad.'（ネット接続が悪かった）か 'The network didn't work well.' がシンプルで自然。connection（接続）は名詞。" },
+    { id: 'p213', q: '「チームを応援する」を正しく言うと？', choices: ['I cheer the team', 'I cheer for the team', 'I cheer to the team', 'I cheering the team'], correct: 1,
+      explain: "cheer for ~ = 〜を応援する（for が必要）。'I cheered for Team Falcons.'（チームファルコンズを応援した）。cheer だけだと「歓声をあげる」の意味。support も「応援する」で使える。" },
+    { id: 'p214', q: '「どうやって復習するか考える」を正しく言うと？', choices: ['think how to review', 'think about how to review', 'think of how review', 'think for how to review'], correct: 1,
+      explain: "think は後ろに目的語を直接置けないので about が必要。'I have to think about how to review my lessons.'（どうやって復習するか考えないと）。think about ~（〜について考える）でセットで覚える。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1241,7 +1255,17 @@ const QUESTIONS = {
     { id: 'g169', q: '「フィリピン」を英語で正しく言うと？', choices: ['Philippines', 'the Philippines', 'a Philippines', 'the Philippine'], correct: 1,
       explain: 'the Philippines = フィリピン。たくさんの島が集まってできた国なので、複数形＋the になります。同じ仲間は the United States（アメリカ）、the Netherlands（オランダ）。"I went to the Philippines in June."' },
     { id: 'g170', q: '「ポーランドに友達がいます」— 自然な英語は？', choices: ['There is my friend in Poland.', 'I have a friend in Poland.', 'My friend is exist in Poland.', 'It has my friend in Poland.'], correct: 1,
-      explain: 'there is は「初めて話題に出すモノ」に使う表現なので、my friend のように持ち主が決まっているものには使えません。「～がいる・～を持っている」は I have ～。⭕️ There is a park near my house.（家の近くに公園がある）' }
+      explain: 'there is は「初めて話題に出すモノ」に使う表現なので、my friend のように持ち主が決まっているものには使えません。「～がいる・～を持っている」は I have ～。⭕️ There is a park near my house.（家の近くに公園がある）' },
+    { id: 'g171', q: '「そのイベントはワクワクするものだった」を正しく言うと？', choices: ['The event was excited.', 'The event was exciting.', 'The event was excite.', 'The event was excitement.'], correct: 1,
+      explain: "-ing は「（周りを）〜させる」、-ed は「（自分が）〜させられた」。イベントは人をワクワクさせる側なので exciting。'The event was exciting.'（イベントはワクワクした）／'I was excited.'（私はワクワクした）。ゆうきさんの反復ポイント。" },
+    { id: 'g172', q: '「まだ練習が必要かもしれない」の still の正しい位置は？', choices: ['I still may need to practice', 'I may still need to practice', 'I may need still to practice', 'Still I may need practice'], correct: 1,
+      explain: "still（まだ）は助動詞（may / can / will）の後ろに置く。'I may still need to practice.'（まだ練習が必要かもしれない）。助動詞がない場合は動詞の前：'I still need to practice.'。語順のルールとして覚える。" },
+    { id: 'g173', q: '「すばやく英文を作る練習」を正しく言うと？', choices: ['practice quick English sentences', 'practice making English sentences quickly', 'practice make English sentences quick', 'practice quickly English sentences'], correct: 1,
+      explain: "「速い」のは文ではなく“作る動作”なので、動詞 making を副詞 quickly で説明する。'practice making English sentences quickly'（すばやく英文を作る練習）。'quick English sentences' だと「短い英文」という別の意味になる。" },
+    { id: 'g174', q: '「プールに行く」の前置詞は？', choices: ['go in the pool', 'go to the pool', 'go on the pool', 'go at pool'], correct: 1,
+      explain: "施設へ「行く」は go to the pool。その場所で活動しているなら at the pool（'We had fun at the pool.'）。in the pool は「水の中にいる」という意味になる。to（移動先）と at（滞在地点）の使い分けがポイント。" },
+    { id: 'g175', q: '「毎日レッスンを復習する」の lesson の形は？', choices: ['review my lesson every day', 'review my lessons every day', 'review my lesson everyday', 'review a my lessons every day'], correct: 1,
+      explain: "「毎日」復習するなら対象は複数回分のレッスンになるので複数形 lessons が自然。'I review my lessons every day.'。また every day（毎日・2語）と everyday（日常の・形容詞）は別物なので、2語で書く点にも注意。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
