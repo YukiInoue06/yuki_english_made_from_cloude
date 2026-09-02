@@ -485,7 +485,13 @@ const QUESTIONS = {
     { id: 'v192', q: '「refreshed」の意味は？', choices: ['（説明が）明確な', '（気分が）さっぱりした、スッキリした', '（空が）晴れた', '（体が）だるい'], correct: 1,
       explain: "refreshed = 気分がさっぱりした、スッキリした。'I felt refreshed after finishing my task.'（タスクを終えてスッキリした）。clear は「晴れた・明確な」で気分には使わない。relieved（ホッとした）も近い表現。" },
     { id: 'v193', q: '「（食べ物が）やわらかい」を表す正しい語は？', choices: ['softy', 'soft', 'softly', 'softness'], correct: 1,
-      explain: "「やわらかい」は形容詞の soft。'The dorayaki was so soft.'（どら焼きはとてもやわらかかった）。softy は「弱虫」という意味の名詞、softly は「そっと」という副詞、softness は「やわらかさ」という名詞。-y を付けても形容詞にはならないので注意。" }
+      explain: "「やわらかい」は形容詞の soft。'The dorayaki was so soft.'（どら焼きはとてもやわらかかった）。softy は「弱虫」という意味の名詞、softly は「そっと」という副詞、softness は「やわらかさ」という名詞。-y を付けても形容詞にはならないので注意。" },
+    { id: 'v194', q: '「前のページに戻ってください」の正しい文は？', choices: ['Please go back to the before page.', 'Please go back to the previous page.', 'Please go back to the ago page.', 'Please go back to the front page.'], correct: 1,
+      explain: "「（順番が）1つ前の」と名詞を説明するときは previous か last を使う。before は前置詞・接続詞なので名詞の前には置けない（× the before page）。'the front page' は「新聞の一面」という別の意味になるので注意。" },
+    { id: 'v195', q: 'I worked at my ------- company for five years.（前の会社で5年働いた）', choices: ['before', 'previous', 'ago', 'front'], correct: 1,
+      explain: "previous = 今より1つ前の。'my previous company'（前の会社）、'my previous job'（前職）。last も同じように使えて 'my last job' でもOK。before と ago は名詞の前に置いて「前の〜」という意味にはならない。" },
+    { id: 'v196', q: '「彼女には3年前に会った」の正しい文は？', choices: ['I met her three years before.', 'I met her three years ago.', 'I met her before three years.', 'I met her last three years.'], correct: 1,
+      explain: "「今から〜前」は「期間 + ago」の語順。'I met her three years ago.'。before を使うと「（過去のある時点）よりさらに前」という意味になり、'before three years' という語順にもならない。ago は必ず期間の後ろに置く。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -919,7 +925,13 @@ const QUESTIONS = {
     { id: 'p215', q: '「ミスをする」の正しい言い方は？', choices: ['take a mistake', 'make a mistake', 'do a mistake', 'have a mistake'], correct: 1,
       explain: "「ミスをする」は make a mistake。動詞は make で固定のセット表現。'I made many mistakes last week.'（先週はたくさんミスをした）。take や do は使えない。make a decision（決める）、make a plan（計画を立てる）と同じ仲間として覚える。" },
     { id: 'p216', q: '「楽しかった」を It was fun. 以外の言い方で表すと？', choices: ['I had fun.', 'I was fun.', 'I did fun.', 'I made fun.'], correct: 0,
-      explain: "I had fun. = 楽しかった。fun は名詞なので have を使う。'I had fun with my girlfriend.'（彼女と楽しく過ごした）。I was fun. は「私は面白い人だった」という別の意味になるので注意。It was fun. と I had fun. の2つをセットで覚えると便利。" }
+      explain: "I had fun. = 楽しかった。fun は名詞なので have を使う。'I had fun with my girlfriend.'（彼女と楽しく過ごした）。I was fun. は「私は面白い人だった」という別の意味になるので注意。It was fun. と I had fun. の2つをセットで覚えると便利。" },
+    { id: 'p217', q: '「面接はうまくいった」の自然な文は？', choices: ['The interview did well.', 'The interview went well.', 'The interview made well.', 'The interview took well.'], correct: 1,
+      explain: "物事（interview / meeting / party など）が主語のときは go well を使う。'The interview went well.'（面接はうまくいった）。do well は人が主語のときの表現なので、interview を主語にすると不自然になる。" },
+    { id: 'p218', q: 'Everything ------- well at the party last night.（昨夜のパーティーはすべて順調だった）', choices: ['did', 'went', 'made', 'had'], correct: 1,
+      explain: "everything は物事なので go well。過去形は went。'Everything went well.'（すべて順調だった）。反対は go wrong。'Something went wrong.'（何かがうまくいかなかった）もセットで覚えると便利。" },
+    { id: 'p219', q: 'He ------- well on the math test.（彼は数学のテストでよくできた）', choices: ['went', 'did', 'was', 'took'], correct: 1,
+      explain: "人が主語のときは do well。'He did well on the math test.'（彼は数学のテストでよくできた）。テストそのものが主語なら 'The test went well.'（テストはうまくいった）。主語が人か物かで do / go を選び分ける。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1285,7 +1297,13 @@ const QUESTIONS = {
     { id: 'g181', q: '「明後日もこのトピックをもう一度勉強する」の自然な文は？', choices: ['I will take this topic again.', 'I will study this topic again.', 'I will get this topic again.', 'I will do this topic again.'], correct: 1,
       explain: "take は lesson / class / test など「受けるもの」に使う（take a lesson）。topic（話題）は受けるものではないので study を使う。レッスンの話なら 'I will take a lesson on this topic again.'（このトピックのレッスンをもう一度受ける）が自然。" },
     { id: 'g182', q: '「カスタマーサポートに電話した」の正しい文は？', choices: ['I called to customer support.', 'I called the customer support.', 'I called customer support.', 'I called for customer support.'], correct: 2,
-      explain: "call は「〜に電話する」で、後ろに前置詞は要らない（call him / call the shop）。また customer support はサービス名として冠詞なしで使う。'I called customer support this morning.'（今朝カスタマーサポートに電話した）。customer service も同じように使える。" }
+      explain: "call は「〜に電話する」で、後ろに前置詞は要らない（call him / call the shop）。また customer support はサービス名として冠詞なしで使う。'I called customer support this morning.'（今朝カスタマーサポートに電話した）。customer service も同じように使える。" },
+    { id: 'g183', q: '「新しい靴を買った」の正しい文は？', choices: ['I bought a new shoes.', 'I bought new shoes.', 'I bought a new shoe.', 'I bought new a shoes.'], correct: 1,
+      explain: "a は単数の名詞にしか付けられない。shoes は複数形なので a は付かない。'I bought new shoes.'（新しい靴を買った）。靴は左右セットなので普通は複数形で使う。'a new shoe' だと片方だけになってしまう。" },
+    { id: 'g184', q: 'This shop sells ------- vegetables.（この店は新鮮な野菜を売っている）', choices: ['a fresh', 'fresh', 'a freshes', 'a the fresh'], correct: 1,
+      explain: "vegetables は複数形なので a は付けられない。「〜というもの全般」を言うときは冠詞なしの複数形にする。'This shop sells fresh vegetables.'。1つだけなら 'a fresh vegetable' と単数にする。" },
+    { id: 'g185', q: '次のうち、文法的に間違っているのはどれ？', choices: ['He has a big dog.', 'He has big dogs.', 'He has a big dogs.', 'He has two big dogs.'], correct: 2,
+      explain: "'a big dogs' は a（単数）と dogs（複数）が矛盾している。正しくは 'a big dog'（1匹）か 'big dogs'（複数）。数をはっきり言いたいときは 'two big dogs' のように数詞を使う。a + 形容詞 + 複数名詞 の形は作れない。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
