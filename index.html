@@ -1515,12 +1515,82 @@ const QUESTIONS = {
   ]
 };
 
-const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + QUESTIONS.toeic.length;
+// ===== 瞬間英作文（レッスンで実際に間違えた文を日本語→英語に変換する練習） =====
+const SPEAKING = [
+  // --- 第1回 レッスン（Charlie） ---
+  { id: 's01', ja: 'ポーランドに友達がいます。', en: "I have a friend in Poland.", note: 'there is my friend とは言えません。「〜がいる」は I have 〜。' },
+  { id: 's02', ja: '私は6月にフィリピンに行きました。', en: "I went to the Philippines in June.", note: 'the Philippines は the と複数形。月には in。' },
+  { id: 's03', ja: 'ホテルに泊まりたいです。', en: "I would like to stay at a hotel.", note: '建物・施設は at。' },
+  { id: 's04', ja: 'クルーズ船に泊まりたいです。', en: "I would like to stay on a cruise ship.", note: '大きな乗り物の上は on。' },
+  { id: 's05', ja: 'キャンプ場に泊まりたいです。', en: "I would like to stay at a campground.", note: 'ホテルと同じで at。' },
+  { id: 's06', ja: 'アメリカに住んで働きたいです。', en: "I want to live and work in America.", note: 'stay は一時的な滞在。住むなら live。国には in。' },
+  { id: 's07', ja: '中学で始めましたが、本格的に勉強しているのは3年ほどです。', en: "I started in junior high school, but I have been studying hard for about three years.", note: 'but でつなぐと意図が伝わります。期間は現在完了。' },
+  { id: 's08', ja: '英検を受けました。日本の英語のテストです。', en: "I took Eiken. It is an English test in Japan.", note: '日本独自のものは「名前＋説明」をセットで。' },
+  { id: 's09', ja: '簡単でしたが、とても楽しかったです。', en: "It was easy, but I really enjoyed it.", note: '短く答えて止まらず、but で情報を足す。' },
+
+  // --- 第2回 レッスン（June） ---
+  { id: 's10', ja: '事故を見ました。', en: "I saw an accident.", note: '偶然目に入るのは see。watch は自分から見にいくもの。' },
+  { id: 's11', ja: '2人の人が歩いていました。', en: "Two people were walking.", note: 'person の複数形は people。背景は was/were + ing。' },
+  { id: 's12', ja: '突然、片方がもう片方にぶつかりました。', en: "Suddenly, one of them bumped into the other.", note: '出来事は過去形。hit より bump into が自然。' },
+  { id: 's13', ja: '彼は飲み物とカバンを落としました。', en: "He dropped his drink and his bag.", note: 'drop だけで「落とす」。down は不要。' },
+  { id: 's14', ja: '事故とは、突然起こる悪い出来事です。', en: "An accident is something bad that happens suddenly.", note: 'something that 〜 の型に、知っている言葉を流し込む。' },
+  { id: 's15', ja: '運転中にスマホを見る人がいます。', en: "Some drivers look at their smartphones while driving.", note: '必ず主語と動詞を入れる。while + ing で「〜しながら」。' },
+  { id: 's16', ja: '他の人と話しながら運転するのは危険です。', en: "Talking to another person while driving is dangerous.", note: 'talk に to が必要。「他の人」は another person。' },
+  { id: 's17', ja: '運転手は道路に集中するべきです。', en: "Drivers should concentrate on the road.", note: '名詞を並べず、誰がどうするの順で組み立てる。' },
+  { id: 's18', ja: '飲んだら乗るな。', en: "Do not drink and drive.", note: '決まった言い方。丸ごと覚える。' },
+  { id: 's19', ja: '定期的に車を点検してください。', en: "Check your car regularly.", note: '相手への助言なので my ではなく your。' },
+  { id: 's20', ja: '私はゲームプログラマーとして働いています。', en: "I work as a game programmer.", note: 'work as 〜。職業名の前に a が必要。' },
+  { id: 's21', ja: 'この仕事を8年やっています。', en: "I have been doing this for eight years.", note: '期間（for 〜）は現在完了。' },
+  { id: 's22', ja: '私のオフィスは秋葉原にあります。', en: "My office is in Akihabara.", note: '地名には in。' },
+
+  // --- 第3回 レッスン（Carmella） ---
+  { id: 's23', ja: '私の趣味はゲームとバドミントンと海外旅行です。', en: "My hobbies are playing games, badminton, and traveling abroad.", note: '複数なら hobbies are。並べる時は形をそろえる。' },
+  { id: 's24', ja: '月に1回くらいです。', en: "About once a month.", note: 'about を付けると正確でなくても大丈夫。' },
+  { id: 's25', ja: '23歳くらいの時に始めました。', en: "I started when I was about 23.", note: '数字で沈黙しないための型。' },
+  { id: 's26', ja: '高校で卓球をやっていました。', en: "I played table tennis in high school.", note: '過去の習慣は過去形で十分。' },
+  { id: 's27', ja: 'だからラケットスポーツが好きです。', en: "So I like racket sports.", note: '一般論の複数名詞に a や the は不要。' },
+  { id: 's28', ja: '川のそばに住んでいます。', en: "I live by a river.", note: 'by = すぐそば。on だと川の上、in だと川の中。' },
+  { id: 's29', ja: '海岸沿いに住んでいます。', en: "I live on the coast.", note: '海に接する線の上なので on。' },
+  { id: 's30', ja: '谷にある町です。', en: "It is a town in a valley.", note: '囲まれた空間は in。' },
+  { id: 's31', ja: '郊外に住んでいます。', en: "I live in the suburbs.", note: 'the ＋複数形で使う。' },
+  { id: 's32', ja: 'あなたの家は大きいですか。', en: "Is your house large?", note: 'Is ＋主語＋形容詞? 形容詞は最後。' },
+  { id: 's33', ja: '私の部屋は狭いですが、便利です。', en: "My apartment is small, but it is convenient.", note: '教材で読んだ文をそのまま自分の答えに使う。' },
+  { id: 's34', ja: 'その部屋は寒くてじめじめしています。', en: "The room is cold and damp.", note: 'damp = じめじめした。' },
+
+  // --- 第4回 レッスン（Jazz） ---
+  { id: 's35', ja: 'なぜ英語を勉強しているのですか。', en: "Why are you learning English?", note: 'are があったら必ず -ing。' },
+  { id: 's36', ja: '新しい人に出会うために英語を勉強しています。', en: "I am learning English to meet new people.", note: '目的は to + 動詞。' },
+  { id: 's37', ja: '英語を勉強するのは楽しいですが、大変でもあります。', en: "Learning English is fun, but it is also hard.", note: '習った単語を使い回してよい。' },
+  { id: 's38', ja: '文法を勉強するのは退屈です。', en: "Learning grammar is boring.", note: '「退屈させる」ものは -ing。' },
+  { id: 's39', ja: '発音を練習するのが好きです。', en: "I like practicing pronunciation.", note: 'like の後ろは -ing が自然。' },
+  { id: 's40', ja: 'リスニングは簡単だと思います。', en: "I find listening easy.", note: 'find + もの + 形容詞。' },
+  { id: 's41', ja: '同じ単語を使ってもいいですか。', en: "Can I use the same word?", note: '思いつかない時、黙る代わりにこう聞く。' },
+  { id: 's42', ja: '例を挙げてもらえますか。', en: "Can you give me an example?", note: '講師に助けを求める型。' },
+  { id: 's43', ja: 'もう一度テキストを確認させてください。', en: "Let me check the text again.", note: '黙って探さず、声に出して探す。' },
+  { id: 's44', ja: 'ちょっと考えさせてください。', en: "Let me think.", note: '沈黙を埋める最重要フレーズ。' },
+
+  // --- 日記の添削から ---
+  { id: 's45', ja: '今日、英会話のレッスンを受け始めました。', en: "I started taking English conversation lessons today.", note: 'レッスンは take を使う。' },
+  { id: 's46', ja: 'とても懐かしかったです。', en: "It really brought back memories.", note: 'nostalgic は重すぎる。日常はこの表現。' },
+  { id: 's47', ja: '週に2回レッスンを受けるつもりです。', en: "I am going to take lessons twice a week.", note: '回数は twice a week。' },
+  { id: 's48', ja: '慣れたら、毎日勉強したいです。', en: "Once I get used to it, I want to study every day.", note: '必ずそうする話は if より once。' },
+  { id: 's49', ja: '今年の6月にフィリピンに留学しました。', en: "I studied abroad in the Philippines in June this year.", note: 'in this year とは言わない。this が付いたら前置詞なし。' },
+
+  // --- つなぎ表現・沈黙対策 ---
+  { id: 's50', ja: 'えーと、そうですね。', en: "Well, let me see.", note: '日本語の「えー」ではなくこれを出す。' },
+  { id: 's51', ja: 'つまり、勉強ではなく働くためです。', en: "I mean, not to study, but to work.", note: '言い直しが説明に聞こえる型。' },
+  { id: 's52', ja: 'ごめんなさい、高校ではなく中学です。', en: "Sorry, not high school. Junior high school.", note: '最短の言い直し。' },
+  { id: 's53', ja: '英語の名前は分かりませんが、赤いスープの一種です。', en: "I do not know the English word, but it is a kind of red soup.", note: '単語が出ない時の逃げ道。' },
+  { id: 's54', ja: 'これって英語で何て言いますか。', en: "How do you say this in English?", note: 'レッスン中いちばん使えるフレーズ。' },
+  { id: 's55', ja: 'もう一度言ってもらえますか。', en: "Could you say that again?", note: '聞き取れない時は遠慮なく。' }
+];
+
+const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 const MASTERY_THRESHOLD = 3;
 
-let state = { mode: null, questions: [], idx: 0, score: 0, answered: false, picked: -1, history: [] };
+let state = { mode: null, questions: [], idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
 let stats = { played: 0, best: 0, totalCorrect: 0 };
 let mastery = {}; // {id: streak}
 let wrongCount = {}; // {id: 累計間違い回数}
@@ -1569,7 +1639,7 @@ function applySyncCode(code) {
     const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
     if (!data || (!data.mastery && !data.stats)) throw new Error('invalid');
     let importedMastered = 0, currentMastered = 0;
-    const allIds = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar, ...QUESTIONS.toeic].map(q => q.id);
+    const allIds = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar].map(q => q.id);
     if (data.mastery) {
       allIds.forEach(id => { if ((data.mastery[id]||0) >= MASTERY_THRESHOLD) importedMastered++; });
       allIds.forEach(id => { if ((mastery[id]||0) >= MASTERY_THRESHOLD) currentMastered++; });
@@ -1594,14 +1664,12 @@ function getStreak(id) { return mastery[id] || 0; }
 function isMastered(id) { return getStreak(id) >= MASTERY_THRESHOLD; }
 
 function getAvailable(category) {
-  if (category === 'mix') {
-    return QUESTIONS.toeic.filter(q => !isMastered(q.id));
-  }
+  if (category === 'speak') return SPEAKING;
   return QUESTIONS[category].filter(q => !isMastered(q.id));
 }
 
 function getMasteryStats() {
-  const all = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar, ...QUESTIONS.toeic];
+  const all = [...QUESTIONS.vocab, ...QUESTIONS.phrase, ...QUESTIONS.grammar];
   const mastered = all.filter(q => isMastered(q.id)).length;
   return { mastered, total: all.length, pct: Math.round(mastered / all.length * 100) };
 }
@@ -1627,14 +1695,21 @@ function shuffleChoices(q) {
 }
 
 function startMode(mode) {
+  if (mode === 'speak') {
+    const list = shuffle(SPEAKING).slice(0, Math.min(10, SPEAKING.length));
+    state = { mode, questions: list, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
   const available = getAvailable(mode);
   if (available.length === 0) {
     alert('このカテゴリは全問マスター済みです！🎉\nマスター記録をリセットすると再挑戦できます。');
     return;
   }
-  const limit = mode === 'mix' ? 15 : 10;
+  const limit = 10;
   const qs = shuffle(available).slice(0, Math.min(limit, available.length)).map(shuffleChoices);
-  state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, history: [] };
+  state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1665,11 +1740,17 @@ function pick(i) {
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
 }
 
+function reveal() {
+  state.revealed = true;
+  render();
+}
+
 function next() {
   state.idx++;
   state.answered = false;
   state.picked = -1;
-  if (state.idx >= state.questions.length) {
+  state.revealed = false;
+  if (state.idx >= state.questions.length && state.mode !== 'speak') {
     stats.played++;
     stats.totalCorrect += state.score;
     const pct = Math.round(state.score / state.questions.length * 100);
@@ -1694,7 +1775,8 @@ function render() {
   const r = document.getElementById('root');
   if (state.mode === 'sync') r.innerHTML = renderSync();
   else if (state.mode === null) r.innerHTML = renderHome();
-  else if (state.idx >= state.questions.length) r.innerHTML = renderResult();
+  else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : renderResult();
+  else if (state.mode === 'speak') r.innerHTML = renderSpeak();
   else r.innerHTML = renderQuestion();
   attach();
 }
@@ -1729,8 +1811,7 @@ function renderHome() {
   const remaining = {
     vocab: getAvailable('vocab').length,
     phrase: getAvailable('phrase').length,
-    grammar: getAvailable('grammar').length,
-    mix: getAvailable('mix').length
+    grammar: getAvailable('grammar').length
   };
   
   return `
@@ -1751,10 +1832,10 @@ function renderHome() {
         <div class="mode-name">文法</div>
         <div class="mode-count">${remaining.grammar > 0 ? `残り${remaining.grammar}問 / 全${QUESTIONS.grammar.length}問` : '全問マスター済み'}</div>
       </button>
-      <button class="mode-btn" data-mode="mix" ${remaining.mix === 0 ? 'disabled' : ''}>
-        <div class="mode-icon">🎯</div>
-        <div class="mode-name">TOEIC Part 5</div>
-        <div class="mode-count">${remaining.mix > 0 ? `残り${remaining.mix}問 / 全${QUESTIONS.toeic.length}問` : '全問マスター済み'}</div>
+      <button class="mode-btn" data-mode="speak">
+        <div class="mode-icon">🗣️</div>
+        <div class="mode-name">瞬間英作文</div>
+        <div class="mode-count">全${SPEAKING.length}文 / 1回10文</div>
       </button>
     </div>
     
@@ -1791,7 +1872,7 @@ function renderQuestion() {
   const q = state.questions[state.idx];
   const total = state.questions.length;
   const pct = Math.round((state.idx) / total * 100);
-  const modeName = { vocab: '単語', phrase: 'フレーズ', grammar: '文法', mix: 'TOEIC Part 5' }[state.mode];
+  const modeName = { vocab: '単語', phrase: 'フレーズ', grammar: '文法' }[state.mode];
   const streak = getStreak(q.id);
   const streakTag = streak > 0 ? `<span class="q-mastery-tag">連続正解 ${streak}/${MASTERY_THRESHOLD}</span>` : '';
   
@@ -1843,6 +1924,62 @@ function renderQuestion() {
   `;
 }
 
+function renderSpeak() {
+  const s = state.questions[state.idx];
+  const total = state.questions.length;
+  const pct = Math.round((state.idx) / total * 100);
+
+  let body;
+  if (!state.revealed) {
+    body = `
+      <p class="q-text">${esc(s.ja)}</p>
+      <p class="q-hint">声に出して英語で言ってから、答えを見てください。</p>
+      <button class="btn btn-primary" id="revealBtn">英語を見る</button>
+    `;
+  } else {
+    body = `
+      <p class="q-text" style="opacity:0.6;">${esc(s.ja)}</p>
+      <div class="feedback ok" style="margin-top:14px;">
+        <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${esc(s.en)}</div>
+        ${s.note ? `<div style="font-size:13px;opacity:0.85;">${esc(s.note)}</div>` : ''}
+      </div>
+      <button class="btn btn-primary" id="nextBtn">${state.idx + 1 === total ? '終わる' : '次へ'}</button>
+    `;
+  }
+
+  return `
+    <div class="q-head">
+      <span>瞬間英作文 · ${state.idx + 1} / ${total}</span>
+    </div>
+    <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
+    ${body}
+    <button class="btn" id="homeBtn" style="margin-top: 16px;">ホームに戻る</button>
+  `;
+}
+
+function renderSpeakResult() {
+  const listHTML = state.questions.map(s => `
+    <div class="review-item">
+      <div>${esc(s.ja)}</div>
+      <div class="review-correct">${esc(s.en)}</div>
+    </div>
+  `).join('');
+
+  return `
+    <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">おつかれさま</p>
+    <div class="score-num">${state.questions.length}文</div>
+    <div class="score-msg">すぐ言えなかった文は、声に出して3回くり返そう</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="retryBtn">別の10文</button>
+      <button class="btn" id="homeBtn">ホームに戻る</button>
+    </div>
+    <div class="review">
+      <div class="review-h">今回の10文</div>
+      ${listHTML}
+    </div>
+  `;
+}
+
 function renderResult() {
   const total = state.questions.length;
   const pct = Math.round(state.score / total * 100);
@@ -1886,6 +2023,7 @@ function attach() {
   document.querySelectorAll('[data-pick]').forEach(b => {
     b.onclick = () => pick(parseInt(b.dataset.pick));
   });
+  const rvb = document.getElementById('revealBtn'); if (rvb) rvb.onclick = reveal;
   const nb = document.getElementById('nextBtn'); if (nb) nb.onclick = next;
   const hb = document.getElementById('homeBtn'); if (hb) hb.onclick = goHome;
   const rb = document.getElementById('retryBtn'); if (rb) rb.onclick = () => {
