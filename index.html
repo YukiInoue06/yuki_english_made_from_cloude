@@ -80,6 +80,16 @@
   .review-item:last-child { border-bottom: none; }
   .review-mark { display: inline-block; width: 20px; }
   .review-correct { margin-left: 20px; margin-top: 4px; color: #a8a59c; font-size: 12px; }
+  .judge-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .judge-btn { padding: 16px 10px; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; min-height: 56px; -webkit-appearance: none; border: 1px solid; transition: transform 0.1s, background 0.15s; }
+  .judge-btn:active { transform: scale(0.97); }
+  .judge-ok { background: #1f3a0f; border-color: #639922; color: #C0DD97; }
+  .judge-ok:active { background: #2a4d14; }
+  .judge-ng { background: #3a1313; border-color: #A32D2D; color: #F09595; }
+  .judge-ng:active { background: #4d1a1a; }
+  .speak-tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 8px; margin-left: 6px; vertical-align: middle; background: #2a2a27; color: #a8a59c; }
+  .speak-tag.hot { background: #1f3a0f; color: #C0DD97; }
+  .speak-tag.new { background: #1e3247; color: #9FC7F0; }
   .empty-state { text-align: center; padding: 24px 16px; color: #a8a59c; font-size: 14px; line-height: 1.6; }
   .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
   @media (max-width: 360px) {
@@ -1594,11 +1604,13 @@ const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.gramm
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 const MASTERY_THRESHOLD = 3;
+const SPEAK_THRESHOLD = 3;   // 3回連続で言えたら「定着」扱い
 
 let state = { mode: null, questions: [], idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
 let stats = { played: 0, best: 0, totalCorrect: 0 };
 let mastery = {}; // {id: streak}
 let wrongCount = {}; // {id: 累計間違い回数}
+let speakRec = {};   // {id: {s: 連続で言えた回数, ok: 累計○, ng: 累計×, last: 'YYYY-MM-DD'}}
 
 function loadData() {
   try {
@@ -1613,6 +1625,10 @@ function loadData() {
     const w = localStorage.getItem('eng-quiz-wrong');
     if (w) wrongCount = JSON.parse(w);
   } catch (e) {}
+  try {
+    const sp = localStorage.getItem('eng-quiz-speak');
+    if (sp) speakRec = JSON.parse(sp);
+  } catch (e) {}
 }
 
 function saveStats() {
@@ -1624,18 +1640,50 @@ function saveMastery() {
 function saveWrongCount() {
   try { localStorage.setItem('eng-quiz-wrong', JSON.stringify(wrongCount)); } catch (e) {}
 }
+function saveSpeakRec() {
+  try { localStorage.setItem('eng-quiz-speak', JSON.stringify(speakRec)); } catch (e) {}
+}
+
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function getSpeakStreak(id) { return (speakRec[id] && speakRec[id].s) || 0; }
+function isSpeakSettled(id) { return getSpeakStreak(id) >= SPEAK_THRESHOLD; }
+
+function getSpeakStats() {
+  const settled = SPEAKING.filter(s => isSpeakSettled(s.id)).length;
+  const touched = SPEAKING.filter(s => speakRec[s.id]).length;
+  const today = SPEAKING.filter(s => speakRec[s.id] && speakRec[s.id].last === todayStr()).length;
+  return { settled, touched, today, total: SPEAKING.length, pct: Math.round(settled / SPEAKING.length * 100) };
+}
+
+// 出題の優先順位：言えなかった文 → 未挑戦 → 練習中 → 定着済み
+function pickSpeakSet(n) {
+  const rank = s => {
+    const r = speakRec[s.id];
+    if (!r) return 1;
+    if (r.s === 0) return 0;
+    if (r.s >= SPEAK_THRESHOLD) return 3;
+    return 2;
+  };
+  return shuffle(SPEAKING).sort((a, b) => rank(a) - rank(b)).slice(0, n);
+}
 
 function resetMastery() {
-  if (confirm('マスター記録（連続正解の進捗）をリセットしますか？\nスコア記録は残ります。')) {
+  if (confirm('マスター記録（クイズの連続正解・瞬間英作文の定着）をリセットしますか？\nスコア記録は残ります。')) {
     mastery = {};
+    speakRec = {};
     saveMastery();
+    saveSpeakRec();
     render();
   }
 }
 
 // 記録をコード化（デバイス間共有用）
 function makeSyncCode() {
-  const data = { v: 2, mastery, stats, wrongCount };
+  const data = { v: 3, mastery, stats, wrongCount, speakRec };
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 }
 
@@ -1654,6 +1702,7 @@ function applySyncCode(code) {
     if (data.mastery) { mastery = data.mastery; saveMastery(); }
     if (data.stats) { stats = data.stats; saveStats(); }
     if (data.wrongCount) { wrongCount = data.wrongCount; saveWrongCount(); }
+    if (data.speakRec) { speakRec = data.speakRec; saveSpeakRec(); }
     // v1の古いコード（wrongCountなし）の場合は、今の端末のwrongCountをそのまま維持
     state.mode = null;
     render();
@@ -1701,10 +1750,7 @@ function shuffleChoices(q) {
 
 function startMode(mode) {
   if (mode === 'speak') {
-    const list = shuffle(SPEAKING).slice(0, Math.min(10, SPEAKING.length));
-    state = { mode, questions: list, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    startSpeak(pickSpeakSet(Math.min(10, SPEAKING.length)));
     return;
   }
   const available = getAvailable(mode);
@@ -1748,6 +1794,32 @@ function pick(i) {
 function reveal() {
   state.revealed = true;
   render();
+}
+
+function startSpeak(list) {
+  state = { mode: 'speak', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 自己採点：言えた / 言えなかった
+function markSpeak(ok) {
+  if (!state.revealed) return;
+  const s = state.questions[state.idx];
+  const r = speakRec[s.id] || { s: 0, ok: 0, ng: 0 };
+  const prev = r.s;
+  r.s = ok ? prev + 1 : 0;
+  if (ok) r.ok++; else r.ng++;
+  r.last = todayStr();
+  speakRec[s.id] = r;
+  saveSpeakRec();
+  if (ok) state.score++;
+  state.history.push({
+    id: s.id, ja: s.ja, en: s.en, note: s.note, ok,
+    prevStreak: prev, newStreak: r.s, justSettled: ok && r.s === SPEAK_THRESHOLD
+  });
+  if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
+  next();
 }
 
 function next() {
@@ -1813,6 +1885,7 @@ function renderSync() {
 
 function renderHome() {
   const m = getMasteryStats();
+  const sp = getSpeakStats();
   const remaining = {
     vocab: getAvailable('vocab').length,
     phrase: getAvailable('phrase').length,
@@ -1840,7 +1913,8 @@ function renderHome() {
       <button class="mode-btn" data-mode="speak">
         <div class="mode-icon">🗣️</div>
         <div class="mode-name">瞬間英作文</div>
-        <div class="mode-count">全${SPEAKING.length}文 / 1回10文</div>
+        <div class="mode-count">定着 ${sp.settled} / ${sp.total}文</div>
+        <div class="mode-mastered">${sp.today > 0 ? `今日 ${sp.today}文` : '1回10文'}</div>
       </button>
     </div>
     
@@ -1934,10 +2008,18 @@ function renderSpeak() {
   const total = state.questions.length;
   const pct = Math.round((state.idx) / total * 100);
 
+  const rec = speakRec[s.id];
+  const streak = getSpeakStreak(s.id);
+  let tag = '<span class="speak-tag new">はじめて</span>';
+  if (rec) {
+    if (isSpeakSettled(s.id)) tag = '<span class="speak-tag hot">定着ずみ</span>';
+    else tag = `<span class="speak-tag">連続 ${streak}/${SPEAK_THRESHOLD}</span>`;
+  }
+
   let body;
   if (!state.revealed) {
     body = `
-      <p class="q-text">${esc(s.ja)}</p>
+      <p class="q-text">${esc(s.ja)}${tag}</p>
       <p class="q-hint">声に出して英語で言ってから、答えを見てください。</p>
       <button class="btn btn-primary" id="revealBtn">英語を見る</button>
     `;
@@ -1948,13 +2030,18 @@ function renderSpeak() {
         <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${esc(s.en)}</div>
         ${s.note ? `<div style="font-size:13px;opacity:0.85;">${esc(s.note)}</div>` : ''}
       </div>
-      <button class="btn btn-primary" id="nextBtn">${state.idx + 1 === total ? '終わる' : '次へ'}</button>
+      <p class="q-hint" style="margin:14px 0 0;">言えましたか？</p>
+      <div class="judge-row">
+        <button class="judge-btn judge-ok" data-judge="1">◯ 言えた</button>
+        <button class="judge-btn judge-ng" data-judge="0">✗ 言えなかった</button>
+      </div>
     `;
   }
 
   return `
     <div class="q-head">
       <span>瞬間英作文 · ${state.idx + 1} / ${total}</span>
+      <span class="streak">◯ ${state.score}</span>
     </div>
     <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
     ${body}
@@ -1963,25 +2050,55 @@ function renderSpeak() {
 }
 
 function renderSpeakResult() {
-  const listHTML = state.questions.map(s => `
-    <div class="review-item">
-      <div>${esc(s.ja)}</div>
-      <div class="review-correct">${esc(s.en)}</div>
-    </div>
-  `).join('');
+  const total = state.history.length;
+  const pct = total ? Math.round(state.score / total * 100) : 0;
+  const missed = state.history.filter(h => !h.ok);
+  const newSettled = state.history.filter(h => h.justSettled).length;
+  const st = getSpeakStats();
+
+  let msg;
+  if (pct === 100) msg = '全部言えた！すばらしい🎉';
+  else if (pct >= 70) msg = 'いい調子！言えなかった文をもう一度';
+  else msg = '言えなかった文を、声に出して3回くり返そう';
+
+  const missedHTML = missed.length ? `
+    <div class="review">
+      <div class="review-h">言えなかった ${missed.length}文</div>
+      ${missed.map(h => `
+        <div class="review-item">
+          <div><span class="review-mark">✗</span>${esc(h.ja)}</div>
+          <div class="review-correct">${esc(h.en)}</div>
+          ${h.note ? `<div class="review-correct" style="opacity:0.7;">${esc(h.note)}</div>` : ''}
+        </div>
+      `).join('')}
+    </div>` : '';
+
+  const okList = state.history.filter(h => h.ok);
+  const okHTML = okList.length ? `
+    <div class="review">
+      <div class="review-h">言えた ${okList.length}文</div>
+      ${okList.map(h => `
+        <div class="review-item">
+          <div><span class="review-mark">◯</span>${esc(h.ja)}${h.justSettled ? ' <span class="speak-tag hot">定着！</span>' : ''}</div>
+          <div class="review-correct">${esc(h.en)}</div>
+        </div>
+      `).join('')}
+    </div>` : '';
+
+  const settledMsg = newSettled > 0 ? `<div class="score-msg" style="color:#C0DD97;font-weight:600;">🏆 新たに ${newSettled}文が定着しました！</div>` : '';
 
   return `
     <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">おつかれさま</p>
-    <div class="score-num">${state.questions.length}文</div>
-    <div class="score-msg">すぐ言えなかった文は、声に出して3回くり返そう</div>
+    <div class="score-num">${state.score} / ${total}</div>
+    <div class="score-msg">${msg}<br>定着 ${st.settled} / ${st.total}文（${st.pct}%）</div>
+    ${settledMsg}
+    ${missed.length ? `<button class="btn btn-primary" id="retryWrongBtn">言えなかった${missed.length}文をもう一度</button>` : ''}
     <div class="btn-row">
-      <button class="btn btn-primary" id="retryBtn">別の10文</button>
+      <button class="btn ${missed.length ? '' : 'btn-primary'}" id="retryBtn">別の10文</button>
       <button class="btn" id="homeBtn">ホームに戻る</button>
     </div>
-    <div class="review">
-      <div class="review-h">今回の10文</div>
-      ${listHTML}
-    </div>
+    ${missedHTML}
+    ${okHTML}
   `;
 }
 
@@ -2029,6 +2146,11 @@ function attach() {
     b.onclick = () => pick(parseInt(b.dataset.pick));
   });
   const rvb = document.getElementById('revealBtn'); if (rvb) rvb.onclick = reveal;
+  document.querySelectorAll('[data-judge]').forEach(b => {
+    b.onclick = () => markSpeak(b.dataset.judge === '1');
+  });
+  const rwb = document.getElementById('retryWrongBtn');
+  if (rwb) rwb.onclick = () => startSpeak(state.history.filter(h => !h.ok).map(h => ({ id: h.id, ja: h.ja, en: h.en, note: h.note })));
   const nb = document.getElementById('nextBtn'); if (nb) nb.onclick = next;
   const hb = document.getElementById('homeBtn'); if (hb) hb.onclick = goHome;
   const rb = document.getElementById('retryBtn'); if (rb) rb.onclick = () => {
