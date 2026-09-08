@@ -501,7 +501,11 @@ const QUESTIONS = {
     { id: 'v195', q: 'I worked at my ------- company for five years.（前の会社で5年働いた）', choices: ['before', 'previous', 'ago', 'front'], correct: 1,
       explain: "previous = 今より1つ前の。'my previous company'（前の会社）、'my previous job'（前職）。last も同じように使えて 'my last job' でもOK。before と ago は名詞の前に置いて「前の〜」という意味にはならない。" },
     { id: 'v196', q: '「彼女には3年前に会った」の正しい文は？', choices: ['I met her three years before.', 'I met her three years ago.', 'I met her before three years.', 'I met her last three years.'], correct: 1,
-      explain: "「今から〜前」は「期間 + ago」の語順。'I met her three years ago.'。before を使うと「（過去のある時点）よりさらに前」という意味になり、'before three years' という語順にもならない。ago は必ず期間の後ろに置く。" }
+      explain: "「今から〜前」は「期間 + ago」の語順。'I met her three years ago.'。before を使うと「（過去のある時点）よりさらに前」という意味になり、'before three years' という語順にもならない。ago は必ず期間の後ろに置く。" },
+    { id: 'v197', q: '「suppress」の意味は？', choices: ['驚かせる', '（感情・情報を）抑える、抑え込む', '応援する', '準備する'], correct: 1,
+      explain: "suppress = 抑える、抑え込む（感情・反乱・情報など）。'He suppressed his anger.'（彼は怒りを抑えた）。surprise（驚かせる）と発音・スペルが似ているが全く別の単語なので、書くときに取り違えないよう注意。" },
+    { id: 'v198', q: '「（人が約束の場に）現れる」を自然に言うと？', choices: ['come out', 'show up', 'appear on', 'stand up'], correct: 1,
+      explain: "show up = （約束の場所に）現れる、顔を出す。'The teacher didn't show up.'（先生が現れなかった）。come だけでも通じるが、「来るはずの人が来た／来なかった」には show up がぴったり。come out は「発売される」（v178）。" }
   ],
   phrase: [
     { id: 'p01', q: 'ホストファミリーに「受け入れてくれてありがとう」と言うには？', choices: ['Thank you for inviting me', 'Thank you for having me', 'Thank you for taking me', 'Thank you for keeping me'], correct: 1,
@@ -941,7 +945,13 @@ const QUESTIONS = {
     { id: 'p218', q: 'Everything ------- well at the party last night.（昨夜のパーティーはすべて順調だった）', choices: ['did', 'went', 'made', 'had'], correct: 1,
       explain: "everything は物事なので go well。過去形は went。'Everything went well.'（すべて順調だった）。反対は go wrong。'Something went wrong.'（何かがうまくいかなかった）もセットで覚えると便利。" },
     { id: 'p219', q: 'He ------- well on the math test.（彼は数学のテストでよくできた）', choices: ['went', 'did', 'was', 'took'], correct: 1,
-      explain: "人が主語のときは do well。'He did well on the math test.'（彼は数学のテストでよくできた）。テストそのものが主語なら 'The test went well.'（テストはうまくいった）。主語が人か物かで do / go を選び分ける。" }
+      explain: "人が主語のときは do well。'He did well on the math test.'（彼は数学のテストでよくできた）。テストそのものが主語なら 'The test went well.'（テストはうまくいった）。主語が人か物かで do / go を選び分ける。" },
+    { id: 'p220', q: '「帰り始めたとき」を自然に言うと？', choices: ['when I started going home', 'when I left for home', 'when I began to home', 'when I go home start'], correct: 1,
+      explain: "leave for ~ = 〜に向けて出発する。'It stopped raining when I left for home.'（帰るときには雨が止んでいた）。head home（家に向かう）も自然。started going home も通じるが、出発の瞬間は left for home / headed home のほうがすっきりする。" },
+    { id: 'p221', q: '「レッスンがいつも通り進むといいな」を自然に言うと？', choices: ['I hope I can learn English normally', 'I hope the lesson goes as usual', 'I hope the lesson is normal', 'I hope to learn English usually'], correct: 1,
+      explain: "go as usual = いつも通りに進む。'I hope the lesson goes as usual.'（レッスンがいつも通り進むといいな）。normally を使うと「普通のやり方で学ぶ」という別の意味に聞こえる。物事の進行は go で表す。" },
+    { id: 'p222', q: '「英会話を練習できなかった」を自然に言うと？', choices: ["I couldn't learn English conversation", "I couldn't practice English conversation", "I didn't able to learn conversation", "I wasn't practice English"], correct: 1,
+      explain: "レッスンで会話を「練習する」は practice。'I couldn't practice English conversation.'（英会話を練習できなかった）。learn は「知識を身につける」というニュアンスなので、実際に口を動かす練習には practice が合う。" }
   ],
   grammar: [
     { id: 'g01', q: '正しいのはどれ？', choices: ['the todays lesson', "the today's lesson", "today's lesson", 'today lesson'], correct: 2,
@@ -1313,7 +1323,15 @@ const QUESTIONS = {
     { id: 'g184', q: 'This shop sells ------- vegetables.（この店は新鮮な野菜を売っている）', choices: ['a fresh', 'fresh', 'a freshes', 'a the fresh'], correct: 1,
       explain: "vegetables は複数形なので a は付けられない。「〜というもの全般」を言うときは冠詞なしの複数形にする。'This shop sells fresh vegetables.'。1つだけなら 'a fresh vegetable' と単数にする。" },
     { id: 'g185', q: '次のうち、文法的に間違っているのはどれ？', choices: ['He has a big dog.', 'He has big dogs.', 'He has a big dogs.', 'He has two big dogs.'], correct: 2,
-      explain: "'a big dogs' は a（単数）と dogs（複数）が矛盾している。正しくは 'a big dog'（1匹）か 'big dogs'（複数）。数をはっきり言いたいときは 'two big dogs' のように数詞を使う。a + 形容詞 + 複数名詞 の形は作れない。" }
+      explain: "'a big dogs' は a（単数）と dogs（複数）が矛盾している。正しくは 'a big dog'（1匹）か 'big dogs'（複数）。数をはっきり言いたいときは 'two big dogs' のように数詞を使う。a + 形容詞 + 複数名詞 の形は作れない。" },
+    { id: 'g186', q: '「前回と同じだった」を正しく言うと？', choices: ['It was as same as the previous one.', 'It was the same as the previous one.', 'It was same as the previous one.', 'It was as same the previous one.'], correct: 1,
+      explain: "same には必ず the が付き、'as same as' という形は存在しない。正しくは the same as ~（〜と同じ）。'It was the same as my previous score.'（前回のスコアと同じだった）。同じくらいの程度を言うなら as good as のように別の形容詞を使う。" },
+    { id: 'g187', q: '「そのレッスンは驚きだった」を正しく言うと？', choices: ['The lesson was surprised.', 'The lesson was surprising.', 'The lesson was surprise.', 'The lesson was surprisingly.'], correct: 1,
+      explain: "-ing は「（周りを）〜させる側」、-ed は「（自分が）〜させられた側」。レッスンは驚かせる側なので surprising。'The lesson was surprising.'／'I was surprised.'（私は驚いた）。exciting / excited（g171）と同じルールで、ゆうきさんの反復ポイント。" },
+    { id: 'g188', q: '「その時間に来なかった」の前置詞は？', choices: ['on that time', 'at that time', 'in that time', 'to that time'], correct: 1,
+      explain: "時刻・時点には at を使う。'The teacher didn't show up at that time.'（先生はその時間に来なかった）。at that time は「その当時」の意味でもよく使う。on は曜日・日付、in は月・年に使う。" },
+    { id: 'g189', q: '「もうTOEICは受けない」と言うとき、never より自然なのは？', choices: ["I'll never take the TOEIC", "I won't take the TOEIC again", "I don't take the TOEIC", "I'll not take TOEIC never"], correct: 1,
+      explain: "never は「一生〜しない」という強い意味なので、日常の決意にはやや大げさ。'I won't take the TOEIC again.'（もう受けない）が自然。試験名には the を付ける（the TOEIC / the TOEFL）。won't = will not。" }
   ],
   toeic: [
     { id: 't01', q: 'The manager asked all employees to submit their reports ------- Friday.', choices: ['by', 'until', 'on at', 'to'], correct: 0,
@@ -1597,7 +1615,12 @@ const SPEAKING = [
   { id: 's56', ja: '今日は金曜日なので、2日間休みです。', en: "Today is Friday, so I have two days off.", note: 'day off は名詞。「休みがある」は have + 数 + days off。' },
   { id: 's57', ja: '久しぶりにまぜそばを食べました。', en: "I ate mazesoba for the first time in a long while.", note: '料理名は不可算。a は付けません。' },
   { id: 's58', ja: 'とてもおいしくて、また食べたいです。', en: "It was so delicious, and I want to eat it again.", note: 'eat の後に it / them を忘れずに。' },
-  { id: 's59', ja: '今からマクドナルドに行って、食べ物と飲み物を買います。', en: "I am going to McDonald's now to buy some food and a drink.", note: "McDonald's に a は不要。food は不可算で foods にしない。" }
+  { id: 's59', ja: '今からマクドナルドに行って、食べ物と飲み物を買います。', en: "I am going to McDonald's now to buy some food and a drink.", note: "McDonald's に a は不要。food は不可算で foods にしない。" },
+  { id: 's60', ja: '今日もひどい雨でしたが、帰るときには止みました。', en: "It rained heavily again today, but it stopped when I left for home.", note: 'rainy（形容詞）ではなく rained（動詞）。「帰るとき」は left for home。' },
+  { id: 's61', ja: '今日の英語レッスンには驚きました。', en: "Today's English lesson was surprising!!", note: '出来事が驚かせる側なので -ing の surprising。suppress（抑える）と混同しない。' },
+  { id: 's62', ja: '先生がその時間に来なかったので、英会話を練習できませんでした。', en: "The teacher didn't show up at that time, so I couldn't practice English conversation.", note: '「現れる」は show up、時刻には at。練習は learn ではなく practice。' },
+  { id: 's63', ja: '次のレッスンは木曜日で、いつも通り進むといいなと思います。', en: "The next lesson is on Thursday, and I hope it goes as usual.", note: '曜日には on。「いつも通り進む」は go as usual。' },
+  { id: 's64', ja: 'スコアは前回と同じだったので、もうTOEICは受けません。', en: "It was the same as my previous score, so I won't take the TOEIC again.", note: "as same as ではなく the same as。never より won't ~ again が自然。" }
 ];
 
 const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length;
