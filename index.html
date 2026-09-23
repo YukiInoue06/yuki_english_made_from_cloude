@@ -80,6 +80,25 @@
   .review-item:last-child { border-bottom: none; }
   .review-mark { display: inline-block; width: 20px; }
   .review-correct { margin-left: 20px; margin-top: 4px; color: #a8a59c; font-size: 12px; }
+  .pb-sec { margin-bottom: 8px; }
+  .pb-h { width: 100%; display: flex; align-items: center; gap: 8px; background: #232321; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 14px; font-family: inherit; color: #f0eee7; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; -webkit-appearance: none; transition: background 0.15s; }
+  .pb-h:active { background: #2d2d2a; }
+  .pb-h.open { background: #2a2f22; border-color: rgba(99,153,34,0.5); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .pb-h-name { flex: 1; }
+  .pb-h-num { font-size: 11px; color: #a8a59c; font-weight: 400; }
+  .pb-arrow { font-size: 11px; color: #a8a59c; transition: transform 0.2s; }
+  .pb-h.open .pb-arrow { transform: rotate(90deg); }
+  .pb-body { border: 1px solid rgba(99,153,34,0.5); border-top: none; border-radius: 0 0 12px 12px; padding: 10px 10px 4px; background: #1c1c1a; }
+  .pb-item { background: #232321; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 11px 13px; margin-bottom: 7px; }
+  .pb-item.pick { border-color: #639922; background: #1f2a18; }
+  .pb-en { font-size: 15.5px; font-weight: 600; line-height: 1.45; }
+  .pb-ja { font-size: 12.5px; color: #a8a59c; margin-top: 3px; line-height: 1.5; }
+  .pb-star { color: #C0DD97; font-size: 11px; margin-left: 5px; }
+  .pb-note { font-size: 13.5px; color: #a8a59c; line-height: 1.6; margin: 0 0 12px; }
+  .pb-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .pb-tool { padding: 10px 8px; border-radius: 10px; font-size: 13px; font-family: inherit; font-weight: 600; cursor: pointer; -webkit-appearance: none; background: #232321; border: 1px solid rgba(255,255,255,0.08); color: #a8a59c; }
+  .pb-tool.on { background: #1f2a18; border-color: #639922; color: #C0DD97; }
+  .pb-empty { font-size: 13px; color: #a8a59c; padding: 4px 3px 10px; }
   .judge-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
   .judge-btn { padding: 16px 10px; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: inherit; cursor: pointer; min-height: 56px; -webkit-appearance: none; border: 1px solid; transition: transform 0.1s, background 0.15s; }
   .judge-btn:active { transform: scale(0.97); }
@@ -1643,6 +1662,68 @@ const SPEAKING = [
   { id: 's82', ja: '電車は便利で、いつも時間通りです。', en: "The train is convenient and always on time.", note: 'on time = 時間通り。convenient とセットで。' }
 ];
 
+
+// ===== レッスン定型文（毎回聞かれることへの答えを固定しておく） =====
+const PHRASEBOOK = [
+  { scene: '👋 あいさつ・冒頭', items: [
+    { en: "Good morning. It is nice to meet you.", ja: 'おはようございます。はじめまして。' },
+    { en: "Yes, I can hear you clearly.", ja: 'はい、はっきり聞こえます。', pick: true },
+    { en: "Pretty good, thanks. How about you?", ja: 'まあまあです、ありがとう。そちらは？', pick: true },
+    { en: "So far so good.", ja: '今のところ順調です。' },
+    { en: "It is cloudy in Tokyo today.", ja: '今日の東京は曇りです。' }
+  ]},
+  { scene: '🙋 自己紹介', items: [
+    { en: "Could you go first, please?", ja: '先にお願いできますか。', pick: true },
+    { en: "I am Yuki. I live in Tokyo, Japan.", ja: 'ユウキです。日本の東京に住んでいます。' },
+    { en: "I am 34 years old and I work as a game programmer.", ja: '34歳で、ゲームプログラマーとして働いています。' },
+    { en: "My hobbies are playing games, badminton, and traveling.", ja: '趣味はゲームとバドミントンと旅行です。' },
+    { en: "I studied English at a language school in Cebu for a month.", ja: 'セブの語学学校で1か月英語を勉強しました。', pick: true },
+    { en: "That is all about me. Thank you.", ja: '以上です。ありがとうございます。' }
+  ]},
+  { scene: '📚 教材と進め方', items: [
+    { en: "I would like to do Daily News today.", ja: '今日はDaily Newsをやりたいです。' },
+    { en: "Could you choose the topic for me?", ja: 'トピックを選んでもらえますか。' },
+    { en: "I would like to repeat after you, please.", ja: '先生の後に続いて読みたいです。', pick: true },
+    { en: "I will read by myself. Please correct my pronunciation.", ja: '自分で読みます。発音を直してください。' },
+    { en: "Could we start from Exercise 1?", ja: 'エクササイズ1から始められますか。' },
+    { en: "Could you correct my mistakes during the lesson?", ja: 'レッスン中、間違いを直してもらえますか。', pick: true }
+  ]},
+  { scene: '🆘 困ったとき', items: [
+    { en: "Sorry, could you say that again?", ja: 'すみません、もう一度言ってもらえますか。', pick: true },
+    { en: "Could you speak more slowly, please?", ja: 'もう少しゆっくり話してもらえますか。' },
+    { en: "Sorry, I do not understand the question.", ja: 'すみません、質問が分かりません。', pick: true },
+    { en: "Do you mean the Lego set?", ja: 'レゴのセットのことですか？（Do you mean 〜? で確認）' },
+    { en: "How do you say this in English?", ja: 'これは英語で何と言いますか。' },
+    { en: "Can I use the same word?", ja: '同じ単語を使ってもいいですか。' },
+    { en: "Can you give me an example?", ja: '例を挙げてもらえますか。' },
+    { en: "Let me check the text again.", ja: 'もう一度テキストを確認させてください。' }
+  ]},
+  { scene: '⏳ 考えているとき', items: [
+    { en: "Well, let me see.", ja: 'えーと、そうですね。', pick: true },
+    { en: "Let me think.", ja: 'ちょっと考えさせてください。' },
+    { en: "That is a good question.", ja: 'いい質問ですね。（時間かせぎに使える）' },
+    { en: "How can I say this?", ja: '何と言えばいいかな。' },
+    { en: "I mean, not to study, but to work.", ja: 'つまり、勉強ではなく働くためです。（I mean で言い直す）' },
+    { en: "Sorry, not positive. Negative.", ja: 'ごめんなさい、ポジティブではなくネガティブです。' },
+    { en: "Actually, I started in junior high school.", ja: '実は、始めたのは中学です。（Actually で訂正）' }
+  ]},
+  { scene: '💭 意見を言う', items: [
+    { en: "I think it is nostalgic because many people played it in Japan.", ja: '日本では多くの人が遊んだので、懐かしいと思います。', pick: true },
+    { en: "Unlike a real console, you cannot play games on it.", ja: '本物のゲーム機と違って、これでは遊べません。', pick: true },
+    { en: "It is more like a display piece.", ja: 'どちらかというと飾り物です。' },
+    { en: "In my job, we have the same problem.", ja: '私の仕事でも同じ問題があります。（得意分野に寄せる）' },
+    { en: "For example, some drivers look at their smartphones.", ja: 'たとえば、運転中にスマホを見る人がいます。' },
+    { en: "Like I said, you cannot play games on it.", ja: 'さっき言ったように、これでは遊べません。' },
+    { en: "I do not know the English word, but it is a kind of red soup.", ja: '英語の名前は分かりませんが、赤いスープの一種です。' }
+  ]},
+  { scene: '🙏 レッスン終了', items: [
+    { en: "No questions, thank you.", ja: '質問はありません、ありがとうございます。' },
+    { en: "Thank you for the lesson. I enjoyed it.", ja: 'レッスンありがとうございました。楽しかったです。', pick: true },
+    { en: "See you next time. Have a good day.", ja: 'また次回。良い一日を。' }
+  ]}
+];
+const PB_COUNT = PHRASEBOOK.reduce((n, s) => n + s.items.length, 0);
+
 const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
@@ -1792,6 +1873,12 @@ function shuffleChoices(q) {
 }
 
 function startMode(mode) {
+  if (mode === 'book') {
+    state = { mode: 'book', questions: [], idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [], openSecs: [], pickOnly: false };
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
   if (mode === 'speak') {
     startSpeak(pickSpeakSet(Math.min(10, SPEAKING.length)));
     return;
@@ -1895,6 +1982,7 @@ function render() {
   const r = document.getElementById('root');
   if (state.mode === 'sync') r.innerHTML = renderSync();
   else if (state.mode === null) r.innerHTML = renderHome();
+  else if (state.mode === 'book') r.innerHTML = renderPhrasebook();
   else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : renderResult();
   else if (state.mode === 'speak') r.innerHTML = renderSpeak();
   else r.innerHTML = renderQuestion();
@@ -1958,6 +2046,11 @@ function renderHome() {
         <div class="mode-name">瞬間英作文</div>
         <div class="mode-count">定着 ${sp.settled} / ${sp.total}文</div>
         <div class="mode-mastered">${sp.today > 0 ? `今日 ${sp.today}文` : '1回10文'}</div>
+      </button>
+      <button class="mode-btn" data-mode="book" style="grid-column: 1 / -1;">
+        <div class="mode-icon">📋</div>
+        <div class="mode-name">レッスン定型文</div>
+        <div class="mode-count">レッスン前に開くカンペ · 全${PB_COUNT}文</div>
       </button>
     </div>
     
@@ -2043,6 +2136,63 @@ function renderQuestion() {
     <div class="choices">${choicesHTML}</div>
     ${fbHTML}
     <button class="btn" id="homeBtn" style="margin-top: 16px;">ホームに戻る</button>
+  `;
+}
+
+function togglePbSec(i) {
+  const at = state.openSecs.indexOf(i);
+  if (at >= 0) state.openSecs.splice(at, 1);
+  else state.openSecs.push(i);
+  render();
+}
+
+function togglePbAll() {
+  state.openSecs = state.openSecs.length === PHRASEBOOK.length ? [] : PHRASEBOOK.map((_, i) => i);
+  render();
+}
+
+function togglePbPick() {
+  state.pickOnly = !state.pickOnly;
+  render();
+}
+
+function renderPhrasebook() {
+  const allOpen = state.openSecs.length === PHRASEBOOK.length;
+
+  const secHTML = PHRASEBOOK.map((sec, i) => {
+    const items = state.pickOnly ? sec.items.filter(it => it.pick) : sec.items;
+    const open = state.openSecs.includes(i);
+    const body = open ? `
+      <div class="pb-body">
+        ${items.length ? items.map(it => `
+          <div class="pb-item${it.pick ? ' pick' : ''}">
+            <div class="pb-en">${esc(it.en)}${it.pick ? '<span class="pb-star">★これを使う</span>' : ''}</div>
+            <div class="pb-ja">${esc(it.ja)}</div>
+          </div>
+        `).join('') : '<div class="pb-empty">この場面に★の文はありません。</div>'}
+      </div>` : '';
+    return `
+      <div class="pb-sec">
+        <button class="pb-h${open ? ' open' : ''}" data-sec="${i}">
+          <span class="pb-arrow">▶</span>
+          <span class="pb-h-name">${esc(sec.scene)}</span>
+          <span class="pb-h-num">${items.length}文</span>
+        </button>
+        ${body}
+      </div>`;
+  }).join('');
+
+  const shown = state.pickOnly ? PHRASEBOOK.reduce((n, s) => n + s.items.filter(it => it.pick).length, 0) : PB_COUNT;
+
+  return `
+    <div class="q-head"><span>📋 レッスン定型文 · ${shown}文</span></div>
+    <p class="pb-note">場面をタップすると開きます。★の文だけ覚えれば、レッスンの最初の5分は乗り切れます。</p>
+    <div class="pb-tools">
+      <button class="pb-tool${allOpen ? ' on' : ''}" id="pbAllBtn">${allOpen ? '📕 すべて閉じる' : '📖 すべて開く'}</button>
+      <button class="pb-tool${state.pickOnly ? ' on' : ''}" id="pbPickBtn">★ ${state.pickOnly ? '全部を表示' : 'おすすめだけ'}</button>
+    </div>
+    ${secHTML}
+    <button class="btn" id="homeBtn" style="margin-top: 14px;">ホームに戻る</button>
   `;
 }
 
@@ -2188,6 +2338,11 @@ function attach() {
   document.querySelectorAll('[data-pick]').forEach(b => {
     b.onclick = () => pick(parseInt(b.dataset.pick));
   });
+  document.querySelectorAll('[data-sec]').forEach(b => {
+    b.onclick = () => togglePbSec(parseInt(b.dataset.sec));
+  });
+  const pbA = document.getElementById('pbAllBtn'); if (pbA) pbA.onclick = togglePbAll;
+  const pbP = document.getElementById('pbPickBtn'); if (pbP) pbP.onclick = togglePbPick;
   const rvb = document.getElementById('revealBtn'); if (rvb) rvb.onclick = reveal;
   document.querySelectorAll('[data-judge]').forEach(b => {
     b.onclick = () => markSpeak(b.dataset.judge === '1');
