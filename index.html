@@ -89,11 +89,15 @@
   .pb-arrow { font-size: 11px; color: #a8a59c; transition: transform 0.2s; }
   .pb-h.open .pb-arrow { transform: rotate(90deg); }
   .pb-body { border: 1px solid rgba(99,153,34,0.5); border-top: none; border-radius: 0 0 12px 12px; padding: 10px 10px 4px; background: #1c1c1a; }
-  .pb-item { background: #232321; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 11px 13px; margin-bottom: 7px; }
+  .pb-item { display: flex; align-items: flex-start; gap: 4px; background: #232321; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 10px 12px; margin-bottom: 7px; }
   .pb-item.pick { border-color: #639922; background: #1f2a18; }
+  .pb-starbtn { flex: 0 0 auto; background: none; border: none; font-family: inherit; font-size: 19px; line-height: 1; color: #55544e; padding: 8px 9px 8px 4px; margin: -4px 0 -4px -4px; cursor: pointer; -webkit-appearance: none; -webkit-tap-highlight-color: transparent; transition: transform 0.1s, color 0.15s; }
+  .pb-starbtn:active { transform: scale(1.25); }
+  .pb-starbtn.on { color: #C0DD97; }
+  .pb-text { flex: 1; min-width: 0; }
   .pb-en { font-size: 15.5px; font-weight: 600; line-height: 1.45; }
   .pb-ja { font-size: 12.5px; color: #a8a59c; margin-top: 3px; line-height: 1.5; }
-  .pb-star { color: #C0DD97; font-size: 11px; margin-left: 5px; }
+  .pb-reset { display: block; width: 100%; background: none; border: none; color: #a8a59c; font-family: inherit; font-size: 12px; text-decoration: underline; padding: 6px; margin-bottom: 10px; cursor: pointer; -webkit-appearance: none; }
   .pb-note { font-size: 13.5px; color: #a8a59c; line-height: 1.6; margin: 0 0 12px; }
   .pb-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
   .pb-tool { padding: 10px 8px; border-radius: 10px; font-size: 13px; font-family: inherit; font-weight: 600; cursor: pointer; -webkit-appearance: none; background: #232321; border: 1px solid rgba(255,255,255,0.08); color: #a8a59c; }
@@ -1659,7 +1663,29 @@ const SPEAKING = [
   { id: 's79', ja: 'ごめんなさい、ポジティブではなくネガティブです。', en: "Sorry, not positive. Negative.", note: '言い間違いに気づいた時の最短の直し方。' },
   { id: 's80', ja: '週末はたいていゲームかバドミントンをします。', en: "I usually play games or badminton on weekends.", note: 'よく聞かれる話題。文で用意しておく。' },
   { id: 's81', ja: 'いつかアメリカで働いて暮らしたいです。', en: "I want to live and work in America someday.", note: '英語を学ぶ理由。someday を付けると自然。' },
-  { id: 's82', ja: '電車は便利で、いつも時間通りです。', en: "The train is convenient and always on time.", note: 'on time = 時間通り。convenient とセットで。' }
+  { id: 's82', ja: '電車は便利で、いつも時間通りです。', en: "The train is convenient and always on time.", note: 'on time = 時間通り。convenient とセットで。' },
+
+  // --- 第7回 レッスン（Cath / レゴのディスカッション） ---
+  { id: 's83', ja: '本物のゲーム機と違って、これでは遊べません。', en: "Unlike a real console, you can't play games on it.", note: 'Unlike A, B = Aと違ってBは。違いを説明する時の型。' },
+  { id: 's84', ja: 'どちらかというと飾り物です。', en: "It's more like a display piece.", note: 'It is more like ~ = どちらかというと～です。言い換えの型。' },
+  { id: 's85', ja: 'すみません、質問が分かりません。', en: "Sorry, I don't understand the question.", note: '黙るくらいなら必ずこれを言う。先生が言い換えてくれます。' },
+  { id: 's86', ja: 'レゴのセットのことですか？', en: "Do you mean the Lego set?", note: 'Do you mean ~? で質問の意図を確認できます。' },
+  { id: 's87', ja: 'さっき言ったように、これでは遊べません。', en: "Like I said, you can't play games on it.", note: '同じことを聞き直された時は、前の答えを繰り返してよい。' },
+  { id: 's88', ja: 'そのレゴのセットはとてもわくわくします。', en: "The Lego set is very exciting.", note: 'モノが主語なら -ing。' },
+  { id: 's89', ja: '私はとてもわくわくしています。', en: "I am very excited.", note: '人が主語なら -ed。モノは -ing、人は -ed。' },
+  { id: 's90', ja: '私は東京に住んでいます。', en: "I live in Tokyo.", note: 'I am living は「一時的に」の意味。ずっと住んでいるなら live。' },
+  { id: 's91', ja: '先生の後に続いて読みたいです。', en: "I would like to repeat after you, please.", note: 'レッスンの進め方を聞かれた時の定番。' },
+  { id: 's92', ja: 'レッスン中、間違いを直してもらえますか。', en: "Could you correct my mistakes during the lesson?", note: 'レッスン冒頭でこれを頼むと指導が細かくなります。' },
+
+  // --- 第8回 レッスン（接客サービスのディスカッション） ---
+  { id: 's93', ja: '店員は同時に多くのことを考えなければなりません。', en: "Workers have to think about many things at the same time.", note: 'because の後ろは必ず主語から。人 + have to ~ の型。' },
+  { id: 's94', ja: 'お客さんに断るのは難しいです。', en: "It's hard to say no to customers.", note: 'It is hard to ~ = ～するのは難しい。理由を言う時の型。' },
+  { id: 's95', ja: '覚えることがたくさんあります。', en: "There are many rules to remember.", note: 'There are ~ で「～がある」。理由の3つ目の型。' },
+  { id: 's96', ja: '良いおもてなしはお客さんを喜ばせるので、また来てくれます。', en: "Good hospitality makes customers happy, so they come back again.", note: 'make + 人 + 形容詞。so で結果をつなげます。' },
+  { id: 's97', ja: '賛成です。それはストレスが多いと思います。', en: "I agree. I think it's stressful.", note: '賛成・反対はまず一言で言い切ってから理由へ。' },
+  { id: 's98', ja: 'hospitality の意味を忘れてしまいました。', en: "I forgot what hospitality means.", note: 'means は動詞、meaning は名詞。I forgot the meaning. でもOK。' },
+  { id: 's99', ja: '店員はみんな親切で礼儀正しかったです。', en: "The staff were all friendly and polite.", note: 'and でつなぐ時は品詞をそろえる。friendly が形容詞なので polite。' },
+  { id: 's100', ja: '日本ではチップを払う必要がありません。', en: "There's no need to tip in Japan.", note: 'There is no need to ~ = ～する必要はない。' }
 ];
 
 
@@ -1688,6 +1714,13 @@ const PHRASEBOOK = [
     { en: "Could we start from Exercise 1?", ja: 'エクササイズ1から始められますか。' },
     { en: "Could you correct my mistakes during the lesson?", ja: 'レッスン中、間違いを直してもらえますか。', pick: true }
   ]},
+  { scene: '✅ 「質問はある？」と聞かれたら', items: [
+    { en: "It is all clear for now.", ja: '今のところ全部わかりました。（先生がよく使う言い方。そのまま真似してよい）', pick: true },
+    { en: "No questions, thank you.", ja: '質問はありません、ありがとうございます。', pick: true },
+    { en: "Everything is clear, thank you.", ja: 'すべて理解できました、ありがとうございます。' },
+    { en: "Actually, I have one question. What does this word mean?", ja: '実は1つ質問があります。この単語はどういう意味ですか。' },
+    { en: "Could you explain that part again?", ja: 'そこをもう一度説明してもらえますか。' }
+  ]},
   { scene: '🆘 困ったとき', items: [
     { en: "Sorry, could you say that again?", ja: 'すみません、もう一度言ってもらえますか。', pick: true },
     { en: "Could you speak more slowly, please?", ja: 'もう少しゆっくり話してもらえますか。' },
@@ -1696,7 +1729,9 @@ const PHRASEBOOK = [
     { en: "How do you say this in English?", ja: 'これは英語で何と言いますか。' },
     { en: "Can I use the same word?", ja: '同じ単語を使ってもいいですか。' },
     { en: "Can you give me an example?", ja: '例を挙げてもらえますか。' },
-    { en: "Let me check the text again.", ja: 'もう一度テキストを確認させてください。' }
+    { en: "Let me check the text again.", ja: 'もう一度テキストを確認させてください。' },
+    { en: "I forgot what this word means.", ja: 'この単語の意味を忘れてしまいました。', pick: true },
+    { en: "Could you give me a hint?", ja: 'ヒントをもらえますか。' }
   ]},
   { scene: '⏳ 考えているとき', items: [
     { en: "Well, let me see.", ja: 'えーと、そうですね。', pick: true },
@@ -1716,8 +1751,18 @@ const PHRASEBOOK = [
     { en: "Like I said, you cannot play games on it.", ja: 'さっき言ったように、これでは遊べません。' },
     { en: "I do not know the English word, but it is a kind of red soup.", ja: '英語の名前は分かりませんが、赤いスープの一種です。' }
   ]},
+  { scene: '👍 賛成・反対（ディスカッション）', items: [
+    { en: "I agree.", ja: 'そう思います。（まず一言で言い切ってから理由へ）', pick: true },
+    { en: "I disagree.", ja: 'そうは思いません。' },
+    { en: "I agree, but it depends on the situation.", ja: '賛成ですが、状況によります。' },
+    { en: "I think so too.", ja: '私もそう思います。' },
+    { en: "Workers have to think about many things at the same time.", ja: '店員は同時に多くのことを考えなければなりません。（人 + have to の型）', pick: true },
+    { en: "It is hard to say no to customers.", ja: 'お客さんに断るのは難しいです。（It is hard to の型）', pick: true },
+    { en: "There are many rules to remember.", ja: '覚えるべき決まりがたくさんあります。（There are の型）', pick: true },
+    { en: "Good hospitality makes customers happy, so they come back again.", ja: '良いおもてなしはお客さんを喜ばせるので、また来てくれます。' },
+    { en: "In Japan, there is no need to tip.", ja: '日本ではチップを払う必要がありません。' }
+  ]},
   { scene: '🙏 レッスン終了', items: [
-    { en: "No questions, thank you.", ja: '質問はありません、ありがとうございます。' },
     { en: "Thank you for the lesson. I enjoyed it.", ja: 'レッスンありがとうございました。楽しかったです。', pick: true },
     { en: "See you next time. Have a good day.", ja: 'また次回。良い一日を。' }
   ]}
@@ -1735,6 +1780,7 @@ let stats = { played: 0, best: 0, totalCorrect: 0 };
 let mastery = {}; // {id: streak}
 let wrongCount = {}; // {id: 累計間違い回数}
 let speakRec = {};   // {id: {s: 連続で言えた回数, ok: 累計○, ng: 累計×, last: 'YYYY-MM-DD'}}
+let pbStars = {};    // {英文: true/false} ★の付け替え（初期値からの変更分だけ保存）
 
 function loadData() {
   try {
@@ -1753,6 +1799,10 @@ function loadData() {
     const sp = localStorage.getItem('eng-quiz-speak');
     if (sp) speakRec = JSON.parse(sp);
   } catch (e) {}
+  try {
+    const ps = localStorage.getItem('eng-quiz-pbstars');
+    if (ps) pbStars = JSON.parse(ps);
+  } catch (e) {}
 }
 
 function saveStats() {
@@ -1766,6 +1816,33 @@ function saveWrongCount() {
 }
 function saveSpeakRec() {
   try { localStorage.setItem('eng-quiz-speak', JSON.stringify(speakRec)); } catch (e) {}
+}
+function savePbStars() {
+  try { localStorage.setItem('eng-quiz-pbstars', JSON.stringify(pbStars)); } catch (e) {}
+}
+
+// ★が付いているか（初期値 pick を、付け替えがあれば上書き）
+function isStarred(it) {
+  return Object.prototype.hasOwnProperty.call(pbStars, it.en) ? !!pbStars[it.en] : !!it.pick;
+}
+
+function toggleStar(en) {
+  const it = PHRASEBOOK.flatMap(s => s.items).find(x => x.en === en);
+  if (!it) return;
+  const now = !isStarred(it);
+  if (now === !!it.pick) delete pbStars[en];   // 初期値に戻ったら記録を消す
+  else pbStars[en] = now;
+  savePbStars();
+  if (navigator.vibrate) navigator.vibrate(15);
+  render();
+}
+
+function resetStars() {
+  if (confirm('★の付け替えを初期状態に戻しますか？')) {
+    pbStars = {};
+    savePbStars();
+    render();
+  }
 }
 
 function todayStr() {
@@ -1807,7 +1884,7 @@ function resetMastery() {
 
 // 記録をコード化（デバイス間共有用）
 function makeSyncCode() {
-  const data = { v: 3, mastery, stats, wrongCount, speakRec };
+  const data = { v: 4, mastery, stats, wrongCount, speakRec, pbStars };
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 }
 
@@ -1827,6 +1904,7 @@ function applySyncCode(code) {
     if (data.stats) { stats = data.stats; saveStats(); }
     if (data.wrongCount) { wrongCount = data.wrongCount; saveWrongCount(); }
     if (data.speakRec) { speakRec = data.speakRec; saveSpeakRec(); }
+    if (data.pbStars) { pbStars = data.pbStars; savePbStars(); }
     // v1の古いコード（wrongCountなし）の場合は、今の端末のwrongCountをそのまま維持
     state.mode = null;
     render();
@@ -2160,16 +2238,21 @@ function renderPhrasebook() {
   const allOpen = state.openSecs.length === PHRASEBOOK.length;
 
   const secHTML = PHRASEBOOK.map((sec, i) => {
-    const items = state.pickOnly ? sec.items.filter(it => it.pick) : sec.items;
+    const items = state.pickOnly ? sec.items.filter(isStarred) : sec.items;
     const open = state.openSecs.includes(i);
     const body = open ? `
       <div class="pb-body">
-        ${items.length ? items.map(it => `
-          <div class="pb-item${it.pick ? ' pick' : ''}">
-            <div class="pb-en">${esc(it.en)}${it.pick ? '<span class="pb-star">★これを使う</span>' : ''}</div>
-            <div class="pb-ja">${esc(it.ja)}</div>
-          </div>
-        `).join('') : '<div class="pb-empty">この場面に★の文はありません。</div>'}
+        ${items.length ? items.map(it => {
+          const on = isStarred(it);
+          return `
+          <div class="pb-item${on ? ' pick' : ''}">
+            <button class="pb-starbtn${on ? ' on' : ''}" data-star="${esc(it.en)}" aria-label="${on ? '★をはずす' : '★をつける'}">${on ? '★' : '☆'}</button>
+            <div class="pb-text">
+              <div class="pb-en">${esc(it.en)}</div>
+              <div class="pb-ja">${esc(it.ja)}</div>
+            </div>
+          </div>`;
+        }).join('') : '<div class="pb-empty">この場面に★の文はありません。</div>'}
       </div>` : '';
     return `
       <div class="pb-sec">
@@ -2182,15 +2265,17 @@ function renderPhrasebook() {
       </div>`;
   }).join('');
 
-  const shown = state.pickOnly ? PHRASEBOOK.reduce((n, s) => n + s.items.filter(it => it.pick).length, 0) : PB_COUNT;
+  const shown = state.pickOnly ? PHRASEBOOK.reduce((n, s) => n + s.items.filter(isStarred).length, 0) : PB_COUNT;
+  const edited = Object.keys(pbStars).length;
 
   return `
     <div class="q-head"><span>📋 レッスン定型文 · ${shown}文</span></div>
-    <p class="pb-note">場面をタップすると開きます。★の文だけ覚えれば、レッスンの最初の5分は乗り切れます。</p>
+    <p class="pb-note">場面をタップすると開きます。☆をタップすると★を付け外しできるので、自分が使う文だけ残していきましょう。</p>
     <div class="pb-tools">
       <button class="pb-tool${allOpen ? ' on' : ''}" id="pbAllBtn">${allOpen ? '📕 すべて閉じる' : '📖 すべて開く'}</button>
-      <button class="pb-tool${state.pickOnly ? ' on' : ''}" id="pbPickBtn">★ ${state.pickOnly ? '全部を表示' : 'おすすめだけ'}</button>
+      <button class="pb-tool${state.pickOnly ? ' on' : ''}" id="pbPickBtn">★ ${state.pickOnly ? '全部を表示' : '★だけ表示'}</button>
     </div>
+    ${edited > 0 ? `<button class="pb-reset" id="pbResetBtn">★の付け替え（${edited}件）を初期状態に戻す</button>` : ''}
     ${secHTML}
     <button class="btn" id="homeBtn" style="margin-top: 14px;">ホームに戻る</button>
   `;
@@ -2343,6 +2428,10 @@ function attach() {
   });
   const pbA = document.getElementById('pbAllBtn'); if (pbA) pbA.onclick = togglePbAll;
   const pbP = document.getElementById('pbPickBtn'); if (pbP) pbP.onclick = togglePbPick;
+  document.querySelectorAll('[data-star]').forEach(b => {
+    b.onclick = () => toggleStar(b.dataset.star);
+  });
+  const pbR = document.getElementById('pbResetBtn'); if (pbR) pbR.onclick = resetStars;
   const rvb = document.getElementById('revealBtn'); if (rvb) rvb.onclick = reveal;
   document.querySelectorAll('[data-judge]').forEach(b => {
     b.onclick = () => markSpeak(b.dataset.judge === '1');
