@@ -81,6 +81,21 @@
   .review-item:last-child { border-bottom: none; }
   .review-mark { display: inline-block; width: 20px; }
   .review-correct { margin-left: 20px; margin-top: 4px; color: #a8a59c; font-size: 12px; }
+  .br-stage { margin-bottom: 10px; }
+  .br-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 5px; }
+  .br-box { border-radius: 12px; padding: 13px 15px; font-size: 15.5px; line-height: 1.65; }
+  .br-raw .br-label { color: #F09595; }
+  .br-raw .br-box { background: #2a1d1d; border: 1px solid rgba(163,45,45,0.45); color: #f0eee7; }
+  .br-simple .br-label { color: #FAC775; }
+  .br-simple .br-box { background: #2b2518; border: 1px solid rgba(250,199,117,0.35); color: #f0eee7; }
+  .br-en .br-label { color: #C0DD97; }
+  .br-en .br-box { background: #1f2a18; border: 1px solid rgba(99,153,34,0.5); color: #f0eee7; font-weight: 600; }
+  .br-line { display: block; }
+  .br-line + .br-line { margin-top: 4px; }
+  .br-arrow { text-align: center; font-size: 12px; color: #6b6862; margin: 2px 0 6px; }
+  .br-note { margin-top: 10px; padding: 11px 13px; background: #232321; border-radius: 10px; font-size: 13px; color: #a8a59c; line-height: 1.6; }
+  .br-theme { display: inline-block; font-size: 10px; padding: 2px 8px; background: #2a2a27; color: #a8a59c; border-radius: 8px; margin-bottom: 10px; }
+  .br-hint { font-size: 12.5px; color: #a8a59c; margin: 0 0 14px; line-height: 1.6; }
   .pb-sec { margin-bottom: 8px; }
   .pb-h { width: 100%; display: flex; align-items: center; gap: 8px; background: #232321; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px 14px; font-family: inherit; color: #f0eee7; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; -webkit-appearance: none; transition: background 0.15s; }
   .pb-h:active { background: #2d2d2a; }
@@ -1821,11 +1836,148 @@ const PHRASEBOOK = [
 ];
 const PB_COUNT = PHRASEBOOK.reduce((n, s) => n + s.items.length, 0);
 
-const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length;
+
+// ===== 和文和訳（言いたいこと → かんたんな日本語 → 英語）=====
+// レッスンで実際に詰まった場面を素材にしている
+const BRIDGE = [
+  { id: 'b01', theme: '第13回 一人旅',
+    raw: 'もしトラブルに巻き込まれても、友達に相談できないから。',
+    simple: ['私が困る。', '私は友達に聞けない。'],
+    en: ["If I have a problem,", "I can't ask my friends for help."],
+    note: '主語「私が」を入れて2つに切る。because でつなごうとすると止まるので、文を分ける。' },
+
+  { id: 'b02', theme: '第13回 一人旅',
+    raw: '大人になってから友達を作るのって難しいし、知らない人に話しかけるのも恥ずかしい。',
+    simple: ['大人は友達を作りにくい。', '私は内気だ。だから知らない人と話さない。'],
+    en: ["It's hard for adults to make friends.", "I'm shy, so I don't talk to strangers."],
+    note: '2つの話が入っているので文を分ける。「恥ずかしい（性格）」は embarrassed ではなく shy。' },
+
+  { id: 'b03', theme: '第13回 一人旅',
+    raw: '韓国で電車の乗り方が分からなくて困っていたら、キムさんが助けてくれて友達になった。',
+    simple: ['私は韓国にいた。', '道に迷った。', 'キムさんが助けてくれた。', '友達になった。'],
+    en: ["I was traveling in Korea.", "I got lost.", "Kim helped me.", "We became friends."],
+    note: '思い出話は「いつ・どこで → 何が起きた → どうなった」の順に、1文ずつ切る。' },
+
+  { id: 'b04', theme: '第13回 一人旅',
+    raw: '一人旅でいちばん怖いのは、知らない人に話しかけることです。',
+    simple: ['いちばん怖いこと。', 'それは知らない人と話すこと。'],
+    en: ["The scariest part is", "talking to strangers."],
+    note: '「〜すること」は -ing で表せる。talking / making / going。' },
+
+  { id: 'b05', theme: '第13回 一人旅',
+    raw: 'フィリピンの学校には日本人がたくさんいたので、怖くなかった。',
+    simple: ['学校に日本人がたくさんいた。', 'だから怖くなかった。'],
+    en: ["There were many Japanese students at the school,", "so I wasn't scared."],
+    note: '「〜ので」は so で後ろにつなぐ。because より語順が簡単。' },
+
+  { id: 'b06', theme: '第12回 睡眠',
+    raw: '6-30ルールのほうがいいと思う。10-3-2-1は画面を1時間前にやめろと言っているけど、30分のほうが楽だから。',
+    simple: ['6-30ルールのほうが好き。', '10-3-2-1は1時間前。', '30分のほうが簡単。'],
+    en: ["I like the 6-30 rule better.", "The 10-3-2-1 rule says one hour.", "Thirty minutes is easier for me."],
+    note: '比較は一度に言わず、順番に並べる。まず結論、それから中身。' },
+
+  { id: 'b07', theme: '第12回 睡眠',
+    raw: '夜ついゲームをしてしまうので、健康的な習慣を続けるのは難しい。',
+    simple: ['私は夜ゲームをする。', 'だから早く寝られない。'],
+    en: ["I play games at night,", "so I can't go to bed early."],
+    note: '「続けるのが難しい」は言い換えて「できない」にすると一気に簡単になる。' },
+
+  { id: 'b08', theme: '第12回 睡眠',
+    raw: '寝る前にストレッチをして、ヒーリング音楽を聴いています。',
+    simple: ['私は寝る前にストレッチをする。', 'そして音楽を聴く。'],
+    en: ["I stretch before bed.", "I also listen to relaxing music."],
+    note: 'do stretch ではなく stretch だけで動詞になる。' },
+
+  { id: 'b09', theme: '第12回 睡眠',
+    raw: '本当は8時間寝たほうがいいんだけど、今は6時間くらいしか寝ていない。',
+    simple: ['私は8時間寝るべきだ。', 'でも6時間しか寝ていない。'],
+    en: ["I should sleep eight hours,", "but I only sleep six."],
+    note: '「〜したほうがいい」は should。「しか〜ない」は only。' },
+
+  { id: 'b10', theme: '第12回 睡眠',
+    raw: '1日3時間くらいスマホやパソコンの画面を見ています。',
+    simple: ['私は1日に約3時間、画面を見る。'],
+    en: ["I spend about three hours a day looking at screens."],
+    note: '数字は about を付ければ正確でなくていい。' },
+
+  { id: 'b11', theme: '第11回 映画',
+    raw: '映画を見ながらポップコーンを食べるのが好きだから。',
+    simple: ['私は映画を見る。', '同時にポップコーンを食べる。'],
+    en: ["I eat popcorn", "while watching a movie."],
+    note: '2つの動作が同時なら while + ing でまとめられる。' },
+
+  { id: 'b12', theme: '第11回 映画',
+    raw: '映画を見るのは娯楽だから、高すぎるとは思わない。',
+    simple: ['映画は娯楽だ。', 'だから高すぎない。'],
+    en: ["Movies are entertainment,", "so I don't think they're too expensive."],
+    note: '娯楽は entertainment。amusement park は遊園地なので別物。' },
+
+  { id: 'b13', theme: '第8回 接客',
+    raw: '接客は同時にいろいろなことを考えないといけないから大変だと思う。',
+    simple: ['店員はたくさんのことを考える。', 'だから大変だ。'],
+    en: ["Workers have to think about many things.", "That's hard."],
+    note: '理由を言うときは必ず「誰が」から始める。名詞だけ並べない。' },
+
+  { id: 'b14', theme: '第8回 接客',
+    raw: 'おもてなしが良いとお客さんが喜んで、また来てくれる。',
+    simple: ['良いサービスはお客を喜ばせる。', 'だからまた来る。'],
+    en: ["Good service makes customers happy,", "so they come back."],
+    note: 'make + 人 + 形容詞 で「人を〜にさせる」。' },
+
+  { id: 'b15', theme: '第7回 レゴ',
+    raw: '普通のレゴと違って、これは遊べなくて飾るだけのものだと思う。',
+    simple: ['本物のゲーム機とは違う。', 'これでは遊べない。', '飾るものだ。'],
+    en: ["It's different from a real console.", "You can't play games on it.", "It's just for display."],
+    note: 'Unlike ~ が出てこなければ It is different from ~ で十分。' },
+
+  { id: 'b16', theme: '第5回 仕事',
+    raw: 'コンシューマーゲームとオンラインゲームの両方を作っています。',
+    simple: ['私はゲームを作る。', '家庭用ゲームとPCゲーム。'],
+    en: ["I make games.", "I make console games and PC games."],
+    note: 'コンシューマーゲームは和製英語。console games が正しい。' },
+
+  { id: 'b17', theme: '第2回 事故',
+    raw: '駅で2人がぶつかって、片方が飲み物を落とすのを見ました。',
+    simple: ['私は事故を見た。', '2人が歩いていた。', '1人がもう1人にぶつかった。', '彼は飲み物を落とした。'],
+    en: ["I saw an accident.", "Two people were walking.", "One bumped into the other.", "He dropped his drink."],
+    note: '見た出来事は1つずつ順番に。背景は was ~ing、出来事は過去形。' },
+
+  { id: 'b18', theme: '第2回 事故',
+    raw: '運転中にスマホを見る人がいるのが事故の原因だと思う。',
+    simple: ['運転手がスマホを見る。', 'それが事故の原因だ。'],
+    en: ["Some drivers look at their smartphones.", "That causes accidents."],
+    note: '「〜する人がいる」は Some + 複数名詞。' },
+
+  { id: 'b19', theme: '第1回 旅行',
+    raw: 'ポーランドに友達がいるので、ヨーロッパに行ってみたい。',
+    simple: ['私はヨーロッパに行きたい。', '私はポーランドに友達がいる。'],
+    en: ["I want to go somewhere in Europe.", "I have a friend in Poland."],
+    note: '「〜がいる」は there is ではなく I have。' },
+
+  { id: 'b20', theme: '第6回 留学',
+    raw: 'セブの語学学校に1か月留学して、英語を勉強しました。',
+    simple: ['私は英語を勉強した。', 'セブの語学学校で。', '1か月間。'],
+    en: ["I studied English", "at a language school in Cebu", "for a month."],
+    note: '「留学」を study abroad で言おうとせず、「どこで・何を・どれくらい」に分解する。' },
+
+  { id: 'b21', theme: '第4回 英語学習',
+    raw: '英語を勉強するのは楽しいけど、文法は退屈です。',
+    simple: ['英語の勉強は楽しい。', 'でも文法は退屈だ。'],
+    en: ["Learning English is fun,", "but grammar is boring."],
+    note: '「〜すること」は -ing で主語にできる。' },
+
+  { id: 'b22', theme: '第10回 通勤',
+    raw: '電車で通勤していて、片道40分くらいかかります。',
+    simple: ['私は電車で通勤する。', '40分くらいかかる。'],
+    en: ["I take the train to work.", "It takes about 40 minutes."],
+    note: '所要時間の主語は It。乗客として乗るものは take。' }
+];
+
+const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/06';
+const APP_UPDATED = '2026/10/08';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
@@ -1836,6 +1988,7 @@ let stats = { played: 0, best: 0, totalCorrect: 0 };
 let mastery = {}; // {id: streak}
 let wrongCount = {}; // {id: 累計間違い回数}
 let speakRec = {};   // {id: {s: 連続で言えた回数, ok: 累計○, ng: 累計×, last: 'YYYY-MM-DD'}}
+let bridgeRec = {};  // {id: {s: 連続○, ok, ng, last}}
 let pbStars = {};    // {英文: true/false} ★の付け替え（初期値からの変更分だけ保存）
 
 function loadData() {
@@ -1859,6 +2012,10 @@ function loadData() {
     const ps = localStorage.getItem('eng-quiz-pbstars');
     if (ps) pbStars = JSON.parse(ps);
   } catch (e) {}
+  try {
+    const br = localStorage.getItem('eng-quiz-bridge');
+    if (br) bridgeRec = JSON.parse(br);
+  } catch (e) {}
 }
 
 function saveStats() {
@@ -1873,6 +2030,31 @@ function saveWrongCount() {
 function saveSpeakRec() {
   try { localStorage.setItem('eng-quiz-speak', JSON.stringify(speakRec)); } catch (e) {}
 }
+function saveBridgeRec() {
+  try { localStorage.setItem('eng-quiz-bridge', JSON.stringify(bridgeRec)); } catch (e) {}
+}
+
+function getBridgeStreak(id) { return (bridgeRec[id] && bridgeRec[id].s) || 0; }
+function isBridgeSettled(id) { return getBridgeStreak(id) >= SPEAK_THRESHOLD; }
+
+function getBridgeStats() {
+  const settled = BRIDGE.filter(b => isBridgeSettled(b.id)).length;
+  const today = BRIDGE.filter(b => bridgeRec[b.id] && bridgeRec[b.id].last === todayStr()).length;
+  return { settled, today, total: BRIDGE.length, pct: Math.round(settled / BRIDGE.length * 100) };
+}
+
+// できなかったもの → 未挑戦 → 練習中 → 定着済み の順で選ぶ
+function pickBridgeSet(n) {
+  const rank = b => {
+    const r = bridgeRec[b.id];
+    if (!r) return 1;
+    if (r.s === 0) return 0;
+    if (r.s >= SPEAK_THRESHOLD) return 3;
+    return 2;
+  };
+  return shuffle(BRIDGE).sort((a, b) => rank(a) - rank(b)).slice(0, n);
+}
+
 function savePbStars() {
   try { localStorage.setItem('eng-quiz-pbstars', JSON.stringify(pbStars)); } catch (e) {}
 }
@@ -1929,18 +2111,20 @@ function pickSpeakSet(n) {
 }
 
 function resetMastery() {
-  if (confirm('マスター記録（クイズの連続正解・瞬間英作文の定着）をリセットしますか？\nスコア記録は残ります。')) {
+  if (confirm('マスター記録（クイズの連続正解・瞬間英作文・和文和訳の定着）をリセットしますか？\nスコア記録は残ります。')) {
     mastery = {};
     speakRec = {};
+    bridgeRec = {};
     saveMastery();
     saveSpeakRec();
+    saveBridgeRec();
     render();
   }
 }
 
 // 記録をコード化（デバイス間共有用）
 function makeSyncCode() {
-  const data = { v: 4, mastery, stats, wrongCount, speakRec, pbStars };
+  const data = { v: 5, mastery, stats, wrongCount, speakRec, pbStars, bridgeRec };
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 }
 
@@ -1961,6 +2145,7 @@ function applySyncCode(code) {
     if (data.wrongCount) { wrongCount = data.wrongCount; saveWrongCount(); }
     if (data.speakRec) { speakRec = data.speakRec; saveSpeakRec(); }
     if (data.pbStars) { pbStars = data.pbStars; savePbStars(); }
+    if (data.bridgeRec) { bridgeRec = data.bridgeRec; saveBridgeRec(); }
     // v1の古いコード（wrongCountなし）の場合は、今の端末のwrongCountをそのまま維持
     state.mode = null;
     render();
@@ -2017,6 +2202,10 @@ function startMode(mode) {
     startSpeak(pickSpeakSet(Math.min(10, SPEAKING.length)));
     return;
   }
+  if (mode === 'bridge') {
+    startBridge(pickBridgeSet(Math.min(5, BRIDGE.length)));
+    return;
+  }
   const available = getAvailable(mode);
   if (available.length === 0) {
     alert('このカテゴリは全問マスター済みです！🎉\nマスター記録をリセットすると再挑戦できます。');
@@ -2058,6 +2247,36 @@ function pick(i) {
 function reveal() {
   state.revealed = true;
   render();
+}
+
+function startBridge(list) {
+  state = { mode: 'bridge', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, step: 0, history: [] };
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function bridgeNext() {
+  state.step++;
+  render();
+}
+
+function markBridge(ok) {
+  const b = state.questions[state.idx];
+  const r = bridgeRec[b.id] || { s: 0, ok: 0, ng: 0 };
+  const prev = r.s;
+  r.s = ok ? prev + 1 : 0;
+  if (ok) r.ok++; else r.ng++;
+  r.last = todayStr();
+  bridgeRec[b.id] = r;
+  saveBridgeRec();
+  if (ok) state.score++;
+  state.history.push({ id: b.id, raw: b.raw, simple: b.simple, en: b.en, note: b.note, ok,
+    justSettled: ok && r.s === SPEAK_THRESHOLD });
+  if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
+  state.idx++;
+  state.step = 0;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function startSpeak(list) {
@@ -2117,8 +2336,9 @@ function render() {
   if (state.mode === 'sync') r.innerHTML = renderSync();
   else if (state.mode === null) r.innerHTML = renderHome();
   else if (state.mode === 'book') r.innerHTML = renderPhrasebook();
-  else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : renderResult();
+  else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : (state.mode === 'bridge' ? renderBridgeResult() : renderResult());
   else if (state.mode === 'speak') r.innerHTML = renderSpeak();
+  else if (state.mode === 'bridge') r.innerHTML = renderBridge();
   else r.innerHTML = renderQuestion();
   attach();
 }
@@ -2151,6 +2371,7 @@ function renderSync() {
 function renderHome() {
   const m = getMasteryStats();
   const sp = getSpeakStats();
+  const br = getBridgeStats();
   const remaining = {
     vocab: getAvailable('vocab').length,
     phrase: getAvailable('phrase').length,
@@ -2180,6 +2401,12 @@ function renderHome() {
         <div class="mode-name">瞬間英作文</div>
         <div class="mode-count">定着 ${sp.settled} / ${sp.total}文</div>
         <div class="mode-mastered">${sp.today > 0 ? `今日 ${sp.today}文` : '1回10文'}</div>
+      </button>
+      <button class="mode-btn" data-mode="bridge" style="grid-column: 1 / -1;">
+        <div class="mode-icon">🔄</div>
+        <div class="mode-name">和文和訳</div>
+        <div class="mode-count">言いたいこと → かんたんな日本語 → 英語</div>
+        <div class="mode-mastered">${br.today > 0 ? `今日 ${br.today}問` : `定着 ${br.settled} / ${br.total}問 · 1回5問`}</div>
       </button>
       <button class="mode-btn" data-mode="book" style="grid-column: 1 / -1;">
         <div class="mode-icon">📋</div>
@@ -2334,6 +2561,107 @@ function renderPhrasebook() {
     ${edited > 0 ? `<button class="pb-reset" id="pbResetBtn">★の付け替え（${edited}件）を初期状態に戻す</button>` : ''}
     ${secHTML}
     <button class="btn" id="homeBtn" style="margin-top: 14px;">ホームに戻る</button>
+  `;
+}
+
+function renderBridge() {
+  const b = state.questions[state.idx];
+  const total = state.questions.length;
+  const pct = Math.round(state.idx / total * 100);
+  const lines = a => a.map(s => `<span class="br-line">${esc(s)}</span>`).join('');
+
+  let body = `
+    <div class="br-theme">${esc(b.theme)}</div>
+    <div class="br-stage br-raw">
+      <div class="br-label">言いたいこと</div>
+      <div class="br-box">${esc(b.raw)}</div>
+    </div>`;
+
+  if (state.step === 0) {
+    body += `
+      <p class="br-hint">主語を入れて、1文に1つのことだけにする。飾りの言葉は削る。</p>
+      <button class="btn btn-primary" id="brNextBtn">かんたんな日本語にすると？</button>`;
+  } else {
+    body += `
+      <div class="br-arrow">▼</div>
+      <div class="br-stage br-simple">
+        <div class="br-label">かんたんな日本語</div>
+        <div class="br-box">${lines(b.simple)}</div>
+      </div>`;
+    if (state.step === 1) {
+      body += `
+        <p class="br-hint">声に出して英語で言ってみてから、答えを見てください。</p>
+        <button class="btn btn-primary" id="brNextBtn">英語にすると？</button>`;
+    } else {
+      body += `
+        <div class="br-arrow">▼</div>
+        <div class="br-stage br-en">
+          <div class="br-label">英語</div>
+          <div class="br-box">${lines(b.en)}</div>
+        </div>
+        <div class="br-note">${esc(b.note)}</div>
+        <p class="q-hint" style="margin:14px 0 0;">言えましたか？</p>
+        <div class="judge-row">
+          <button class="judge-btn judge-ok" data-brjudge="1">◯ 言えた</button>
+          <button class="judge-btn judge-ng" data-brjudge="0">✗ 言えなかった</button>
+        </div>`;
+    }
+  }
+
+  return `
+    <div class="q-head">
+      <span>🔄 和文和訳 · ${state.idx + 1} / ${total}</span>
+      <span class="streak">◯ ${state.score}</span>
+    </div>
+    <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
+    ${body}
+    <button class="btn" id="homeBtn" style="margin-top: 16px;">ホームに戻る</button>
+  `;
+}
+
+function renderBridgeResult() {
+  const total = state.history.length;
+  const missed = state.history.filter(h => !h.ok);
+  const newSettled = state.history.filter(h => h.justSettled).length;
+  const st = getBridgeStats();
+  const pct = total ? Math.round(state.score / total * 100) : 0;
+
+  let msg;
+  if (pct === 100) msg = '全部言えた！この調子で';
+  else if (pct >= 60) msg = 'いい調子！できなかった分をもう一度';
+  else msg = 'かんたんな日本語に直す練習をくり返そう';
+
+  const card = h => `
+    <div class="review-item">
+      <div><span class="review-mark">${h.ok ? '◯' : '✗'}</span>${esc(h.raw)}</div>
+      <div class="review-correct">→ ${esc(h.simple.join(' / '))}</div>
+      <div class="review-correct" style="color:#C0DD97;">→ ${esc(h.en.join(' '))}</div>
+    </div>`;
+
+  const missedHTML = missed.length ? `
+    <div class="review">
+      <div class="review-h">言えなかった ${missed.length}問</div>
+      ${missed.map(card).join('')}
+    </div>` : '';
+  const okList = state.history.filter(h => h.ok);
+  const okHTML = okList.length ? `
+    <div class="review">
+      <div class="review-h">言えた ${okList.length}問</div>
+      ${okList.map(card).join('')}
+    </div>` : '';
+
+  return `
+    <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">おつかれさま</p>
+    <div class="score-num">${state.score} / ${total}</div>
+    <div class="score-msg">${msg}<br>定着 ${st.settled} / ${st.total}問（${st.pct}%）</div>
+    ${newSettled > 0 ? `<div class="score-msg" style="color:#C0DD97;font-weight:600;">🏆 新たに ${newSettled}問が定着しました！</div>` : ''}
+    ${missed.length ? `<button class="btn btn-primary" id="brRetryWrongBtn">言えなかった${missed.length}問をもう一度</button>` : ''}
+    <div class="btn-row">
+      <button class="btn ${missed.length ? '' : 'btn-primary'}" id="retryBtn">別の5問</button>
+      <button class="btn" id="homeBtn">ホームに戻る</button>
+    </div>
+    ${missedHTML}
+    ${okHTML}
   `;
 }
 
@@ -2492,6 +2820,13 @@ function attach() {
   document.querySelectorAll('[data-judge]').forEach(b => {
     b.onclick = () => markSpeak(b.dataset.judge === '1');
   });
+  const brN = document.getElementById('brNextBtn'); if (brN) brN.onclick = bridgeNext;
+  document.querySelectorAll('[data-brjudge]').forEach(b => {
+    b.onclick = () => markBridge(b.dataset.brjudge === '1');
+  });
+  const brRW = document.getElementById('brRetryWrongBtn');
+  if (brRW) brRW.onclick = () => startBridge(state.history.filter(h => !h.ok)
+    .map(h => ({ id: h.id, theme: '復習', raw: h.raw, simple: h.simple, en: h.en, note: h.note })));
   const rwb = document.getElementById('retryWrongBtn');
   if (rwb) rwb.onclick = () => startSpeak(state.history.filter(h => !h.ok).map(h => ({ id: h.id, ja: h.ja, en: h.en, note: h.note })));
   const nb = document.getElementById('nextBtn'); if (nb) nb.onclick = next;
