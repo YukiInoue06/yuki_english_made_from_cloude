@@ -1736,7 +1736,19 @@ const SPEAKING = [
   { id: 's125', ja: '蒸気機関車は1820年代半ばにさかのぼります。', en: "Steam-powered trains date back to the mid-1820s.", note: '1820s は the eighteen twenties。date back to ~ = ～にさかのぼる。' },
   { id: 's126', ja: '映画館は1940年代にポップコーンを売り始めました。', en: "Theaters started selling popcorn in the 1940s.", note: '1940s は the nineteen forties。年代は2桁目を複数形に。' },
   { id: 's127', ja: 'ポップコーンは1800年代にアメリカで人気になりました。', en: "Popcorn became popular in America in the 1800s.", note: '1800s だけは the eighteen hundreds と読みます。' },
-  { id: 's128', ja: '今日はディスカッションに多めに時間を使えますか。', en: "Could we spend more time on the discussion today?", note: '読む時間を短くして、話す時間を増やしたい時に。' }
+  { id: 's128', ja: '今日はディスカッションに多めに時間を使えますか。', en: "Could we spend more time on the discussion today?", note: '読む時間を短くして、話す時間を増やしたい時に。' },
+
+  // --- 第14回 レッスン（昼食の記事・ディスカッション） ---
+  { id: 's129', ja: 'お腹が空いたまま働くことがときどきあります。', en: "Sometimes I have to work while I'm hungry.", note: "while + 主語 + 形容詞 で「～の状態で」。while watching と同じ仲間。" },
+  { id: 's130', ja: '音楽を聴きながら仕事をするのが好きです。', en: "I like to work while I'm listening to music.", note: 'while のうしろに文を置く形。主語と be 動詞を入れる。' },
+  { id: 's131', ja: 'すみません、もう一度言ってもらえますか。', en: "Sorry, could you say that again?", note: '5秒考えて分からなければ、黙らずにこれを言う。' },
+  { id: 's132', ja: 'いいえ、あまり昼食を抜きません。', en: "No, I don't. I don't often skip lunch.", note: '短縮応答のあとに完全な文を続けるのが理想形。' },
+  { id: 's133', ja: 'はい、そうです。1時間はとても短いです。', en: "Yes, it does. One hour is very short.", note: 'Yes, it does. で受けてから理由を1文。' },
+  { id: 's134', ja: '朝は時間がないので、よく朝食を抜きます。', en: "I often skip breakfast because I don't have time in the morning.", note: 'skip = 抜かす、飛ばす。' },
+  { id: 's135', ja: '服にたくさんお金を使います。', en: "I spend a lot of money on clothes.", note: 'clothes の発音は close とほぼ同じ「クロウズ」。th はほぼ聞こえない。' },
+  { id: 's136', ja: '完成までに少なくとも3日はかかります。', en: "It's going to take at least three days to complete.", note: 'at least = 少なくとも。数の前に置く飾りの言葉。' },
+  { id: 's137', ja: '同僚がときどきおやつを持ってきてくれます。', en: "My coworkers sometimes bring me snacks.", note: 'bring + 人 + もの で「人に～を持ってくる」。' },
+  { id: 's138', ja: 'あなたはどんなゲームをしますか。', en: "What games do you play?", note: '質問を返す形。What + 名詞 + do you ~? の語順に慣れる。' }
 ];
 
 
@@ -1970,14 +1982,44 @@ const BRIDGE = [
     raw: '電車で通勤していて、片道40分くらいかかります。',
     simple: ['私は電車で通勤する。', '40分くらいかかる。'],
     en: ["I take the train to work.", "It takes about 40 minutes."],
-    note: '所要時間の主語は It。乗客として乗るものは take。' }
+    note: '所要時間の主語は It。乗客として乗るものは take。' },
+
+  { id: 'b23', theme: '第14回 昼食',
+    raw: 'ゲームプログラミングは頭をたくさん使うので、お昼を食べないと集中できない。',
+    simple: ['プログラミングは頭を使う。', '頭を使うと疲れる。', 'だからお昼を食べる。'],
+    en: ["Programming uses a lot of brain power.", "It makes me tired.", "So I always eat lunch."],
+    note: '「頭を使う」が出てこなければ I use my brain a lot. でも通じる。3文に切るだけで言える。' },
+
+  { id: 'b24', theme: '第14回 昼食',
+    raw: '朝は時間がないし、料理も得意じゃないから、お弁当は作れない。',
+    simple: ['朝、時間がない。', '料理が得意ではない。', 'だから弁当を作らない。'],
+    en: ["I don't have time in the morning.", "I'm not good at cooking.", "So I don't make a bento."],
+    note: '「〜が得意ではない」は be not good at ~ing。否定が続く時こそ1文ずつ切る。' },
+
+  { id: 'b25', theme: '第14回 昼食',
+    raw: 'いろんな種類の食べ物を食べたいし、いろんな店にも行きたいから、会社が昼食を出さなくていい。',
+    simple: ['私はいろいろな食べ物を食べたい。', '自分で店を選びたい。', 'だから会社の昼食はいらない。'],
+    en: ["I want to try different kinds of food.", "I want to choose my own restaurant.", "So I don't need company lunches."],
+    note: '「いろんな」は different kinds of ~。「自分で選ぶ」は choose my own ~。' },
+
+  { id: 'b26', theme: '第14回 昼食',
+    raw: '昼休みが1時間なのは短い。食べることはできるけど、休む時間がない。',
+    simple: ['1時間は短すぎる。', '食べることはできる。', 'でも休めない。'],
+    en: ["One hour is too short.", "I can eat,", "but I can't rest."],
+    note: "「〜はできるが…できない」は can と can't を並べるだけでよい。" },
+
+  { id: 'b27', theme: '第14回 昼食',
+    raw: 'お昼は毎日外に出て食べていて、たいていマクドナルドみたいなファストフード店に行きます。',
+    simple: ['私は毎日外で食べる。', 'たいていファストフード店に行く。', '例えばマクドナルド。'],
+    en: ["I eat out every day.", "I usually go to a fast food restaurant,", "like McDonald's."],
+    note: 'eat out = 外食する。例を出す時は like ~ でつなぐ。' }
 ];
 
 const TOTAL = QUESTIONS.vocab.length + QUESTIONS.phrase.length + QUESTIONS.grammar.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/08';
+const APP_UPDATED = '2026/10/20';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
