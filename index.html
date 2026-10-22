@@ -395,7 +395,15 @@ const SPEAKING = [
   { id: 's138', ja: 'あなたはどんなゲームをしますか。', en: "What games do you play?", note: '質問を返す形。What + 名詞 + do you ~? の語順に慣れる。' },
 
   // --- 第15回 レッスン（高齢者の就労） ---
-  { id: 's139', ja: 'そこでは65歳以上の人がたくさん働いています。', en: "Many people over 65 work there.", note: '「65歳以上の人」は people over 65。名詞のうしろに over ~ を置くだけでよい。' }
+  { id: 's139', ja: 'そこでは65歳以上の人がたくさん働いています。', en: "Many people over 65 work there.", note: '「65歳以上の人」は people over 65。名詞のうしろに over ~ を置くだけでよい。' },
+
+  // --- 第16回 レッスン（used to：昔と今を比べる） ---
+  { id: 's140', ja: '以前はto-doリストを書いていましたが、もう書きません。', en: "I used to write to-do lists, but I don't anymore.", note: 'used to ~ = 以前は～だった（今は違う）。昔と今を比べる話で必ず使う形。' },
+  { id: 's141', ja: '以前は卓球をしていましたが、今はバドミントンをしています。', en: "I used to play table tennis, but now I play badminton.", note: 'used to のあとは動詞の原形。but now ~ で今の話につなぐ。' },
+  { id: 's142', ja: '以前は毎朝、朝食を食べていました。', en: "I used to eat breakfast every morning.", note: '今はしていないことを表す。今も続いているなら I eat ~ でよい。' },
+  { id: 's143', ja: '以前は岡山に住んでいましたが、今は東京に住んでいます。', en: "I used to live in Okayama, but now I live in Tokyo.", note: '出身と今の住まいを一度に言える便利な形。' },
+  { id: 's144', ja: '以前は英語を話すのが怖かったです。', en: "I used to be scared of speaking English.", note: 'used to be + 形容詞 で「以前は～だった」。be を忘れずに。' },
+  { id: 's145', ja: '最後に書いたのは5年前です。', en: "The last time I wrote one was five years ago.", note: 'The last time + 文 + was ~ ago。「最後に～したのは」の型。' }
 ];
 
 
@@ -666,7 +674,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/21';
+const APP_UPDATED = '2026/10/22';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
