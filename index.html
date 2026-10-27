@@ -406,7 +406,15 @@ const SPEAKING = [
   { id: 's145', ja: '最後に書いたのは5年前です。', en: "The last time I wrote one was five years ago.", note: 'The last time + 文 + was ~ ago。「最後に～したのは」の型。' },
 
   // --- 第17回 レッスン ---
-  { id: 's146', ja: '記事を確認させてください。', en: "Let me check the article.", note: 'True/False は記憶で答えず、記事を探して答える。黙って探さず、まずこれを言う。' }
+  { id: 's146', ja: '記事を確認させてください。', en: "Let me check the article.", note: 'True/False は記憶で答えず、記事を探して答える。黙って探さず、まずこれを言う。' },
+
+  // --- 第18回 レッスン（put の句動詞を整理する） ---
+  { id: 's147', ja: '皿を洗って片付けます。', en: "I wash the plates and put them away.", note: 'put away = 離れた所へ置く → 片付ける。家の話では必ず出てくる。' },
+  { id: 's148', ja: '使い終わったらすぐに片付けます。', en: "I put things away as soon as I finish using them.", note: 'as soon as ~ = ～したらすぐに。put away とセットで覚える。' },
+  { id: 's149', ja: 'いつも部屋の掃除を先延ばしにしてしまいます。', en: "I always put off cleaning my room.", note: 'put off = 先へずらす → 先延ばしにする。put away と混同しやすい。' },
+  { id: 's150', ja: '寒いのでコートを着ます。', en: "It's cold, so I'll put on my coat.", note: 'put on = 体の上に置く → 着る。' },
+  { id: 's151', ja: '本を読み終えたら棚に戻してください。', en: "Please put the book back on the shelf when you finish reading it.", note: 'put back = 元へ戻す。put away より「元の場所」を強調する。' },
+  { id: 's152', ja: '物はあるべき場所に戻します。', en: "I put things back where they belong.", note: 'where they belong = あるべき場所に。先生が put away を説明した言い方。' }
 ];
 
 
@@ -677,7 +685,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/26';
+const APP_UPDATED = '2026/10/27';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
