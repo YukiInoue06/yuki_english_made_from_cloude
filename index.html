@@ -225,7 +225,57 @@ const QUESTIONS = {
     { id: "p36", q: "「さっぱりした・すっきりした」を正しく言うと？", choices: ["I'm clear", "I feel refreshed", "I'm refresh", "I feel clear up"], correct: 1,
       explain: "feel refreshed = さっぱりした、すっきりした。'I got a haircut, so I feel refreshed.'（髪を切ってさっぱりした）。I'm clear は「（話が）理解できた」の意味に取られることが多い。" },
     { id: "p37", q: "「このあと（今日の後半に）買い物に行く」を自然に言うと？", choices: ["After that, I'll go shopping", "Later today, I'll go shopping", "After this time, I'll go shopping", "In later, I'll go shopping"], correct: 1,
-      explain: "Later today = 今日このあと（まだ起きていないこれからの話）。'Later today, I'll go shopping.'。After that は「（すでに話した出来事）のあとで」という意味なので、今この瞬間から先の予定には合わない。" }
+      explain: "Later today = 今日このあと（まだ起きていないこれからの話）。'Later today, I'll go shopping.'。After that は「（すでに話した出来事）のあとで」という意味なので、今この瞬間から先の予定には合わない。" },
+
+    // --- 10/22〜10/30 の日記添削より ---
+    { id: "p38", q: "「歯のホワイトニングをしてもらう予定」を正しく言うと？", choices: ["I'm going to take whitened teeth", "I'm going to get my teeth whitened", "I'm going to do my teeth whitening", "I'm going to make my teeth whitened"], correct: 1,
+      explain: "get + もの + 過去分詞 = （人に）〜してもらう。'I'm going to get my teeth whitened tomorrow.'（明日ホワイトニングをしてもらう）。自分でやるのではなく誰かにやってもらうときの形。get my hair cut も同じ。" },
+    { id: "p39", q: "「明日もやる仕事がある」を自然に言うと？", choices: ["I'm also going to do tasks tomorrow", "I have more tasks to do tomorrow", "I also do tasks tomorrow", "I'm going to do task tomorrow too"], correct: 1,
+      explain: "have + もの + to do = 〜すべき…がある。'I have more tasks to do tomorrow.'（明日もやる仕事がある）。be going to do tasks だと「タスクをする予定」と言うだけで、量が残っている感じが出ない。" },
+    { id: "p40", q: "「自信がつくといいな」を自然に言うと？", choices: ["I want to get more confidence to take it", "I hope it gives me more confidence", "I want to have confidence to take", "I hope to get confidence it"], correct: 1,
+      explain: "I hope it gives me ~ = それが〜をくれるといいな。'I hope it gives me more confidence.'（自信がつくといいな）。主語を it（そのこと）にすると、願いがすっきり伝わる。" },
+    { id: "p41", q: "「でも、他の先生も試してみたいな」と付け足すとき自然なのは？", choices: ["But I want to try other teachers too", "I want to try other teachers too, though", "But too I want to try other teachers", "I want to try other teachers but though"], correct: 1,
+      explain: "though を文末に置くと「でもね」と軽く付け足せる。'I want to try other teachers too, though.'。文頭の But でも通じるが、though を後ろに置くほうが会話らしく柔らかい。" },
+    { id: "p42", q: "「歯を白いままにしておきたい」の「歯」を指す代名詞は？", choices: ["I want to keep it white", "I want to keep them white", "I want to keep its white", "I want to keep they white"], correct: 1,
+      explain: "teeth（歯）は複数形なので、受ける代名詞は them。'I want to keep them white.'（白いままにしておきたい）。tooth（1本）なら it。keep + もの + 形容詞 で「〜を…の状態に保つ」。" },
+    { id: "p43", q: "「〜で思い出したけど」と話題をつなぐときは？", choices: ["Speaking about that", "Speaking of that", "Speaking for that", "Talking about of that"], correct: 1,
+      explain: "Speaking of ~ = 〜といえば、〜で思い出したけど（前の話題から自然につなぐ）。'Speaking of the gym, I went there yesterday.'。Speaking about という形は使わない。" },
+    { id: "p44", q: "「新しいデッキが完成した（今できている）」を正しく言うと？", choices: ["My new deck was complete", "My new deck is complete", "My new deck has complete", "My new deck was completed now"], correct: 1,
+      explain: "今その状態にあることは is（現在形）で表す。'My new deck is complete.'（新しいデッキが完成した）。was にすると「あのときは完成していた（今は違うかも）」というニュアンスになる。" },
+    { id: "p45", q: "「友達と対戦する」を正しく言うと？", choices: ["I want to play it to my friends", "I want to play it against my friends", "I want to play it with friends against", "I want to play it for my friends"], correct: 1,
+      explain: "against = 〜を相手にして（対戦）。'I want to play it against my friends.'（友達と対戦したい）。with friends だと「友達と一緒に（協力して）遊ぶ」の意味になるので、勝負なら against。" },
+    { id: "p46", q: "「家に帰るのが遅くなりそう」を正しく言うと？", choices: ["I'm going to back home late", "I'm going to get home late", "I'm going to go back home lately", "I'm going to home late"], correct: 1,
+      explain: "get home = 家に着く。back home は「家に戻って（いる状態）」で動詞がないので、go back home か get home にする。'I'm going to get home late tonight.'（今夜は帰りが遅くなりそう）。" },
+    { id: "p47", q: "「遅く」を表すとき正しいのは？", choices: ["I'll get home lately", "I'll get home late", "I'll get home in late", "I'll get home lateness"], correct: 1,
+      explain: "late = 遅く（時間）。lately は「最近」という全く別の意味。'I'll get home late.'（遅く帰る）vs 'I've been busy lately.'（最近忙しい）。形が似ているので書くとき注意。" },
+    { id: "p48", q: "「夜のルーティンを早く済ませる」を正しく言うと？", choices: ["I'll finish night routine quickly", "I'll finish my night routine quickly", "I'll finish night routines quick", "I'll finish the night routine quick"], correct: 1,
+      explain: "routine は数えられる名詞なので、my や the を付ける。'I'll finish my night routine quickly.'（夜のルーティンを早く済ませる）。quickly（副詞）で動詞 finish を説明するのもポイント。" },
+    { id: "p49", q: "「自分のタスクではなく、同僚を手伝った」を正しく言うと？", choices: ["I helped my coworker for my tasks", "I helped my coworker instead of doing my tasks", "I helped my coworker without my tasks", "I helped my coworker than my tasks"], correct: 1,
+      explain: "instead of + -ing = 〜する代わりに、〜せずに。'I helped my coworker instead of doing my tasks.'（自分のタスクをやる代わりに同僚を手伝った）。of の後ろは動詞の -ing 形にする。" },
+    { id: "p50", q: "「別のレッスンを受ける」で、まだ決まっていない別の1回を指すのは？", choices: ["the other lesson", "another lesson", "other lesson", "the another lesson"], correct: 1,
+      explain: "another = もう1つ別の（不特定）。'I'm going to take another lesson tomorrow.'（明日また別のレッスンを受ける）。the other は「（2つのうち）残りのもう一方」を指すので、数が決まっていない場面には合わない。" },
+    { id: "p51", q: "「毎日友達と昼ごはんを食べられて嬉しい」を自然に言うと？", choices: ["I'm glad to have lunch with friends", "I'm glad I can have lunch with my friends", "I'm glad having lunch with friends", "I'm glad that I have lunch friends"], correct: 1,
+      explain: "I'm glad + 文 = 〜で嬉しい。'I'm glad I can have lunch with my friends every workday.'（毎日友達と昼ごはんを食べられて嬉しい）。can を入れると「できている」という継続の嬉しさが出る。" },
+    { id: "p52", q: "「夕食を早く済ませる」を自然に言うと？", choices: ["I should finish having dinner quickly", "I should finish dinner quickly", "I should finish to have dinner quickly", "I should finish dinner quick"], correct: 1,
+      explain: "finish dinner = 夕食を終える（having は不要）。'I should finish dinner quickly.'（夕食を早く済ませないと）。文法的には finish having dinner も可能だが、ネイティブは短く finish dinner と言う。" },
+    { id: "p53", q: "「夜遅くにバグを直した」を正しく言うと？", choices: ["I fixed them late", "I fixed them late at night", "I fixed them in late night", "I fixed them lately at night"], correct: 1,
+      explain: "late at night = 夜遅くに。'I fixed them late at night.'（夜遅くに直した）。late だけだと「（予定より）遅れて」とも読めるので、夜遅い時間を言うなら at night を付けるとはっきり伝わる。" },
+    { id: "p54", q: "「ついにタスクを終わらせた」の finally の位置は？", choices: ["I finished my task finally", "I finally finished my task", "Finally I finished my task today", "I finished finally my task"], correct: 1,
+      explain: "finally（ついに）は動詞の前に置く。'I finally finished my task.'（ついにタスクを終わらせた）。文末に置くと言い足したような響きになり、動詞と目的語の間には入れられない。" },
+    { id: "p55", q: "「次の月曜に休みを取る」の前置詞は？", choices: ["on next Monday", "next Monday", "in next Monday", "at next Monday"], correct: 1,
+      explain: "next / last / this が付く時間表現には前置詞を付けない。'I'm going to take next Monday off.'（次の月曜に休みを取る）。next Monday / last week / this morning すべて前置詞なしで使う。" },
+    { id: "p56", q: "「今週は4回レッスンを受けた」を正しく言うと？", choices: ["I took lesson four times this week", "I took lessons four times this week", "I took four time lessons this week", "I took lesson in four times this week"], correct: 1,
+      explain: "four times（4回）と回数を言うときは、受けたものも複数形 lessons にする。'I took lessons four times this week.'（今週は4回レッスンを受けた）。数と名詞の形をそろえるのがポイント。" },
+    { id: "p57", q: "「自分を褒めたい」を自然に言うと？", choices: ["I want to praise me", "I'm proud of myself", "I want to praise to me", "I'm proud of me myself"], correct: 1,
+      explain: "I'm proud of myself = 自分を褒めたい、自分を誇りに思う。'I took four lessons this week. I'm proud of myself!'。praise me は他人に褒めてもらう形なので、自分で自分を褒めるなら proud of myself。" },
+    { id: "p58", q: "「頭がすっきりしている」を正しく言うと？", choices: ["I'm clear mind now", "My mind is clear now", "I'm clear in mind now", "My mind clear now"], correct: 1,
+      explain: "主語を My mind にして 'My mind is clear now.'（今は頭がすっきりしている）。'I'm clear mind' だと「私＝すっきりした心」という意味になってしまう。I feel refreshed も使える。" },
+    { id: "p59", q: "「明日から4連休だ」を正しく言うと？", choices: ["I have four days off tomorrow", "I have four days off starting tomorrow", "I have four days off from tomorrow", "I'm going to have four days off at tomorrow"], correct: 1,
+      explain: "starting tomorrow = 明日から。'I have four days off starting tomorrow.'（明日から4連休だ）。tomorrow だけだと「明日だけ4日休む」ような不自然な響きになる。" },
+    { id: "p60", q: "「明後日、彼女とゲームをする」の自然な語順は？", choices: ["I'm going to play games the day after tomorrow with my girlfriend", "I'm going to play games with my girlfriend the day after tomorrow", "I'm going to play with my girlfriend games the day after tomorrow", "I'm going to the day after tomorrow play games with my girlfriend"], correct: 1,
+      explain: "英語は「何を → 誰と → いつ」の順が自然で、時間はいちばん後ろに置くことが多い。'I'm going to play games with my girlfriend the day after tomorrow.'（明後日、彼女とゲームをする）。" },
+    { id: "p61", q: "「この休みは楽しくなりそう」を正しく言うと？", choices: ["This days off will make me happy", "These days off will make me happy", "This day off will make me happy them", "These days off will makes me happy"], correct: 1,
+      explain: "days は複数形なので This ではなく These を使う。'These days off will make me happy.'。もっと自然に言うなら 'I'm sure I'll have a great time!'（きっと楽しくなる）もおすすめ。" }
   ]
 };
 
@@ -689,7 +739,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/29';
+const APP_UPDATED = '2026/10/30';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
