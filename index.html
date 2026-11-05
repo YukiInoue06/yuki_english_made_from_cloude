@@ -468,7 +468,12 @@ const SPEAKING = [
 
   // --- 第20回 レッスン ---
   { id: 's153', ja: 'だんだん寒くなってきています。', en: "It's getting colder.", note: "It's getting + 形容詞 = だんだん～になってきている。難しい名詞を主語にせず It's で始めると崩れない。" },
-  { id: 's154', ja: '彼女は仕事でとてもストレスを抱えています。', en: "She's under a lot of stress at work.", note: 'under a lot of stress = ストレスを抱えている。under が来たら stress とセットで覚える。' }
+  { id: 's154', ja: '彼女は仕事でとてもストレスを抱えています。', en: "She's under a lot of stress at work.", note: 'under a lot of stress = ストレスを抱えている。under が来たら stress とセットで覚える。' },
+
+  // --- 第23回 レッスン（aside from） ---
+  { id: 's155', ja: 'ゲームのほかに、バドミントンも好きです。', en: "Aside from games, I also like badminton.", note: 'aside from ~ = ～のほかに。besides とほぼ同じ意味。' },
+  { id: 's156', ja: 'ポテトのほかに、何が好きですか。', en: "Aside from french fries, what else do you like?", note: '先生が使っていた形。what else = ほかに何が。' },
+  { id: 's157', ja: 'ゲームプログラマーのほかに、英語も勉強しています。', en: "Aside from being a game programmer, I'm also studying English.", note: 'aside from のうしろに動詞を置くときは -ing の形にする。' }
 ];
 
 
@@ -739,7 +744,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/10/30';
+const APP_UPDATED = '2026/11/05';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
