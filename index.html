@@ -277,7 +277,9 @@ const QUESTIONS = {
     { id: "p61", q: "「この休みは楽しくなりそう」を正しく言うと？", choices: ["This days off will make me happy", "These days off will make me happy", "This day off will make me happy them", "These days off will makes me happy"], correct: 1,
       explain: "days は複数形なので This ではなく These を使う。'These days off will make me happy.'。もっと自然に言うなら 'I'm sure I'll have a great time!'（きっと楽しくなる）もおすすめ。" },
     { id: "p62", q: "「この調子で（来週も）続ける」を自然に言うと？", choices: ["I'm going to keep it on next week", "I'm going to keep it up next week", "I'm going to keep up it next week", "I'm going to keep it next week"], correct: 1,
-      explain: "keep it up = （いい調子のことを）このまま続ける。'I took four lessons this week. I'm going to keep it up next week.'（今週は4回レッスンを受けた。来週もこの調子で続ける）。it は up の前に置くので keep up it は×。人をほめるときの 'Keep it up!'（その調子！）もよく使う。" }
+      explain: "keep it up = （いい調子のことを）このまま続ける。'I took four lessons this week. I'm going to keep it up next week.'（今週は4回レッスンを受けた。来週もこの調子で続ける）。it は up の前に置くので keep up it は×。人をほめるときの 'Keep it up!'（その調子！）もよく使う。" },
+    { id: "p63", q: "「ヨーロッパは日本ほど忙しくない」を自然に言うと？", choices: ["Europe is not more busy than Japan", "Europe is not as busy as Japan", "Europe is not so busy than Japan", "Europe is not busy as Japan"], correct: 1,
+      explain: "not as ~ as … = …ほど～ではない。形容詞は as と as の間にそのままの形で入れる（busy / difficult / expensive）。比較級の more busy や than は使わない。'Europe is not as busy as Japan.'（ヨーロッパは日本ほど忙しくない）。逆に「同じくらい～」なら as busy as。" }
   ]
 };
 
@@ -518,7 +520,8 @@ const PHRASEBOOK = [
     { en: "Could you speak more slowly, please?", ja: 'もう少しゆっくり話してもらえますか。' },
     { en: "Sorry, I do not understand the question.", ja: 'すみません、質問が分かりません。', pick: true },
     { en: "Do you mean the Lego set?", ja: 'レゴのセットのことですか？（Do you mean 〜? で確認）' },
-    { en: "How do you say this in English?", ja: 'これは英語で何と言いますか。' },
+    { en: "How do you say this in English?", ja: 'これは英語で何と言いますか。', pick: true },
+    { en: "How do you say chousa-kekka in English?", ja: '「調査結果」は英語で何と言いますか。（単語名を入れて聞く形。翻訳アプリを使うより速く、覚えられる）', pick: true },
     { en: "Can I use the same word?", ja: '同じ単語を使ってもいいですか。' },
     { en: "Can you give me an example?", ja: '例を挙げてもらえますか。' },
     { en: "Let me check the text again.", ja: 'もう一度テキストを確認させてください。' },
@@ -746,7 +749,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/05';
+const APP_UPDATED = '2026/11/09';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
