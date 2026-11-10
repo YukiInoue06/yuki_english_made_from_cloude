@@ -279,7 +279,15 @@ const QUESTIONS = {
     { id: "p62", q: "「この調子で（来週も）続ける」を自然に言うと？", choices: ["I'm going to keep it on next week", "I'm going to keep it up next week", "I'm going to keep up it next week", "I'm going to keep it next week"], correct: 1,
       explain: "keep it up = （いい調子のことを）このまま続ける。'I took four lessons this week. I'm going to keep it up next week.'（今週は4回レッスンを受けた。来週もこの調子で続ける）。it は up の前に置くので keep up it は×。人をほめるときの 'Keep it up!'（その調子！）もよく使う。" },
     { id: "p63", q: "「ヨーロッパは日本ほど忙しくない」を自然に言うと？", choices: ["Europe is not more busy than Japan", "Europe is not as busy as Japan", "Europe is not so busy than Japan", "Europe is not busy as Japan"], correct: 1,
-      explain: "not as ~ as … = …ほど～ではない。形容詞は as と as の間にそのままの形で入れる（busy / difficult / expensive）。比較級の more busy や than は使わない。'Europe is not as busy as Japan.'（ヨーロッパは日本ほど忙しくない）。逆に「同じくらい～」なら as busy as。" }
+      explain: "not as ~ as … = …ほど～ではない。形容詞は as と as の間にそのままの形で入れる（busy / difficult / expensive）。比較級の more busy や than は使わない。'Europe is not as busy as Japan.'（ヨーロッパは日本ほど忙しくない）。逆に「同じくらい～」なら as busy as。" },
+    { id: "p64", q: "「浅草には有名なお寺があります」の「お寺」は？", choices: ["There is a famous temperature in Asakusa", "There is a famous temple in Asakusa", "There is a famous shrine in Asakusa", "There is a famous tempura in Asakusa"], correct: 1,
+      explain: "temple = 寺。temperature（テンペラチャー）は「温度」でまったく別の単語なので注意。神社は shrine なので、浅草寺のような寺は temple、明治神宮のような神社は shrine。日本の観光地の話では必ず出るので temple と shrine はセットで覚える。'There are many temples and shrines in Japan.'" },
+    { id: "p65", q: "「美術館より外での活動のほうが好きです」を自然に言うと？", choices: ["I prefer outdoor activities than museums", "I prefer outdoor activities to museums", "I prefer outdoor activities more than museums", "I more prefer outdoor activities than museums"], correct: 1,
+      explain: "prefer A to B = BよりAのほうが好き。than ではなく to を使うのがポイント。prefer 自体に「より好き」の意味があるので more も不要。'I prefer outdoor activities to museums.'（美術館より外での活動が好きです）。単独なら 'I prefer online shopping.' のように to なしでも使える。" },
+    { id: "p66", q: "「ただ見ているだけというのが苦手です」を自然に言うと？", choices: ["I'm not good at just look at things", "I'm not good at just looking at things", "I'm not good just looking at things", "I'm not good at just see things"], correct: 1,
+      explain: "be not good at ~ing = ～するのが得意ではない。at のうしろは必ず -ing の形にする（looking / cooking / speaking）。'I'm not good at looking at art, so I don't go to museums.'（絵を見るのが苦手なので美術館には行きません）。苦手な理由を説明するときの定番。" },
+    { id: "p67", q: "「たぶん3年前だったと思います」と、自信のない情報をぼかすには？", choices: ["It was three years ago", "I think it was about three years ago", "It must be three years ago", "Three years ago, surely"], correct: 1,
+      explain: "I think ~ / maybe / about を付けると、あいまいな記憶をそのまま伝えられる。言い切ると相手が事実として受け取るので、あとで訂正が必要になる。'I think it was about three years ago.'（たぶん3年くらい前だったと思います）。自信があることは言い切り、あいまいなことは I think を付ける、と使い分ける。" }
   ]
 };
 
@@ -749,7 +757,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/09';
+const APP_UPDATED = '2026/11/10';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
