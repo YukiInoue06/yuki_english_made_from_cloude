@@ -287,7 +287,11 @@ const QUESTIONS = {
     { id: "p66", q: "「ただ見ているだけというのが苦手です」を自然に言うと？", choices: ["I'm not good at just look at things", "I'm not good at just looking at things", "I'm not good just looking at things", "I'm not good at just see things"], correct: 1,
       explain: "be not good at ~ing = ～するのが得意ではない。at のうしろは必ず -ing の形にする（looking / cooking / speaking）。'I'm not good at looking at art, so I don't go to museums.'（絵を見るのが苦手なので美術館には行きません）。苦手な理由を説明するときの定番。" },
     { id: "p67", q: "「たぶん3年前だったと思います」と、自信のない情報をぼかすには？", choices: ["It was three years ago", "I think it was about three years ago", "It must be three years ago", "Three years ago, surely"], correct: 1,
-      explain: "I think ~ / maybe / about を付けると、あいまいな記憶をそのまま伝えられる。言い切ると相手が事実として受け取るので、あとで訂正が必要になる。'I think it was about three years ago.'（たぶん3年くらい前だったと思います）。自信があることは言い切り、あいまいなことは I think を付ける、と使い分ける。" }
+      explain: "I think ~ / maybe / about を付けると、あいまいな記憶をそのまま伝えられる。言い切ると相手が事実として受け取るので、あとで訂正が必要になる。'I think it was about three years ago.'（たぶん3年くらい前だったと思います）。自信があることは言い切り、あいまいなことは I think を付ける、と使い分ける。" },
+    { id: "p68", q: "「一方で、大きい家は家族には向いています」の「一方で」は？", choices: ["In the other hand, a bigger house is better for families", "On the other hand, a bigger house is better for families", "On other hand, a bigger house is better for families", "At the other hand, a bigger house is better for families"], correct: 1,
+      explain: "On the other hand = 一方で。前置詞は on、the も必要（in / at / the なしは×）。自分の意見を言ったあと、反対の面も示すときに使う。'I prefer a smaller house. On the other hand, a bigger house is better for families.'（小さい家のほうが好きです。一方で、大きい家は家族には向いています）。But でも通じるが、On the other hand のほうが両面を考えている感じが出る。" },
+    { id: "p69", q: "「そこにはどれくらい住んでいるんですか」と相手に聞くには？", choices: ["How long do you live there?", "How long have you lived there?", "How long are you living there?", "How long did you live there?"], correct: 1,
+      explain: "How long have you + 過去分詞 ~? = どれくらいの間～していますか。過去に始まって今も続いていることを聞く形なので現在完了を使う。do you live だと「どれくらい住むの？」と未来の話に聞こえ、did you live だと「もう住んでいない」という意味になる。'How long have you worked there?'（そこでどれくらい働いているんですか）も同じ形。相手が長く話しているときに挟むと、会話が双方向になる。" }
   ]
 };
 
@@ -757,7 +761,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/10';
+const APP_UPDATED = '2026/11/12';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
