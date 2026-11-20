@@ -501,7 +501,10 @@ const SPEAKING = [
   // --- 第23回 レッスン（aside from） ---
   { id: 's155', ja: 'ゲームのほかに、バドミントンも好きです。', en: "Aside from games, I also like badminton.", note: 'aside from ~ = ～のほかに。besides とほぼ同じ意味。' },
   { id: 's156', ja: 'ポテトのほかに、何が好きですか。', en: "Aside from french fries, what else do you like?", note: '先生が使っていた形。what else = ほかに何が。' },
-  { id: 's157', ja: 'ゲームプログラマーのほかに、英語も勉強しています。', en: "Aside from being a game programmer, I'm also studying English.", note: 'aside from のうしろに動詞を置くときは -ing の形にする。' }
+  { id: 's157', ja: 'ゲームプログラマーのほかに、英語も勉強しています。', en: "Aside from being a game programmer, I'm also studying English.", note: 'aside from のうしろに動詞を置くときは -ing の形にする。' },
+  { id: 's158', ja: '運動を続ける必要があります。', en: "I need to keep exercising.", note: 'need to は主語のすぐうしろに置く。It\'s need to ~ とは言えない。keep のうしろは -ing。' },
+  { id: 's159', ja: 'それは健康に良いです。', en: "It's good for my health.", note: 'Better my health. とは言わない。better は形容詞なので、動詞として使えない。' },
+  { id: 's160', ja: 'なぜなら、それが脳を健康に保つからです。', en: "Because it keeps my brain healthy.", note: 'Why? への答え。keep + 目的語 + 形容詞 = ～を…に保つ。brain は単数。理由は1つ言って That\'s all. で止める。' }
 ];
 
 
@@ -767,7 +770,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/19';
+const APP_UPDATED = '2026/11/20';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
