@@ -900,7 +900,7 @@ function pickSpeakSet(n) {
 }
 
 function resetMastery() {
-  if (confirm('マスター記録（フレーズの連続正解・瞬間英作文の定着）をリセットしますか？\nスコア記録は残ります。')) {
+  if (confirm('学習記録（フレーズ・瞬間英作文の連続正解と出題スケジュール）をリセットしますか？\nスコア記録は残ります。')) {
     mastery = {};
     speakRec = {};
     bridgeRec = {};
@@ -1224,7 +1224,6 @@ function renderSync() {
 }
 
 function renderHome() {
-  const m = getMasteryStats();
   const sp = getSpeakStats();
   const ssc = getSpeakSchedule();
   let speakLabel;
@@ -1273,14 +1272,8 @@ function renderHome() {
       </button>
     </div>
     
-    <div class="mastery-bar">
-      <div class="mastery-row">
-        <span class="mastery-label">🏆 マスター進捗</span>
-        <span class="mastery-value">${m.mastered} / ${m.total} 問 (${m.pct}%)</span>
-      </div>
-      <div class="mastery-progress"><div class="mastery-fill" style="width: ${m.pct}%"></div></div>
-      <div class="mastery-hint">3回連続正解で「マスター」扱いになり、出題されなくなります。</div>
-      <button class="reset-btn" id="resetBtn">マスター記録をリセット</button>
+    <div class="mastery-bar" style="text-align:center;">
+      <button class="reset-btn" id="resetBtn" style="margin-top:0;">学習記録をリセット</button>
     </div>
 
     <button class="btn" id="syncBtn" style="margin-top:12px;">🔄 デバイス間で記録を同期</button>
