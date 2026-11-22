@@ -737,7 +737,7 @@ const SPEAK_ALL = [
 
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/22';
+const APP_UPDATED = '2026/11/22b';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
@@ -1247,8 +1247,11 @@ function startSpeak(list) {
 
 // 自己採点：言えた / 言えなかった
 function markSpeak(ok) {
-  if (!state.revealed) return;
   const s = state.questions[state.idx];
+  if (!s) return;
+  // 答えを表示しきった段階でだけ採点できる（3段階タイプは step 2、2段階タイプは step 1）
+  const finalStep = (s.simple && s.simple.length) ? 2 : 1;
+  if ((state.step || 0) < finalStep) return;
   const store = speakStore(s.id);
   const r = store[s.id] || { s: 0, ok: 0, ng: 0 };
   const prev = r.s;
@@ -1276,6 +1279,7 @@ function next() {
   state.answered = false;
   state.picked = -1;
   state.revealed = false;
+  state.step = 0;   // 瞬間英作文の段階表示を次の問題でリセットする
   if (state.idx >= state.questions.length && state.mode !== 'speak') {
     stats.played++;
     stats.totalCorrect += state.score;
