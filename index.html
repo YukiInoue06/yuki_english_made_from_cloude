@@ -612,7 +612,7 @@ const PHRASEBOOK = [
 const PB_COUNT = PHRASEBOOK.reduce((n, s) => n + s.items.length, 0);
 
 
-// ===== 和文和訳（言いたいこと → かんたんな日本語 → 英語）=====
+// ===== 瞬間英作文のうち3段階タイプ（言いたいこと → かんたんな日本語 → 英語）=====
 // レッスンで実際に詰まった場面を素材にしている
 const BRIDGE = [
   { id: 'b01', theme: '第13回 一人旅',
@@ -772,7 +772,14 @@ const BRIDGE = [
     note: 'eat out = 外食する。例を出す時は like ~ でつなぐ。' }
 ];
 
-const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
+// 瞬間英作文の全問題。旧「和文和訳」も統合する。
+// simple を持つ問題は「言いたいこと → かんたんな日本語 → 英語」の3段階で表示する
+const SPEAK_ALL = [
+  ...SPEAKING.map(s => ({ id: s.id, ja: s.ja, en: [s.en], note: s.note })),
+  ...BRIDGE.map(b => ({ id: b.id, ja: b.raw, simple: b.simple, en: b.en, note: b.note, theme: b.theme }))
+];
+
+const TOTAL = QUESTIONS.phrase.length + SPEAK_ALL.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
@@ -845,26 +852,11 @@ function savePhraseSeen() {
   try { localStorage.setItem('eng-quiz-phrase-seen', JSON.stringify(phraseSeen)); } catch (e) {}
 }
 
-function getBridgeStreak(id) { return (bridgeRec[id] && bridgeRec[id].s) || 0; }
-function isBridgeSettled(id) { return getBridgeStreak(id) >= SPEAK_THRESHOLD; }
+// 統合後も記録は元の保存先に振り分ける（これまでの進捗をそのまま使うため）
+function speakStore(id) { return String(id).charAt(0) === 'b' ? bridgeRec : speakRec; }
+function saveSpeakStores() { saveSpeakRec(); saveBridgeRec(); }
 
-function getBridgeStats() {
-  const settled = BRIDGE.filter(b => isBridgeSettled(b.id)).length;
-  const today = BRIDGE.filter(b => bridgeRec[b.id] && bridgeRec[b.id].last === todayStr()).length;
-  return { settled, today, total: BRIDGE.length, pct: Math.round(settled / BRIDGE.length * 100) };
-}
 
-// できなかったもの → 未挑戦 → 練習中 → 定着済み の順で選ぶ
-function pickBridgeSet(n) {
-  const rank = b => {
-    const r = bridgeRec[b.id];
-    if (!r) return 1;
-    if (r.s === 0) return 0;
-    if (r.s >= SPEAK_THRESHOLD) return 3;
-    return 2;
-  };
-  return shuffle(BRIDGE).sort((a, b) => rank(a) - rank(b)).slice(0, n);
-}
 
 function savePbStars() {
   try { localStorage.setItem('eng-quiz-pbstars', JSON.stringify(pbStars)); } catch (e) {}
@@ -899,30 +891,30 @@ function todayStr() {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
 
-function getSpeakStreak(id) { return (speakRec[id] && speakRec[id].s) || 0; }
+function getSpeakStreak(id) { const r = speakStore(id)[id]; return (r && r.s) || 0; }
 function isSpeakSettled(id) { return getSpeakStreak(id) >= SPEAK_THRESHOLD; }
 
 function getSpeakStats() {
-  const settled = SPEAKING.filter(s => isSpeakSettled(s.id)).length;
-  const touched = SPEAKING.filter(s => speakRec[s.id]).length;
-  const today = SPEAKING.filter(s => speakRec[s.id] && speakRec[s.id].last === todayStr()).length;
-  return { settled, touched, today, total: SPEAKING.length, pct: Math.round(settled / SPEAKING.length * 100) };
+  const settled = SPEAK_ALL.filter(s => isSpeakSettled(s.id)).length;
+  const touched = SPEAK_ALL.filter(s => speakStore(s.id)[s.id]).length;
+  const today = SPEAK_ALL.filter(s => { const r = speakStore(s.id)[s.id]; return r && r.last === todayStr(); }).length;
+  return { settled, touched, today, total: SPEAK_ALL.length, pct: Math.round(settled / SPEAK_ALL.length * 100) };
 }
 
 // 出題の優先順位：言えなかった文 → 未挑戦 → 練習中 → 定着済み
 function pickSpeakSet(n) {
   const rank = s => {
-    const r = speakRec[s.id];
+    const r = speakStore(s.id)[s.id];
     if (!r) return 1;
     if (r.s === 0) return 0;
     if (r.s >= SPEAK_THRESHOLD) return 3;
     return 2;
   };
-  return shuffle(SPEAKING).sort((a, b) => rank(a) - rank(b)).slice(0, n);
+  return shuffle(SPEAK_ALL).sort((a, b) => rank(a) - rank(b)).slice(0, n);
 }
 
 function resetMastery() {
-  if (confirm('マスター記録（クイズの連続正解・瞬間英作文・和文和訳の定着）をリセットしますか？\nスコア記録は残ります。')) {
+  if (confirm('マスター記録（フレーズの連続正解・瞬間英作文の定着）をリセットしますか？\nスコア記録は残ります。')) {
     mastery = {};
     speakRec = {};
     bridgeRec = {};
@@ -1074,11 +1066,7 @@ function startMode(mode) {
     return;
   }
   if (mode === 'speak') {
-    startSpeak(pickSpeakSet(Math.min(10, SPEAKING.length)));
-    return;
-  }
-  if (mode === 'bridge') {
-    startBridge(pickBridgeSet(Math.min(5, BRIDGE.length)));
+    startSpeak(pickSpeakSet(Math.min(10, SPEAK_ALL.length)));
     return;
   }
   if (QUESTIONS[mode].length === 0) {
@@ -1140,42 +1128,17 @@ function pick(i) {
 }
 
 function reveal() {
-  state.revealed = true;
+  if (state.mode === 'speak') {
+    state.step = (state.step || 0) + 1;
+  } else {
+    state.revealed = true;
+  }
   render();
 }
 
-function startBridge(list) {
-  state = { mode: 'bridge', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, step: 0, history: [] };
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function bridgeNext() {
-  state.step++;
-  render();
-}
-
-function markBridge(ok) {
-  const b = state.questions[state.idx];
-  const r = bridgeRec[b.id] || { s: 0, ok: 0, ng: 0 };
-  const prev = r.s;
-  r.s = ok ? prev + 1 : 0;
-  if (ok) r.ok++; else r.ng++;
-  r.last = todayStr();
-  bridgeRec[b.id] = r;
-  saveBridgeRec();
-  if (ok) state.score++;
-  state.history.push({ id: b.id, raw: b.raw, simple: b.simple, en: b.en, note: b.note, ok,
-    justSettled: ok && r.s === SPEAK_THRESHOLD });
-  if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
-  state.idx++;
-  state.step = 0;
-  render();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
 
 function startSpeak(list) {
-  state = { mode: 'speak', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
+  state = { mode: 'speak', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, step: 0, history: [] };
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1184,18 +1147,20 @@ function startSpeak(list) {
 function markSpeak(ok) {
   if (!state.revealed) return;
   const s = state.questions[state.idx];
-  const r = speakRec[s.id] || { s: 0, ok: 0, ng: 0 };
+  const store = speakStore(s.id);
+  const r = store[s.id] || { s: 0, ok: 0, ng: 0 };
   const prev = r.s;
   r.s = ok ? prev + 1 : 0;
   if (ok) r.ok++; else r.ng++;
   r.last = todayStr();
-  speakRec[s.id] = r;
-  saveSpeakRec();
+  store[s.id] = r;
+  saveSpeakStores();
   if (ok) state.score++;
   state.history.push({
-    id: s.id, ja: s.ja, en: s.en, note: s.note, ok,
+    id: s.id, ja: s.ja, en: s.en, note: s.note, simple: s.simple, theme: s.theme, ok,
     prevStreak: prev, newStreak: r.s, justSettled: ok && r.s === SPEAK_THRESHOLD
   });
+  state.step = 0;
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
   next();
 }
@@ -1231,9 +1196,8 @@ function render() {
   if (state.mode === 'sync') r.innerHTML = renderSync();
   else if (state.mode === null) r.innerHTML = renderHome();
   else if (state.mode === 'book') r.innerHTML = renderPhrasebook();
-  else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : (state.mode === 'bridge' ? renderBridgeResult() : renderResult());
+  else if (state.idx >= state.questions.length) r.innerHTML = state.mode === 'speak' ? renderSpeakResult() : renderResult();
   else if (state.mode === 'speak') r.innerHTML = renderSpeak();
-  else if (state.mode === 'bridge') r.innerHTML = renderBridge();
   else r.innerHTML = renderQuestion();
   attach();
 }
@@ -1266,7 +1230,6 @@ function renderSync() {
 function renderHome() {
   const m = getMasteryStats();
   const sp = getSpeakStats();
-  const br = getBridgeStats();
   const sched = getPhraseSchedule();
   let phraseLabel;
   if (sched.total === 0) {
@@ -1294,12 +1257,6 @@ function renderHome() {
         <div class="mode-name">瞬間英作文</div>
         <div class="mode-count">定着 ${sp.settled} / ${sp.total}文</div>
         <div class="mode-mastered">${sp.today > 0 ? `今日 ${sp.today}文` : '1回10文'}</div>
-      </button>
-      <button class="mode-btn" data-mode="bridge" style="grid-column: 1 / -1;">
-        <div class="mode-icon">🔄</div>
-        <div class="mode-name">和文和訳</div>
-        <div class="mode-count">言いたいこと → かんたんな日本語 → 英語</div>
-        <div class="mode-mastered">${br.today > 0 ? `今日 ${br.today}問` : `定着 ${br.settled} / ${br.total}問 · 1回5問`}</div>
       </button>
       <button class="mode-btn" data-mode="book" style="grid-column: 1 / -1;">
         <div class="mode-icon">📋</div>
@@ -1462,113 +1419,18 @@ function renderPhrasebook() {
   `;
 }
 
-function renderBridge() {
-  const b = state.questions[state.idx];
-  const total = state.questions.length;
-  const pct = Math.round(state.idx / total * 100);
-  const lines = a => a.map(s => `<span class="br-line">${esc(s)}</span>`).join('');
 
-  let body = `
-    <div class="br-theme">${esc(b.theme)}</div>
-    <div class="br-stage br-raw">
-      <div class="br-label">言いたいこと</div>
-      <div class="br-box">${esc(b.raw)}</div>
-    </div>`;
-
-  if (state.step === 0) {
-    body += `
-      <p class="br-hint">主語を入れて、1文に1つのことだけにする。飾りの言葉は削る。</p>
-      <button class="btn btn-primary" id="brNextBtn">かんたんな日本語にすると？</button>`;
-  } else {
-    body += `
-      <div class="br-arrow">▼</div>
-      <div class="br-stage br-simple">
-        <div class="br-label">かんたんな日本語</div>
-        <div class="br-box">${lines(b.simple)}</div>
-      </div>`;
-    if (state.step === 1) {
-      body += `
-        <p class="br-hint">声に出して英語で言ってみてから、答えを見てください。</p>
-        <button class="btn btn-primary" id="brNextBtn">英語にすると？</button>`;
-    } else {
-      body += `
-        <div class="br-arrow">▼</div>
-        <div class="br-stage br-en">
-          <div class="br-label">英語</div>
-          <div class="br-box">${lines(b.en)}</div>
-        </div>
-        <div class="br-note">${esc(b.note)}</div>
-        <p class="q-hint" style="margin:14px 0 0;">言えましたか？</p>
-        <div class="judge-row">
-          <button class="judge-btn judge-ok" data-brjudge="1">◯ 言えた</button>
-          <button class="judge-btn judge-ng" data-brjudge="0">✗ 言えなかった</button>
-        </div>`;
-    }
-  }
-
-  return `
-    <div class="q-head">
-      <span>🔄 和文和訳 · ${state.idx + 1} / ${total}</span>
-      <span class="streak">◯ ${state.score}</span>
-    </div>
-    <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
-    ${body}
-    <button class="btn" id="homeBtn" style="margin-top: 16px;">ホームに戻る</button>
-  `;
-}
-
-function renderBridgeResult() {
-  const total = state.history.length;
-  const missed = state.history.filter(h => !h.ok);
-  const newSettled = state.history.filter(h => h.justSettled).length;
-  const st = getBridgeStats();
-  const pct = total ? Math.round(state.score / total * 100) : 0;
-
-  let msg;
-  if (pct === 100) msg = '全部言えた！この調子で';
-  else if (pct >= 60) msg = 'いい調子！できなかった分をもう一度';
-  else msg = 'かんたんな日本語に直す練習をくり返そう';
-
-  const card = h => `
-    <div class="review-item">
-      <div><span class="review-mark">${h.ok ? '◯' : '✗'}</span>${esc(h.raw)}</div>
-      <div class="review-correct">→ ${esc(h.simple.join(' / '))}</div>
-      <div class="review-correct" style="color:#C0DD97;">→ ${esc(h.en.join(' '))}</div>
-    </div>`;
-
-  const missedHTML = missed.length ? `
-    <div class="review">
-      <div class="review-h">言えなかった ${missed.length}問</div>
-      ${missed.map(card).join('')}
-    </div>` : '';
-  const okList = state.history.filter(h => h.ok);
-  const okHTML = okList.length ? `
-    <div class="review">
-      <div class="review-h">言えた ${okList.length}問</div>
-      ${okList.map(card).join('')}
-    </div>` : '';
-
-  return `
-    <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">おつかれさま</p>
-    <div class="score-num">${state.score} / ${total}</div>
-    <div class="score-msg">${msg}<br>定着 ${st.settled} / ${st.total}問（${st.pct}%）</div>
-    ${newSettled > 0 ? `<div class="score-msg" style="color:#C0DD97;font-weight:600;">🏆 新たに ${newSettled}問が定着しました！</div>` : ''}
-    ${missed.length ? `<button class="btn btn-primary" id="brRetryWrongBtn">言えなかった${missed.length}問をもう一度</button>` : ''}
-    <div class="btn-row">
-      <button class="btn ${missed.length ? '' : 'btn-primary'}" id="retryBtn">別の5問</button>
-      <button class="btn" id="homeBtn">ホームに戻る</button>
-    </div>
-    ${missedHTML}
-    ${okHTML}
-  `;
-}
 
 function renderSpeak() {
   const s = state.questions[state.idx];
   const total = state.questions.length;
   const pct = Math.round((state.idx) / total * 100);
+  const lines = a => a.map(x => `<span class="br-line">${esc(x)}</span>`).join('');
+  const hasSimple = !!(s.simple && s.simple.length);
+  const finalStep = hasSimple ? 2 : 1;
+  const step = state.step || 0;
 
-  const rec = speakRec[s.id];
+  const rec = speakStore(s.id)[s.id];
   const streak = getSpeakStreak(s.id);
   let tag = '<span class="speak-tag new">はじめて</span>';
   if (rec) {
@@ -1576,31 +1438,56 @@ function renderSpeak() {
     else tag = `<span class="speak-tag">連続 ${streak}/${SPEAK_THRESHOLD}</span>`;
   }
 
-  let body;
-  if (!state.revealed) {
-    body = `
-      <p class="q-text">${esc(s.ja)}${tag}</p>
-      <p class="q-hint">声に出して英語で言ってから、答えを見てください。</p>
-      <button class="btn btn-primary" id="revealBtn">英語を見る</button>
-    `;
+  let body = '';
+  if (s.theme) body += `<div class="br-theme">${esc(s.theme)}</div>`;
+  if (step < finalStep) {
+    // まだ答えを見ていない段階
+    body += `<p class="q-text">${esc(s.ja)}${step === 0 ? tag : ''}</p>`;
+    if (hasSimple && step === 1) {
+      body += `
+        <div class="br-arrow">▼</div>
+        <div class="br-stage br-simple">
+          <div class="br-label">かんたんな日本語</div>
+          <div class="br-box">${lines(s.simple)}</div>
+        </div>
+        <p class="q-hint">声に出して英語で言ってみてから、答えを見てください。</p>
+        <button class="btn btn-primary" id="revealBtn">英語を見る</button>`;
+    } else if (hasSimple) {
+      body += `
+        <p class="q-hint">主語を入れて、1文に1つのことだけにする。飾りの言葉は削る。</p>
+        <button class="btn btn-primary" id="revealBtn">かんたんな日本語にすると？</button>`;
+    } else {
+      body += `
+        <p class="q-hint">声に出して英語で言ってから、答えを見てください。</p>
+        <button class="btn btn-primary" id="revealBtn">英語を見る</button>`;
+    }
   } else {
-    body = `
-      <p class="q-text" style="opacity:0.6;">${esc(s.ja)}</p>
+    // 答えを表示して自己採点
+    body += `<p class="q-text" style="opacity:0.6;">${esc(s.ja)}</p>`;
+    if (hasSimple) {
+      body += `
+        <div class="br-arrow">▼</div>
+        <div class="br-stage br-simple">
+          <div class="br-label">かんたんな日本語</div>
+          <div class="br-box">${lines(s.simple)}</div>
+        </div>
+        <div class="br-arrow">▼</div>`;
+    }
+    body += `
       <div class="feedback ok" style="margin-top:14px;">
-        <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${esc(s.en)}</div>
+        <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${lines(s.en)}</div>
         ${s.note ? `<div style="font-size:13px;opacity:0.85;">${esc(s.note)}</div>` : ''}
       </div>
       <p class="q-hint" style="margin:14px 0 0;">言えましたか？</p>
       <div class="judge-row">
         <button class="judge-btn judge-ok" data-judge="1">◯ 言えた</button>
         <button class="judge-btn judge-ng" data-judge="0">✗ 言えなかった</button>
-      </div>
-    `;
+      </div>`;
   }
 
   return `
     <div class="q-head">
-      <span>瞬間英作文 · ${state.idx + 1} / ${total}</span>
+      <span>🗣️ 瞬間英作文 · ${state.idx + 1} / ${total}</span>
       <span class="streak">◯ ${state.score}</span>
     </div>
     <div class="q-progress"><div class="q-progress-fill" style="width: ${pct}%"></div></div>
@@ -1627,7 +1514,7 @@ function renderSpeakResult() {
       ${missed.map(h => `
         <div class="review-item">
           <div><span class="review-mark">✗</span>${esc(h.ja)}</div>
-          <div class="review-correct">${esc(h.en)}</div>
+          <div class="review-correct">${(h.en||[]).map(x => esc(x)).join('<br>')}</div>
           ${h.note ? `<div class="review-correct" style="opacity:0.7;">${esc(h.note)}</div>` : ''}
         </div>
       `).join('')}
@@ -1640,7 +1527,7 @@ function renderSpeakResult() {
       ${okList.map(h => `
         <div class="review-item">
           <div><span class="review-mark">◯</span>${esc(h.ja)}${h.justSettled ? ' <span class="speak-tag hot">定着！</span>' : ''}</div>
-          <div class="review-correct">${esc(h.en)}</div>
+          <div class="review-correct">${(h.en||[]).map(x => esc(x)).join('<br>')}</div>
         </div>
       `).join('')}
     </div>` : '';
@@ -1718,15 +1605,9 @@ function attach() {
   document.querySelectorAll('[data-judge]').forEach(b => {
     b.onclick = () => markSpeak(b.dataset.judge === '1');
   });
-  const brN = document.getElementById('brNextBtn'); if (brN) brN.onclick = bridgeNext;
-  document.querySelectorAll('[data-brjudge]').forEach(b => {
-    b.onclick = () => markBridge(b.dataset.brjudge === '1');
-  });
-  const brRW = document.getElementById('brRetryWrongBtn');
-  if (brRW) brRW.onclick = () => startBridge(state.history.filter(h => !h.ok)
-    .map(h => ({ id: h.id, theme: '復習', raw: h.raw, simple: h.simple, en: h.en, note: h.note })));
   const rwb = document.getElementById('retryWrongBtn');
-  if (rwb) rwb.onclick = () => startSpeak(state.history.filter(h => !h.ok).map(h => ({ id: h.id, ja: h.ja, en: h.en, note: h.note })));
+  if (rwb) rwb.onclick = () => startSpeak(state.history.filter(h => !h.ok)
+    .map(h => ({ id: h.id, ja: h.ja, en: h.en, note: h.note, simple: h.simple, theme: h.theme })));
   const nb = document.getElementById('nextBtn'); if (nb) nb.onclick = next;
   const hb = document.getElementById('homeBtn'); if (hb) hb.onclick = goHome;
   const rb = document.getElementById('retryBtn'); if (rb) rb.onclick = () => {
