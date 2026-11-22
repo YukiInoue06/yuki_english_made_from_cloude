@@ -135,6 +135,21 @@
     .mode-name { font-size: 14px; }
     .q-text { font-size: 16px; }
   }
+  /* RPG風ステータス */
+  .rpg { margin: 0 0 14px; padding: 12px 14px; background: linear-gradient(135deg, #2a2a25, #232321); border: 1px solid rgba(250,199,117,0.18); border-radius: 12px; }
+  .rpg-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .rpg-lv { font-size: 15px; font-weight: 700; color: #FAC775; }
+  .rpg-chip { font-size: 11px; padding: 3px 8px; background: #2f2f2b; border-radius: 10px; color: #a8a59c; }
+  .rpg-chip.fire { color: #FF9B6A; }
+  .rpg-chip.shield { color: #9BC8E8; }
+  .rpg-exp { height: 7px; background: #1c1c1a; border-radius: 4px; overflow: hidden; }
+  .rpg-exp-fill { height: 100%; background: linear-gradient(90deg, #C98A1E, #FAC775); transition: width 0.5s; }
+  .rpg-exp-txt { font-size: 10px; color: #6b6862; text-align: right; margin-top: 3px; }
+  .rpg-quest { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255,255,255,0.08); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .rpg-quest-done { color: #C0DD97; font-weight: 600; }
+  .rpg-quest-num { color: #f0eee7; font-weight: 600; }
+  .rpg-gain { display: inline-block; margin-left: 6px; font-size: 11px; color: #FAC775; font-weight: 600; }
+  .rpg-levelup { margin: 10px 0 0; padding: 10px; background: #3a2f0f; border-radius: 10px; text-align: center; color: #FAC775; font-weight: 700; font-size: 14px; }
 </style>
 </head>
 <body>
@@ -743,6 +758,19 @@ let wrongCount = {}; // {id: 累計間違い回数}
 let speakRec = {};   // {id: {s: 連続で言えた回数, ok: 累計○, ng: 累計×, last: 'YYYY-MM-DD'}}
 let bridgeRec = {};  // {id: {s: 連続○, ok, ng, last}}
 let pbStars = {};    // {英文: true/false} ★の付け替え（初期値からの変更分だけ保存）
+// RPG要素：レベル・連続日数・今日のクエスト
+let game = {
+  exp: null,          // 累計EXP（null なら初回。これまでの正解数から引き継ぐ）
+  streak: 0,          // 連続日数
+  bestStreak: 0,
+  lastDay: null,      // 最後にクエストを達成した日
+  questDay: null,     // 今日クエストを達成したか
+  freeze: 1,          // お守り（1日休んでも連続が途切れない）
+  freezeDate: null,   // お守りを補充した日
+  todayDate: null,    // 今日の集計日
+  todayCount: 0,      // 今日解いた数
+  questGoal: 0        // 今日の目標数
+};
 let phraseSeen = {}; // {id: 'YYYY-MM-DD'} 最後に解いた日（忘却曲線の間隔計算用）
 
 // 忘却曲線に沿った復習間隔（日数）。フレーズと瞬間英作文で共用する
@@ -781,6 +809,15 @@ function loadData() {
     const ps2 = localStorage.getItem('eng-quiz-phrase-seen');
     if (ps2) phraseSeen = JSON.parse(ps2);
   } catch (e) {}
+  try {
+    const g = localStorage.getItem('eng-quiz-game');
+    if (g) game = Object.assign(game, JSON.parse(g));
+  } catch (e) {}
+  // 初回はこれまでの正解数をEXPとして引き継ぐ
+  if (game.exp === null || game.exp === undefined) {
+    game.exp = (stats.totalCorrect || 0) * 10;
+    saveGame();
+  }
 }
 
 function saveStats() {
@@ -808,6 +845,9 @@ function saveSpeakStores() { saveSpeakRec(); saveBridgeRec(); }
 
 
 
+function saveGame() {
+  try { localStorage.setItem('eng-quiz-game', JSON.stringify(game)); } catch (e) {}
+}
 function savePbStars() {
   try { localStorage.setItem('eng-quiz-pbstars', JSON.stringify(pbStars)); } catch (e) {}
 }
@@ -915,7 +955,7 @@ function resetMastery() {
 
 // 記録をコード化（デバイス間共有用）
 function makeSyncCode() {
-  const data = { v: 6, mastery, stats, wrongCount, speakRec, pbStars, bridgeRec, phraseSeen };
+  const data = { v: 7, mastery, stats, wrongCount, speakRec, pbStars, bridgeRec, phraseSeen, game };
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 }
 
@@ -938,6 +978,7 @@ function applySyncCode(code) {
     if (data.pbStars) { pbStars = data.pbStars; savePbStars(); }
     if (data.bridgeRec) { bridgeRec = data.bridgeRec; saveBridgeRec(); }
     if (data.phraseSeen) { phraseSeen = data.phraseSeen; savePhraseSeen(); }
+    if (data.game) { game = Object.assign(game, data.game); saveGame(); }
     // v1の古いコード（wrongCountなし）の場合は、今の端末のwrongCountをそのまま維持
     state.mode = null;
     render();
@@ -948,6 +989,77 @@ function applySyncCode(code) {
 }
 
 function openSync() { state.mode = 'sync'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+// ---- RPG要素：EXP・レベル・連続日数・今日のクエスト ----
+
+// 正解1問のEXP。長い間隔の問題ほど倍率が上がる（＝本当に覚えていた証拠）
+function expFor(interval) {
+  const mult = interval >= 90 ? 8 : interval >= 30 ? 4 : interval >= 7 ? 2 : 1;
+  return { exp: 10 * mult, mult };
+}
+
+// 累計EXPからレベルと次のレベルまでの進捗を出す
+function levelFromExp(exp) {
+  let lv = 1, need = 100, acc = 0;
+  while (exp >= acc + need && lv < 999) { acc += need; lv++; need = Math.round(need * 1.15); }
+  return { lv, inLevel: exp - acc, need, pct: Math.round((exp - acc) / need * 100) };
+}
+
+// 日付が変わったら今日の集計をリセットし、目標を決める
+function ensureToday() {
+  const t = todayStr();
+  // お守りは7日ごとに1個まで補充
+  if (!game.freezeDate || daysBetween(game.freezeDate, t) >= 7) {
+    game.freeze = 1;
+    game.freezeDate = t;
+  }
+  if (game.todayDate !== t) {
+    game.todayDate = t;
+    game.todayCount = 0;
+    const ready = getPhraseSchedule().ready + getSpeakSchedule().ready;
+    game.questGoal = ready > 0 ? Math.min(10, ready) : 5;  // 期限切れがない日は前倒し5問
+    saveGame();
+  }
+}
+
+// 今日のクエストの状態
+function getQuest() {
+  ensureToday();
+  const goal = game.questGoal || 1;
+  const done = Math.min(game.todayCount, goal);
+  return { goal, done, cleared: game.questDay === todayStr() };
+}
+
+// 1問解いたときに呼ぶ。EXPを足し、クエスト達成なら連続日数を伸ばす
+function recordAnswer(ok, interval) {
+  ensureToday();
+  let gained = 0, mult = 1;
+  if (ok) {
+    const e = expFor(interval || 1);
+    gained = e.exp; mult = e.mult;
+    game.exp += gained;
+  }
+  game.todayCount++;
+  const t = todayStr();
+  if (game.questDay !== t && game.todayCount >= (game.questGoal || 1)) {
+    const gap = game.lastDay ? daysBetween(game.lastDay, t) : null;
+    if (gap === null || gap <= 0) {
+      game.streak = Math.max(1, game.streak);
+    } else if (gap === 1) {
+      game.streak += 1;
+    } else if (game.freeze > 0) {
+      game.freeze -= 1;      // お守りで連続を守る
+      game.streak += 1;
+    } else {
+      game.streak = 1;
+    }
+    game.lastDay = t;
+    game.questDay = t;
+    if (game.streak > game.bestStreak) game.bestStreak = game.streak;
+  }
+  saveGame();
+  return { gained, mult };
+}
 
 function getStreak(id) { return mastery[id] || 0; }
 function isMastered(id) { return getStreak(id) >= MASTERY_THRESHOLD; }
@@ -1087,7 +1199,7 @@ function startMode(mode) {
   const qs = mode === 'phrase'
     ? pickPhraseSet(n)
     : shuffle(QUESTIONS[mode]).slice(0, n).map(shuffleChoices);
-  state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
+  state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [], lvStart: levelFromExp(game.exp).lv };
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1113,10 +1225,13 @@ function pick(i) {
   phraseSeen[q.id] = todayStr();
   savePhraseSeen();
 
+  // RPG：解いていた間隔に応じてEXPを加算
+  const servedInterval = phraseSeen[q.id] ? srsInterval(prevStreak) : 1;
+  const gain = recordAnswer(ok, servedInterval);
   state.history.push({
     q: q.q, picked: q.choices[i], correct: q.choices[q.correct], ok, explain: q.explain,
     prevStreak, newStreak, justMastered: ok && newStreak === MASTERY_THRESHOLD,
-    nextIn: phraseInterval(newStreak)
+    nextIn: phraseInterval(newStreak), gained: gain.gained, mult: gain.mult
   });
   render();
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
@@ -1133,7 +1248,7 @@ function reveal() {
 
 
 function startSpeak(list) {
-  state = { mode: 'speak', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, step: 0, history: [] };
+  state = { mode: 'speak', questions: shuffle(list), idx: 0, score: 0, answered: false, picked: -1, revealed: false, step: 0, history: [], lvStart: levelFromExp(game.exp).lv };
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1145,16 +1260,19 @@ function markSpeak(ok) {
   const store = speakStore(s.id);
   const r = store[s.id] || { s: 0, ok: 0, ng: 0 };
   const prev = r.s;
+  const prevLast = r.last;
   r.s = ok ? prev + 1 : 0;
   if (ok) r.ok++; else r.ng++;
   r.last = todayStr();
   store[s.id] = r;
   saveSpeakStores();
   if (ok) state.score++;
+  const servedInterval = prevLast ? srsInterval(prev) : 1;
+  const gain = recordAnswer(ok, servedInterval);
   state.history.push({
     id: s.id, ja: s.ja, en: s.en, note: s.note, simple: s.simple, theme: s.theme, ok,
     prevStreak: prev, newStreak: r.s, justSettled: ok && r.s === SPEAK_THRESHOLD,
-    nextIn: srsInterval(r.s)
+    nextIn: srsInterval(r.s), gained: gain.gained, mult: gain.mult
   });
   state.step = 0;
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
@@ -1225,6 +1343,25 @@ function renderSync() {
 
 function renderHome() {
   const sp = getSpeakStats();
+  const lv = levelFromExp(game.exp);
+  const quest = getQuest();
+  const rpgHTML = `
+    <div class="rpg">
+      <div class="rpg-top">
+        <span class="rpg-lv">Lv.${lv.lv}</span>
+        <span class="rpg-chip fire">🔥 ${game.streak}日連続</span>
+        ${game.freeze > 0 ? '<span class="rpg-chip shield">🛡️ お守り 1</span>' : '<span class="rpg-chip">🛡️ お守り 0</span>'}
+        ${game.bestStreak > game.streak ? `<span class="rpg-chip">最長 ${game.bestStreak}日</span>` : ''}
+      </div>
+      <div class="rpg-exp"><div class="rpg-exp-fill" style="width:${lv.pct}%"></div></div>
+      <div class="rpg-exp-txt">EXP ${lv.inLevel} / ${lv.need}</div>
+      <div class="rpg-quest">
+        <span>📜 今日のクエスト</span>
+        ${quest.cleared
+          ? '<span class="rpg-quest-done">達成！✓</span>'
+          : `<span class="rpg-quest-num">${quest.done} / ${quest.goal} 問</span>`}
+      </div>
+    </div>`;
   const ssc = getSpeakSchedule();
   let speakLabel;
   if (ssc.total === 0) {
@@ -1251,6 +1388,7 @@ function renderHome() {
   }
   
   return `
+    ${rpgHTML}
     <p class="subtitle">フレーズと瞬間英作文は忘却曲線に沿って出題されます。できるほど次に出る間隔が広がり（1日→3日→7日→14日→30日→60日→90日）、間違えるとまた翌日に出ます。定着した問題も忘れないよう、時間をおいて復習として出ます。</p>
     <div class="mode-grid">
       <button class="mode-btn" data-mode="phrase" ${sched.total === 0 ? 'disabled' : ''}>
@@ -1319,6 +1457,7 @@ function renderQuestion() {
     const last = state.history[state.history.length - 1];
     let masteryNote = '';
     const nextNote = last.nextIn ? `次の出題は約${last.nextIn}日後` : '';
+    const expNote = last.gained ? `<span class="rpg-gain">+${last.gained} EXP${last.mult > 1 ? ' ×' + last.mult + '!' : ''}</span>` : '';
     if (ok) {
       if (last.justMastered) {
         masteryNote = `<span class="fb-mastery">🎉 マスター達成！${nextNote}に復習として出ます。</span>`;
@@ -1334,7 +1473,7 @@ function renderQuestion() {
     }
     fbHTML = `
       <div class="feedback ${ok ? 'ok' : 'ng'}">
-        <div class="fb-label">${ok ? '✓ 正解！' : '✗ 残念...'}</div>
+        <div class="fb-label">${ok ? '✓ 正解！' : '✗ 残念...'}${expNote}</div>
         ${esc(q.explain)}
         ${masteryNote}
       </div>
@@ -1479,7 +1618,7 @@ function renderSpeak() {
         <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${lines(s.en)}</div>
         ${s.note ? `<div style="font-size:13px;opacity:0.85;">${esc(s.note)}</div>` : ''}
       </div>
-      <p class="q-hint" style="margin:14px 0 0;">言えましたか？（◯なら約${srsInterval(streak + 1)}日後、✗なら翌日に出ます）</p>
+      <p class="q-hint" style="margin:14px 0 0;">言えましたか？（◯なら +${expFor(speakDaysSince(s.id) === null ? 1 : srsInterval(streak)).exp} EXP・約${srsInterval(streak + 1)}日後／✗なら翌日）</p>
       <div class="judge-row">
         <button class="judge-btn judge-ok" data-judge="1">◯ 言えた</button>
         <button class="judge-btn judge-ng" data-judge="0">✗ 言えなかった</button>
@@ -1538,6 +1677,7 @@ function renderSpeakResult() {
   return `
     <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">おつかれさま</p>
     <div class="score-num">${state.score} / ${total}</div>
+    ${renderRpgResult()}
     <div class="score-msg">${msg}<br>定着 ${st.settled} / ${st.total}文（${st.pct}%）</div>
     ${settledMsg}
     ${missed.length ? `<button class="btn btn-primary" id="retryWrongBtn">言えなかった${missed.length}文をもう一度</button>` : ''}
@@ -1548,6 +1688,19 @@ function renderSpeakResult() {
     ${missedHTML}
     ${okHTML}
   `;
+}
+
+// 結果画面に出すレベルアップ・クエスト達成の表示
+function renderRpgResult() {
+  const lv = levelFromExp(game.exp);
+  const earned = state.history.reduce((a, h) => a + (h.gained || 0), 0);
+  const leveled = state.lvStart && lv.lv > state.lvStart;
+  const quest = getQuest();
+  let html = '';
+  if (leveled) html += `<div class="rpg-levelup">🎉 レベルアップ！ Lv.${state.lvStart} → Lv.${lv.lv}</div>`;
+  if (quest.cleared) html += `<div class="rpg-levelup" style="background:#2b3a1b;color:#C0DD97;">📜 今日のクエスト達成！🔥 ${game.streak}日連続</div>`;
+  if (earned > 0) html += `<div class="score-msg" style="color:#FAC775;">獲得EXP +${earned}（Lv.${lv.lv} / 次まで ${lv.need - lv.inLevel}）</div>`;
+  return html;
 }
 
 function renderResult() {
@@ -1572,6 +1725,7 @@ function renderResult() {
   return `
     <p style="text-align:center; font-size:14px; color:#a8a59c; margin:0;">結果</p>
     <div class="score-num">${state.score} / ${total}</div>
+    ${renderRpgResult()}
     <div class="score-msg">${msg}<br>正答率 ${pct}%</div>
     ${masterMsg}
     <div class="btn-row">
