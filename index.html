@@ -164,8 +164,6 @@ const QUESTIONS = {
       explain: "寝る時間の話は tonight（今夜）を使う。'I'll go to bed early tonight.'。today は一日全体を指すので、夜のことを言うときは不自然に聞こえる。this morning / this afternoon / tonight と使い分ける。" },
     { id: "p06", q: "「明日、上司に報告しないといけない」を正しく言うと？", choices: ["I tell my manager tomorrow", "I need to tell my manager tomorrow", "I telling my manager tomorrow", "I will telling my manager tomorrow"], correct: 1,
       explain: "これからやるべきことは need to + 動詞の原形。'I need to tell my manager tomorrow.'（明日上司に報告しないといけない）。現在形の I tell だと「いつも報告している」という習慣の意味になってしまう。" },
-    { id: "p07", q: "「マスターボールのランクに到達する」を自然に言うと？", choices: ["get the Master Ball rank", "reach the Master Ball rank", "arrive the Master Ball rank", "take the Master Ball rank"], correct: 1,
-      explain: "reach = （ある段階・ランク）に到達する。'I'm close to reaching the Master Ball rank.'（マスターボールのランクまであと少しだ）。ランク名は大文字で始めるのが自然。" },
     { id: "p08", q: "「だんだん面白くなってきた」を正しく言うと？", choices: ["It seemed like getting fun", "It is starting to get fun", "It seems like get fun", "It started like getting fun"], correct: 1,
       explain: "start to get ~ = だんだん〜になってくる。'The game is starting to get fun.'（そのゲームはだんだん面白くなってきた）。seem like の後ろに動詞の -ing 形を続ける形は文法的に作れない。" },
     { id: "p09", q: "「のどが痛い」を正しく言うと？", choices: ["I have a sour throat", "I have a sore throat", "I have a sore neck", "I have a sick throat"], correct: 1,
@@ -218,8 +216,6 @@ const QUESTIONS = {
       explain: "again（また）は動詞と目的語のあとに置く。'I want to play it again tonight.'（今夜またそれをやりたい）。play again it のように目的語の前に割り込ませることはできない。" },
     { id: "p33", q: "「とても気に入っている」を正しく言うと？", choices: ["I love so much", "I love it so much", "I love so much it", "I'm love it so much"], correct: 1,
       explain: "love は後ろに「何を」が必要な動詞なので、it を省略できない。'I love it so much.'（とても気に入っている）。日本語では「大好き」と目的語を省けるが、英語では it / them を入れる。" },
-    { id: "p34", q: "「昨日と今日、カードを売った」を自然な順番で言うと？", choices: ["I sold my cards today and yesterday", "I sold my cards yesterday and today", "I sold my cards in today and yesterday", "I sold my cards yesterday to today"], correct: 1,
-      explain: "起きた順（古い→新しい）に並べるのが自然。'I sold my cards yesterday and today.'（昨日と今日カードを売った）。英語では時間の流れに沿って言うと聞き手が理解しやすい。" },
     { id: "p35", q: "「このお金を使うつもりだ」を正しく言うと？", choices: ["This money is going to use", "I'm going to use this money", "This money is going to be use", "I'm going to used this money"], correct: 1,
       explain: "お金は「使われる側」なので主語にすると受け身の形が必要になり、文が複雑になる。シンプルに自分を主語にして 'I'm going to use this money.'（このお金を使うつもりだ）と言うのが自然。" },
     { id: "p36", q: "「さっぱりした・すっきりした」を正しく言うと？", choices: ["I'm clear", "I feel refreshed", "I'm refresh", "I feel clear up"], correct: 1,
@@ -228,32 +224,24 @@ const QUESTIONS = {
       explain: "Later today = 今日このあと（まだ起きていないこれからの話）。'Later today, I'll go shopping.'。After that は「（すでに話した出来事）のあとで」という意味なので、今この瞬間から先の予定には合わない。" },
 
     // --- 10/22〜10/30 の日記添削より ---
-    { id: "p38", q: "「歯のホワイトニングをしてもらう予定」を正しく言うと？", choices: ["I'm going to take whitened teeth", "I'm going to get my teeth whitened", "I'm going to do my teeth whitening", "I'm going to make my teeth whitened"], correct: 1,
-      explain: "get + もの + 過去分詞 = （人に）〜してもらう。'I'm going to get my teeth whitened tomorrow.'（明日ホワイトニングをしてもらう）。自分でやるのではなく誰かにやってもらうときの形。get my hair cut も同じ。" },
     { id: "p39", q: "「明日もやる仕事がある」を自然に言うと？", choices: ["I'm also going to do tasks tomorrow", "I have more tasks to do tomorrow", "I also do tasks tomorrow", "I'm going to do task tomorrow too"], correct: 1,
       explain: "have + もの + to do = 〜すべき…がある。'I have more tasks to do tomorrow.'（明日もやる仕事がある）。be going to do tasks だと「タスクをする予定」と言うだけで、量が残っている感じが出ない。" },
     { id: "p40", q: "「自信がつくといいな」を自然に言うと？", choices: ["I want to get more confidence to take it", "I hope it gives me more confidence", "I want to have confidence to take", "I hope to get confidence it"], correct: 1,
       explain: "I hope it gives me ~ = それが〜をくれるといいな。'I hope it gives me more confidence.'（自信がつくといいな）。主語を it（そのこと）にすると、願いがすっきり伝わる。" },
     { id: "p41", q: "「でも、他の先生も試してみたいな」と付け足すとき自然なのは？", choices: ["But I want to try other teachers too", "I want to try other teachers too, though", "But too I want to try other teachers", "I want to try other teachers but though"], correct: 1,
       explain: "though を文末に置くと「でもね」と軽く付け足せる。'I want to try other teachers too, though.'。文頭の But でも通じるが、though を後ろに置くほうが会話らしく柔らかい。" },
-    { id: "p42", q: "「歯を白いままにしておきたい」の「歯」を指す代名詞は？", choices: ["I want to keep it white", "I want to keep them white", "I want to keep its white", "I want to keep they white"], correct: 1,
-      explain: "teeth（歯）は複数形なので、受ける代名詞は them。'I want to keep them white.'（白いままにしておきたい）。tooth（1本）なら it。keep + もの + 形容詞 で「〜を…の状態に保つ」。" },
     { id: "p43", q: "「〜で思い出したけど」と話題をつなぐときは？", choices: ["Speaking about that", "Speaking of that", "Speaking for that", "Talking about of that"], correct: 1,
       explain: "Speaking of ~ = 〜といえば、〜で思い出したけど（前の話題から自然につなぐ）。'Speaking of the gym, I went there yesterday.'。Speaking about という形は使わない。" },
     { id: "p44", q: "「新しいデッキが完成した（今できている）」を正しく言うと？", choices: ["My new deck was complete", "My new deck is complete", "My new deck has complete", "My new deck was completed now"], correct: 1,
       explain: "今その状態にあることは is（現在形）で表す。'My new deck is complete.'（新しいデッキが完成した）。was にすると「あのときは完成していた（今は違うかも）」というニュアンスになる。" },
     { id: "p45", q: "「友達と対戦する」を正しく言うと？", choices: ["I want to play it to my friends", "I want to play it against my friends", "I want to play it with friends against", "I want to play it for my friends"], correct: 1,
       explain: "against = 〜を相手にして（対戦）。'I want to play it against my friends.'（友達と対戦したい）。with friends だと「友達と一緒に（協力して）遊ぶ」の意味になるので、勝負なら against。" },
-    { id: "p46", q: "「家に帰るのが遅くなりそう」を正しく言うと？", choices: ["I'm going to back home late", "I'm going to get home late", "I'm going to go back home lately", "I'm going to home late"], correct: 1,
-      explain: "get home = 家に着く。back home は「家に戻って（いる状態）」で動詞がないので、go back home か get home にする。'I'm going to get home late tonight.'（今夜は帰りが遅くなりそう）。" },
     { id: "p47", q: "「遅く」を表すとき正しいのは？", choices: ["I'll get home lately", "I'll get home late", "I'll get home in late", "I'll get home lateness"], correct: 1,
       explain: "late = 遅く（時間）。lately は「最近」という全く別の意味。'I'll get home late.'（遅く帰る）vs 'I've been busy lately.'（最近忙しい）。形が似ているので書くとき注意。" },
     { id: "p48", q: "「夜のルーティンを早く済ませる」を正しく言うと？", choices: ["I'll finish night routine quickly", "I'll finish my night routine quickly", "I'll finish night routines quick", "I'll finish the night routine quick"], correct: 1,
       explain: "routine は数えられる名詞なので、my や the を付ける。'I'll finish my night routine quickly.'（夜のルーティンを早く済ませる）。quickly（副詞）で動詞 finish を説明するのもポイント。" },
     { id: "p49", q: "「自分のタスクではなく、同僚を手伝った」を正しく言うと？", choices: ["I helped my coworker for my tasks", "I helped my coworker instead of doing my tasks", "I helped my coworker without my tasks", "I helped my coworker than my tasks"], correct: 1,
       explain: "instead of + -ing = 〜する代わりに、〜せずに。'I helped my coworker instead of doing my tasks.'（自分のタスクをやる代わりに同僚を手伝った）。of の後ろは動詞の -ing 形にする。" },
-    { id: "p50", q: "「別のレッスンを受ける」で、まだ決まっていない別の1回を指すのは？", choices: ["the other lesson", "another lesson", "other lesson", "the another lesson"], correct: 1,
-      explain: "another = もう1つ別の（不特定）。'I'm going to take another lesson tomorrow.'（明日また別のレッスンを受ける）。the other は「（2つのうち）残りのもう一方」を指すので、数が決まっていない場面には合わない。" },
     { id: "p51", q: "「毎日友達と昼ごはんを食べられて嬉しい」を自然に言うと？", choices: ["I'm glad to have lunch with friends", "I'm glad I can have lunch with my friends", "I'm glad having lunch with friends", "I'm glad that I have lunch friends"], correct: 1,
       explain: "I'm glad + 文 = 〜で嬉しい。'I'm glad I can have lunch with my friends every workday.'（毎日友達と昼ごはんを食べられて嬉しい）。can を入れると「できている」という継続の嬉しさが出る。" },
     { id: "p52", q: "「夕食を早く済ませる」を自然に言うと？", choices: ["I should finish having dinner quickly", "I should finish dinner quickly", "I should finish to have dinner quickly", "I should finish dinner quick"], correct: 1,
@@ -274,8 +262,6 @@ const QUESTIONS = {
       explain: "starting tomorrow = 明日から。'I have four days off starting tomorrow.'（明日から4連休だ）。tomorrow だけだと「明日だけ4日休む」ような不自然な響きになる。" },
     { id: "p60", q: "「明後日、彼女とゲームをする」の自然な語順は？", choices: ["I'm going to play games the day after tomorrow with my girlfriend", "I'm going to play games with my girlfriend the day after tomorrow", "I'm going to play with my girlfriend games the day after tomorrow", "I'm going to the day after tomorrow play games with my girlfriend"], correct: 1,
       explain: "英語は「何を → 誰と → いつ」の順が自然で、時間はいちばん後ろに置くことが多い。'I'm going to play games with my girlfriend the day after tomorrow.'（明後日、彼女とゲームをする）。" },
-    { id: "p61", q: "「この休みは楽しくなりそう」を正しく言うと？", choices: ["This days off will make me happy", "These days off will make me happy", "This day off will make me happy them", "These days off will makes me happy"], correct: 1,
-      explain: "days は複数形なので This ではなく These を使う。'These days off will make me happy.'。もっと自然に言うなら 'I'm sure I'll have a great time!'（きっと楽しくなる）もおすすめ。" },
     { id: "p62", q: "「この調子で（来週も）続ける」を自然に言うと？", choices: ["I'm going to keep it on next week", "I'm going to keep it up next week", "I'm going to keep up it next week", "I'm going to keep it next week"], correct: 1,
       explain: "keep it up = （いい調子のことを）このまま続ける。'I took four lessons this week. I'm going to keep it up next week.'（今週は4回レッスンを受けた。来週もこの調子で続ける）。it は up の前に置くので keep up it は×。人をほめるときの 'Keep it up!'（その調子！）もよく使う。" },
     { id: "p63", q: "「ヨーロッパは日本ほど忙しくない」を自然に言うと？", choices: ["Europe is not more busy than Japan", "Europe is not as busy as Japan", "Europe is not so busy than Japan", "Europe is not busy as Japan"], correct: 1,
@@ -317,10 +303,7 @@ const QUESTIONS = {
 const SPEAKING = [
   // --- 第1回 レッスン（Charlie） ---
   { id: 's01', ja: 'ポーランドに友達がいます。', en: "I have a friend in Poland.", note: 'there is my friend とは言えません。「〜がいる」は I have 〜。' },
-  { id: 's02', ja: '私は6月にフィリピンに行きました。', en: "I went to the Philippines in June.", note: 'the Philippines は the と複数形。月には in。' },
   { id: 's03', ja: 'ホテルに泊まりたいです。', en: "I would like to stay at a hotel.", note: '建物・施設は at。' },
-  { id: 's04', ja: 'クルーズ船に泊まりたいです。', en: "I would like to stay on a cruise ship.", note: '大きな乗り物の上は on。' },
-  { id: 's05', ja: 'キャンプ場に泊まりたいです。', en: "I would like to stay at a campground.", note: 'ホテルと同じで at。' },
   { id: 's06', ja: 'アメリカに住んで働きたいです。', en: "I want to live and work in America.", note: 'stay は一時的な滞在。住むなら live。国には in。' },
   { id: 's07', ja: '中学で始めましたが、本格的に勉強しているのは3年ほどです。', en: "I started in junior high school, but I have been studying hard for about three years.", note: 'but でつなぐと意図が伝わります。期間は現在完了。' },
   { id: 's08', ja: '英検を受けました。日本の英語のテストです。', en: "I took Eiken. It is an English test in Japan.", note: '日本独自のものは「名前＋説明」をセットで。' },
@@ -331,12 +314,8 @@ const SPEAKING = [
   { id: 's11', ja: '2人の人が歩いていました。', en: "Two people were walking.", note: 'person の複数形は people。背景は was/were + ing。' },
   { id: 's12', ja: '突然、片方がもう片方にぶつかりました。', en: "Suddenly, one of them bumped into the other.", note: '出来事は過去形。hit より bump into が自然。' },
   { id: 's13', ja: '彼は飲み物とカバンを落としました。', en: "He dropped his drink and his bag.", note: 'drop だけで「落とす」。down は不要。' },
-  { id: 's14', ja: '事故とは、突然起こる悪い出来事です。', en: "An accident is something bad that happens suddenly.", note: 'something that 〜 の型に、知っている言葉を流し込む。' },
   { id: 's15', ja: '運転中にスマホを見る人がいます。', en: "Some drivers look at their smartphones while driving.", note: '必ず主語と動詞を入れる。while + ing で「〜しながら」。' },
   { id: 's16', ja: '他の人と話しながら運転するのは危険です。', en: "Talking to another person while driving is dangerous.", note: 'talk に to が必要。「他の人」は another person。' },
-  { id: 's17', ja: '運転手は道路に集中するべきです。', en: "Drivers should concentrate on the road.", note: '名詞を並べず、誰がどうするの順で組み立てる。' },
-  { id: 's18', ja: '飲んだら乗るな。', en: "Do not drink and drive.", note: '決まった言い方。丸ごと覚える。' },
-  { id: 's19', ja: '定期的に車を点検してください。', en: "Check your car regularly.", note: '相手への助言なので my ではなく your。' },
   { id: 's20', ja: '私はゲームプログラマーとして働いています。', en: "I work as a game programmer.", note: 'work as 〜。職業名の前に a が必要。' },
   { id: 's21', ja: 'この仕事を8年やっています。', en: "I have been doing this for eight years.", note: '期間（for 〜）は現在完了。' },
   { id: 's22', ja: '私のオフィスは秋葉原にあります。', en: "My office is in Akihabara.", note: '地名には in。' },
@@ -347,13 +326,9 @@ const SPEAKING = [
   { id: 's25', ja: '23歳くらいの時に始めました。', en: "I started when I was about 23.", note: '数字で沈黙しないための型。' },
   { id: 's26', ja: '高校で卓球をやっていました。', en: "I played table tennis in high school.", note: '過去の習慣は過去形で十分。' },
   { id: 's27', ja: 'だからラケットスポーツが好きです。', en: "So I like racket sports.", note: '一般論の複数名詞に a や the は不要。' },
-  { id: 's28', ja: '川のそばに住んでいます。', en: "I live by a river.", note: 'by = すぐそば。on だと川の上、in だと川の中。' },
-  { id: 's29', ja: '海岸沿いに住んでいます。', en: "I live on the coast.", note: '海に接する線の上なので on。' },
-  { id: 's30', ja: '谷にある町です。', en: "It is a town in a valley.", note: '囲まれた空間は in。' },
   { id: 's31', ja: '郊外に住んでいます。', en: "I live in the suburbs.", note: 'the ＋複数形で使う。' },
   { id: 's32', ja: 'あなたの家は大きいですか。', en: "Is your house large?", note: 'Is ＋主語＋形容詞? 形容詞は最後。' },
   { id: 's33', ja: '私の部屋は狭いですが、便利です。', en: "My apartment is small, but it is convenient.", note: '教材で読んだ文をそのまま自分の答えに使う。' },
-  { id: 's34', ja: 'その部屋は寒くてじめじめしています。', en: "The room is cold and damp.", note: 'damp = じめじめした。' },
 
   // --- 第4回 レッスン（Jazz） ---
   { id: 's35', ja: 'なぜ英語を勉強しているのですか。', en: "Why are you learning English?", note: 'are があったら必ず -ing。' },
@@ -362,7 +337,6 @@ const SPEAKING = [
   { id: 's38', ja: '文法を勉強するのは退屈です。', en: "Learning grammar is boring.", note: '「退屈させる」ものは -ing。' },
   { id: 's39', ja: '発音を練習するのが好きです。', en: "I like practicing pronunciation.", note: 'like の後ろは -ing が自然。' },
   { id: 's40', ja: 'リスニングは簡単だと思います。', en: "I find listening easy.", note: 'find + もの + 形容詞。' },
-  { id: 's41', ja: '同じ単語を使ってもいいですか。', en: "Can I use the same word?", note: '思いつかない時、黙る代わりにこう聞く。' },
   { id: 's42', ja: '例を挙げてもらえますか。', en: "Can you give me an example?", note: '講師に助けを求める型。' },
   { id: 's43', ja: 'もう一度テキストを確認させてください。', en: "Let me check the text again.", note: '黙って探さず、声に出して探す。' },
   { id: 's44', ja: 'ちょっと考えさせてください。', en: "Let me think.", note: '沈黙を埋める最重要フレーズ。' },
@@ -393,8 +367,6 @@ const SPEAKING = [
   { id: 's64', ja: 'スコアは前回と同じだったので、もうTOEICは受けません。', en: "It was the same as my previous score, so I won't take the TOEIC again.", note: "as same as ではなく the same as。never より won't ~ again が自然。" },
 
   // --- 第5回・第6回 レッスン（Diane / Jess） ---
-  { id: 's65', ja: 'セブの語学学校で1か月間、英語を勉強しました。', en: "I studied English at a language school in Cebu for a month.", note: '2回のレッスンで連続して詰まった文。study abroad を名詞のようには使えません。丸ごと覚えましょう。' },
-  { id: 's66', ja: '今年の6月に、1か月フィリピンに行きました。', en: "This June, I went to the Philippines for a month.", note: 'this が付いたら in は不要。時期を言うので現在完了ではなく過去形。' },
   { id: 's67', ja: '電車で通勤しています。', en: "I take the train to work.", note: '乗客として乗るものは take。' },
   { id: 's68', ja: '40分くらいかかります。', en: "It takes about 40 minutes.", note: '所要時間の主語は It。about で正確さを逃がせます。' },
   { id: 's69', ja: '朝の電車はいつも混んでいます。', en: "The train is always crowded in the morning.", note: 'crowded は「混んでいる」。in the morning。' },
@@ -407,69 +379,45 @@ const SPEAKING = [
   { id: 's76', ja: '向こうでは雨がたくさん降りました。', en: "We had a lot of rain there.", note: '経験として話すなら We had ~ も使えます。' },
   { id: 's77', ja: 'まあまあです、ありがとう。', en: "Pretty good, thanks.", note: 'How is your day going? への定番の返し。考えずに出せるように。' },
   { id: 's78', ja: '今のところ順調です。', en: "So far so good.", note: '挨拶の返しのストックをもう1つ。' },
-  { id: 's79', ja: 'ごめんなさい、ポジティブではなくネガティブです。', en: "Sorry, not positive. Negative.", note: '言い間違いに気づいた時の最短の直し方。' },
   { id: 's80', ja: '週末はたいていゲームかバドミントンをします。', en: "I usually play games or badminton on weekends.", note: 'よく聞かれる話題。文で用意しておく。' },
-  { id: 's81', ja: 'いつかアメリカで働いて暮らしたいです。', en: "I want to live and work in America someday.", note: '英語を学ぶ理由。someday を付けると自然。' },
   { id: 's82', ja: '電車は便利で、いつも時間通りです。', en: "The train is convenient and always on time.", note: 'on time = 時間通り。convenient とセットで。' },
 
   // --- 第7回 レッスン（Cath / レゴのディスカッション） ---
-  { id: 's83', ja: '本物のゲーム機と違って、これでは遊べません。', en: "Unlike a real console, you can't play games on it.", note: 'Unlike A, B = Aと違ってBは。違いを説明する時の型。' },
-  { id: 's84', ja: 'どちらかというと飾り物です。', en: "It's more like a display piece.", note: 'It is more like ~ = どちらかというと～です。言い換えの型。' },
   { id: 's85', ja: 'すみません、質問が分かりません。', en: "Sorry, I don't understand the question.", note: '黙るくらいなら必ずこれを言う。先生が言い換えてくれます。' },
-  { id: 's86', ja: 'レゴのセットのことですか？', en: "Do you mean the Lego set?", note: 'Do you mean ~? で質問の意図を確認できます。' },
-  { id: 's87', ja: 'さっき言ったように、これでは遊べません。', en: "Like I said, you can't play games on it.", note: '同じことを聞き直された時は、前の答えを繰り返してよい。' },
-  { id: 's88', ja: 'そのレゴのセットはとてもわくわくします。', en: "The Lego set is very exciting.", note: 'モノが主語なら -ing。' },
   { id: 's89', ja: '私はとてもわくわくしています。', en: "I am very excited.", note: '人が主語なら -ed。モノは -ing、人は -ed。' },
   { id: 's90', ja: '私は東京に住んでいます。', en: "I live in Tokyo.", note: 'I am living は「一時的に」の意味。ずっと住んでいるなら live。' },
   { id: 's91', ja: '先生の後に続いて読みたいです。', en: "I would like to repeat after you, please.", note: 'レッスンの進め方を聞かれた時の定番。' },
   { id: 's92', ja: 'レッスン中、間違いを直してもらえますか。', en: "Could you correct my mistakes during the lesson?", note: 'レッスン冒頭でこれを頼むと指導が細かくなります。' },
 
   // --- 第8回 レッスン（接客サービスのディスカッション） ---
-  { id: 's93', ja: '店員は同時に多くのことを考えなければなりません。', en: "Workers have to think about many things at the same time.", note: 'because の後ろは必ず主語から。人 + have to ~ の型。' },
-  { id: 's94', ja: 'お客さんに断るのは難しいです。', en: "It's hard to say no to customers.", note: 'It is hard to ~ = ～するのは難しい。理由を言う時の型。' },
   { id: 's95', ja: '覚えることがたくさんあります。', en: "There are many rules to remember.", note: 'There are ~ で「～がある」。理由の3つ目の型。' },
-  { id: 's96', ja: '良いおもてなしはお客さんを喜ばせるので、また来てくれます。', en: "Good hospitality makes customers happy, so they come back again.", note: 'make + 人 + 形容詞。so で結果をつなげます。' },
   { id: 's97', ja: '賛成です。それはストレスが多いと思います。', en: "I agree. I think it's stressful.", note: '賛成・反対はまず一言で言い切ってから理由へ。' },
-  { id: 's98', ja: 'hospitality の意味を忘れてしまいました。', en: "I forgot what hospitality means.", note: 'means は動詞、meaning は名詞。I forgot the meaning. でもOK。' },
   { id: 's99', ja: '店員はみんな親切で礼儀正しかったです。', en: "The staff were all friendly and polite.", note: 'and でつなぐ時は品詞をそろえる。friendly が形容詞なので polite。' },
   { id: 's100', ja: '日本ではチップを払う必要がありません。', en: "There's no need to tip in Japan.", note: 'There is no need to ~ = ～する必要はない。' },
   { id: 's101', ja: '今夜またそのゲームをやるのが待ちきれない。', en: "I can't wait to play it again tonight.", note: "can't wait to ~ = ～するのが待ちきれない（楽しみでたまらない）。again は tonight の前。" },
 
   // --- 第9回 レッスン（チャーハンの記事・フリートーク） ---
-  { id: 's102', ja: 'ええと、いちばん人気の料理はカツカレーです。', en: "Let me see. Our most popular dish is the katsu curry.", note: '答える前の一瞬を Um ではなく Let me see. で埋める。' },
   { id: 's103', ja: 'もちろんです。チャーハンが大好きです。', en: "Of course. I love fried rice.", note: 'Of course. だけで止めず、もう一文足す。' },
   { id: 's104', ja: 'たいてい昼に食べます。', en: "I usually have it for lunch.", note: '単語だけで答えず、主語と動詞のある文にする。' },
   { id: 's105', ja: 'はい、ときどき作ります。早くて簡単です。', en: "Yes, I cook it sometimes. It's quick and easy.", note: 'Yes のあとに理由や感想を1文足す。' },
-  { id: 's106', ja: 'うちも残りご飯で作ります。', en: "I make it with leftover rice, too.", note: 'leftover rice = 残りご飯。too で「うちも」。' },
-  { id: 's107', ja: '日本ではネギと卵を入れます。', en: "In Japan, we put green onions and eggs in it.", note: 'put A in it = A を入れる。green onions = ネギ。' },
-  { id: 's108', ja: '日本では朝ごはんには食べません。', en: "We don't eat it for breakfast in Japan.", note: '相手の話と自分の国を比べると会話が広がる。' },
   { id: 's109', ja: 'それは面白いですね。', en: "That sounds interesting.", note: 'That sounds ~ = ～そうですね。感想の定番。' },
   { id: 's110', ja: 'なるほど。私もそう思います。', en: "I see. I think so too.", note: 'yeah yeah yeah の代わりに使う相づち。' },
   { id: 's111', ja: 'それはどういう意味ですか。', en: "What do you mean by that?", note: '聞き返す時は単語だけで返さず、この形で。' },
   { id: 's112', ja: 'その言葉は聞いたことがありません。', en: "I'm not familiar with that word.", note: '知らないと正直に言うと、先生が説明してくれます。' },
   { id: 's113', ja: '別の言い方で説明してもらえますか。', en: "Could you explain it in another way?", note: '説明を言い換えてもらう時に使う。' },
   { id: 's114', ja: '私には少し簡単でした。次はもう少し上のレベルを試せますか。', en: "This was a little easy for me. Could I try a higher level next time?", note: '教材のレベルを上げたい時に自分から伝える。' },
-  { id: 's115', ja: 'お米が高くなってきています。', en: "Rice has become more expensive.", note: 'have become = ～になってきた。変化を表す現在完了。' },
 
   // --- 第11回 レッスン（ポップコーンの記事・ディスカッション） ---
-  { id: 's116', ja: '自分で読みます。', en: "I'll read by myself.", note: '音読に自信がついたらこちら。リピートより速く進みます。' },
   { id: 's117', ja: '映画を見ながらポップコーンを食べます。', en: "I eat popcorn while watching a movie.", note: 'while + ing = ～しながら。moving ではなく watching。' },
   { id: 's118', ja: '音楽を聞きながら仕事をします。', en: "I work while listening to music.", note: '同じ while + ing を別の場面でも言えるように。' },
   { id: 's119', ja: 'ゲームをしながら英語を勉強します。', en: "I study English while playing games.", note: 'while + ing の3つ目。型は場面を変えて練習する。' },
   { id: 's120', ja: '映画を見るのは娯楽です。', en: "Watching movies is entertainment.", note: 'entertainment = 娯楽。amusement park は遊園地なので別物。' },
   { id: 's121', ja: 'だから高すぎるとは思いません。', en: "So I don't think it's too expensive.", note: 'I do not think ~ = ～とは思わない。反対意見の言い方。' },
   { id: 's122', ja: '賛成です。最近の映画は長すぎます。', en: "I agree. Movies are too long these days.", note: 'these days = 最近は。まず賛成を言い切ってから理由へ。' },
-  { id: 's123', ja: 'いちばん好きな味はバター塩です。', en: "My favorite flavor is butter and salt.", note: 'flavor = 味。単語だけで答えず文にする。' },
-  { id: 's124', ja: 'いいえ、家では作りません。', en: "No, I don't make it at home.", note: 'No のあとに動詞まで言うと自然。' },
-  { id: 's125', ja: '蒸気機関車は1820年代半ばにさかのぼります。', en: "Steam-powered trains date back to the mid-1820s.", note: '1820s は the eighteen twenties。date back to ~ = ～にさかのぼる。' },
-  { id: 's126', ja: '映画館は1940年代にポップコーンを売り始めました。', en: "Theaters started selling popcorn in the 1940s.", note: '1940s は the nineteen forties。年代は2桁目を複数形に。' },
-  { id: 's127', ja: 'ポップコーンは1800年代にアメリカで人気になりました。', en: "Popcorn became popular in America in the 1800s.", note: '1800s だけは the eighteen hundreds と読みます。' },
   { id: 's128', ja: '今日はディスカッションに多めに時間を使えますか。', en: "Could we spend more time on the discussion today?", note: '読む時間を短くして、話す時間を増やしたい時に。' },
 
   // --- 第14回 レッスン（昼食の記事・ディスカッション） ---
   { id: 's129', ja: 'お腹が空いたまま働くことがときどきあります。', en: "Sometimes I have to work while I'm hungry.", note: "while + 主語 + 形容詞 で「～の状態で」。while watching と同じ仲間。" },
-  { id: 's130', ja: '音楽を聴きながら仕事をするのが好きです。', en: "I like to work while I'm listening to music.", note: 'while のうしろに文を置く形。主語と be 動詞を入れる。' },
-  { id: 's131', ja: 'すみません、もう一度言ってもらえますか。', en: "Sorry, could you say that again?", note: '5秒考えて分からなければ、黙らずにこれを言う。' },
   { id: 's132', ja: 'いいえ、あまり昼食を抜きません。', en: "No, I don't. I don't often skip lunch.", note: '短縮応答のあとに完全な文を続けるのが理想形。' },
   { id: 's133', ja: 'はい、そうです。1時間はとても短いです。', en: "Yes, it does. One hour is very short.", note: 'Yes, it does. で受けてから理由を1文。' },
   { id: 's134', ja: '朝は時間がないので、よく朝食を抜きます。', en: "I often skip breakfast because I don't have time in the morning.", note: 'skip = 抜かす、飛ばす。' },
@@ -479,7 +427,6 @@ const SPEAKING = [
   { id: 's138', ja: 'あなたはどんなゲームをしますか。', en: "What games do you play?", note: '質問を返す形。What + 名詞 + do you ~? の語順に慣れる。' },
 
   // --- 第15回 レッスン（高齢者の就労） ---
-  { id: 's139', ja: 'そこでは65歳以上の人がたくさん働いています。', en: "Many people over 65 work there.", note: '「65歳以上の人」は people over 65。名詞のうしろに over ~ を置くだけでよい。' },
 
   // --- 第16回 レッスン（used to：昔と今を比べる） ---
   { id: 's140', ja: '以前はto-doリストを書いていましたが、もう書きません。', en: "I used to write to-do lists, but I don't anymore.", note: 'used to ~ = 以前は～だった（今は違う）。昔と今を比べる話で必ず使う形。' },
@@ -798,9 +745,12 @@ let bridgeRec = {};  // {id: {s: 連続○, ok, ng, last}}
 let pbStars = {};    // {英文: true/false} ★の付け替え（初期値からの変更分だけ保存）
 let phraseSeen = {}; // {id: 'YYYY-MM-DD'} 最後に解いた日（忘却曲線の間隔計算用）
 
-// 忘却曲線に沿った復習間隔（日数）。連続正解が増えるほど間隔が広がる
-// 連続正解: 0回→1日後, 1回→3日後, 2回→7日後, 3回(マスター)→14日後, 4回→30日後, 5回→60日後, 6回以上→90日後
-const PHRASE_INTERVALS = [1, 3, 7, 14, 30, 60, 90];
+// 忘却曲線に沿った復習間隔（日数）。フレーズと瞬間英作文で共用する
+// 連続正解: 0回→1日後, 1回→3日後, 2回→7日後, 3回(定着)→14日後, 4回→30日後, 5回→60日後, 6回以上→90日後
+const SRS_INTERVALS = [1, 3, 7, 14, 30, 60, 90];
+function srsInterval(streak) {
+  return SRS_INTERVALS[Math.min(streak, SRS_INTERVALS.length - 1)];
+}
 
 function loadData() {
   try {
@@ -901,16 +851,52 @@ function getSpeakStats() {
   return { settled, touched, today, total: SPEAK_ALL.length, pct: Math.round(settled / SPEAK_ALL.length * 100) };
 }
 
-// 出題の優先順位：言えなかった文 → 未挑戦 → 練習中 → 定着済み
+// ---- 忘却曲線に沿った出題スケジュール（瞬間英作文）----
+
+// 最後に取り組んでから何日たったか（未挑戦なら null）
+function speakDaysSince(id) {
+  const r = speakStore(id)[id];
+  if (!r || !r.last) return null;
+  const n = daysBetween(r.last, todayStr());
+  return isNaN(n) ? null : n;
+}
+
+// 出題時期まであと何日か。0以下なら「今すぐ出す」、未挑戦は最優先
+function speakDueIn(id) {
+  const since = speakDaysSince(id);
+  if (since === null) return -9999;
+  return srsInterval(getSpeakStreak(id)) - since;
+}
+
+// 今日の出題予定をまとめる
+function getSpeakSchedule() {
+  let due = 0, fresh = 0, waiting = 0, nextDays = null;
+  SPEAK_ALL.forEach(s => {
+    if (speakDaysSince(s.id) === null) { fresh++; return; }
+    const d = speakDueIn(s.id);
+    if (d <= 0) {
+      due++;
+    } else {
+      waiting++;
+      if (nextDays === null || d < nextDays) nextDays = d;
+    }
+  });
+  return { due, fresh, waiting, nextDays, ready: due + fresh, total: SPEAK_ALL.length };
+}
+
+// 出題の優先順位：復習時期が来た文（超過が大きい順）→ 未挑戦 → まだ時期が来ていない文（前倒し）
 function pickSpeakSet(n) {
   const rank = s => {
-    const r = speakStore(s.id)[s.id];
-    if (!r) return 1;
-    if (r.s === 0) return 0;
-    if (r.s >= SPEAK_THRESHOLD) return 3;
-    return 2;
+    if (speakDaysSince(s.id) === null) return 1;
+    return speakDueIn(s.id) <= 0 ? 0 : 2;
   };
-  return shuffle(SPEAK_ALL).sort((a, b) => rank(a) - rank(b)).slice(0, n);
+  return shuffle(SPEAK_ALL)
+    .sort((a, b) => {
+      const ra = rank(a), rb = rank(b);
+      if (ra !== rb) return ra - rb;
+      return speakDueIn(a.id) - speakDueIn(b.id);
+    })
+    .slice(0, n);
 }
 
 function resetMastery() {
@@ -974,9 +960,7 @@ function getAvailable(category) {
 // ---- 忘却曲線に沿った出題スケジュール（フレーズ） ----
 
 // 連続正解の回数から、次に出すまでの日数を決める
-function phraseInterval(streak) {
-  return PHRASE_INTERVALS[Math.min(streak, PHRASE_INTERVALS.length - 1)];
-}
+function phraseInterval(streak) { return srsInterval(streak); }
 
 // 'YYYY-MM-DD' を日数差に変換（b - a）
 function daysBetween(a, b) {
@@ -1066,7 +1050,18 @@ function startMode(mode) {
     return;
   }
   if (mode === 'speak') {
-    startSpeak(pickSpeakSet(Math.min(10, SPEAK_ALL.length)));
+    const ss = getSpeakSchedule();
+    let sn;
+    if (ss.ready > 0) {
+      sn = Math.min(10, ss.ready);
+    } else {
+      const msg = ss.nextDays !== null
+        ? `今日の復習は終わっています！🎉\n次の復習は約${ss.nextDays}日後です。\n\n前倒しで練習しますか？`
+        : '今日の復習は終わっています！🎉\n\n前倒しで練習しますか？';
+      if (!confirm(msg)) return;
+      sn = Math.min(10, SPEAK_ALL.length);
+    }
+    startSpeak(pickSpeakSet(sn));
     return;
   }
   if (QUESTIONS[mode].length === 0) {
@@ -1158,7 +1153,8 @@ function markSpeak(ok) {
   if (ok) state.score++;
   state.history.push({
     id: s.id, ja: s.ja, en: s.en, note: s.note, simple: s.simple, theme: s.theme, ok,
-    prevStreak: prev, newStreak: r.s, justSettled: ok && r.s === SPEAK_THRESHOLD
+    prevStreak: prev, newStreak: r.s, justSettled: ok && r.s === SPEAK_THRESHOLD,
+    nextIn: srsInterval(r.s)
   });
   state.step = 0;
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
@@ -1230,6 +1226,18 @@ function renderSync() {
 function renderHome() {
   const m = getMasteryStats();
   const sp = getSpeakStats();
+  const ssc = getSpeakSchedule();
+  let speakLabel;
+  if (ssc.total === 0) {
+    speakLabel = '問題がありません';
+  } else if (ssc.ready > 0) {
+    const sParts = [];
+    if (ssc.due > 0) sParts.push(`復習 ${ssc.due}文`);
+    if (ssc.fresh > 0) sParts.push(`新規 ${ssc.fresh}文`);
+    speakLabel = sParts.join(' · ');
+  } else {
+    speakLabel = ssc.nextDays !== null ? `今日の分は完了 · 次は約${ssc.nextDays}日後` : '今日の分は完了';
+  }
   const sched = getPhraseSchedule();
   let phraseLabel;
   if (sched.total === 0) {
@@ -1244,7 +1252,7 @@ function renderHome() {
   }
   
   return `
-    <p class="subtitle">フレーズは忘却曲線に沿って出題されます。正解するほど次に出る間隔が広がり（1日→3日→7日→14日→30日→60日→90日）、間違えるとまた翌日に出ます。マスター済みの問題も忘れないよう、時間をおいて復習として出ます。</p>
+    <p class="subtitle">フレーズと瞬間英作文は忘却曲線に沿って出題されます。できるほど次に出る間隔が広がり（1日→3日→7日→14日→30日→60日→90日）、間違えるとまた翌日に出ます。定着した問題も忘れないよう、時間をおいて復習として出ます。</p>
     <div class="mode-grid">
       <button class="mode-btn" data-mode="phrase" ${sched.total === 0 ? 'disabled' : ''}>
         <div class="mode-icon">💬</div>
@@ -1255,8 +1263,8 @@ function renderHome() {
       <button class="mode-btn" data-mode="speak">
         <div class="mode-icon">🗣️</div>
         <div class="mode-name">瞬間英作文</div>
-        <div class="mode-count">定着 ${sp.settled} / ${sp.total}文</div>
-        <div class="mode-mastered">${sp.today > 0 ? `今日 ${sp.today}文` : '1回10文'}</div>
+        <div class="mode-count">${speakLabel}</div>
+        <div class="mode-mastered">定着 ${sp.settled} / ${sp.total}文 · 1回10文</div>
       </button>
       <button class="mode-btn" data-mode="book" style="grid-column: 1 / -1;">
         <div class="mode-icon">📋</div>
@@ -1478,7 +1486,7 @@ function renderSpeak() {
         <div style="font-size:17px;font-weight:600;line-height:1.5;margin-bottom:6px;">${lines(s.en)}</div>
         ${s.note ? `<div style="font-size:13px;opacity:0.85;">${esc(s.note)}</div>` : ''}
       </div>
-      <p class="q-hint" style="margin:14px 0 0;">言えましたか？</p>
+      <p class="q-hint" style="margin:14px 0 0;">言えましたか？（◯なら約${srsInterval(streak + 1)}日後、✗なら翌日に出ます）</p>
       <div class="judge-row">
         <button class="judge-btn judge-ok" data-judge="1">◯ 言えた</button>
         <button class="judge-btn judge-ng" data-judge="0">✗ 言えなかった</button>
