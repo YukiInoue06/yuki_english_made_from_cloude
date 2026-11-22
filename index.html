@@ -776,7 +776,7 @@ const TOTAL = QUESTIONS.phrase.length + SPEAKING.length + BRIDGE.length;
 document.getElementById('total-badge').textContent = TOTAL + '問';
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/20';
+const APP_UPDATED = '2026/11/22';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
@@ -789,6 +789,11 @@ let wrongCount = {}; // {id: 累計間違い回数}
 let speakRec = {};   // {id: {s: 連続で言えた回数, ok: 累計○, ng: 累計×, last: 'YYYY-MM-DD'}}
 let bridgeRec = {};  // {id: {s: 連続○, ok, ng, last}}
 let pbStars = {};    // {英文: true/false} ★の付け替え（初期値からの変更分だけ保存）
+let phraseSeen = {}; // {id: 'YYYY-MM-DD'} 最後に解いた日（忘却曲線の間隔計算用）
+
+// 忘却曲線に沿った復習間隔（日数）。連続正解が増えるほど間隔が広がる
+// 連続正解: 0回→1日後, 1回→3日後, 2回→7日後, 3回(マスター)→14日後, 4回→30日後, 5回→60日後, 6回以上→90日後
+const PHRASE_INTERVALS = [1, 3, 7, 14, 30, 60, 90];
 
 function loadData() {
   try {
@@ -815,6 +820,10 @@ function loadData() {
     const br = localStorage.getItem('eng-quiz-bridge');
     if (br) bridgeRec = JSON.parse(br);
   } catch (e) {}
+  try {
+    const ps2 = localStorage.getItem('eng-quiz-phrase-seen');
+    if (ps2) phraseSeen = JSON.parse(ps2);
+  } catch (e) {}
 }
 
 function saveStats() {
@@ -831,6 +840,9 @@ function saveSpeakRec() {
 }
 function saveBridgeRec() {
   try { localStorage.setItem('eng-quiz-bridge', JSON.stringify(bridgeRec)); } catch (e) {}
+}
+function savePhraseSeen() {
+  try { localStorage.setItem('eng-quiz-phrase-seen', JSON.stringify(phraseSeen)); } catch (e) {}
 }
 
 function getBridgeStreak(id) { return (bridgeRec[id] && bridgeRec[id].s) || 0; }
@@ -914,16 +926,18 @@ function resetMastery() {
     mastery = {};
     speakRec = {};
     bridgeRec = {};
+    phraseSeen = {};
     saveMastery();
     saveSpeakRec();
     saveBridgeRec();
+    savePhraseSeen();
     render();
   }
 }
 
 // 記録をコード化（デバイス間共有用）
 function makeSyncCode() {
-  const data = { v: 5, mastery, stats, wrongCount, speakRec, pbStars, bridgeRec };
+  const data = { v: 6, mastery, stats, wrongCount, speakRec, pbStars, bridgeRec, phraseSeen };
   return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
 }
 
@@ -945,6 +959,7 @@ function applySyncCode(code) {
     if (data.speakRec) { speakRec = data.speakRec; saveSpeakRec(); }
     if (data.pbStars) { pbStars = data.pbStars; savePbStars(); }
     if (data.bridgeRec) { bridgeRec = data.bridgeRec; saveBridgeRec(); }
+    if (data.phraseSeen) { phraseSeen = data.phraseSeen; savePhraseSeen(); }
     // v1の古いコード（wrongCountなし）の場合は、今の端末のwrongCountをそのまま維持
     state.mode = null;
     render();
@@ -962,6 +977,67 @@ function isMastered(id) { return getStreak(id) >= MASTERY_THRESHOLD; }
 function getAvailable(category) {
   if (category === 'speak') return SPEAKING;
   return QUESTIONS[category].filter(q => !isMastered(q.id));
+}
+
+// ---- 忘却曲線に沿った出題スケジュール（フレーズ） ----
+
+// 連続正解の回数から、次に出すまでの日数を決める
+function phraseInterval(streak) {
+  return PHRASE_INTERVALS[Math.min(streak, PHRASE_INTERVALS.length - 1)];
+}
+
+// 'YYYY-MM-DD' を日数差に変換（b - a）
+function daysBetween(a, b) {
+  const d1 = new Date(a + 'T00:00:00');
+  const d2 = new Date(b + 'T00:00:00');
+  return Math.round((d2 - d1) / 86400000);
+}
+
+// 最後に解いてから何日たったか（未着手なら null）
+function phraseDaysSince(id) {
+  const last = phraseSeen[id];
+  if (!last) return null;
+  const n = daysBetween(last, todayStr());
+  return isNaN(n) ? null : n;
+}
+
+// 出題時期まであと何日か。0以下なら「今すぐ出す」、未着手は最優先
+function phraseDueIn(id) {
+  const since = phraseDaysSince(id);
+  if (since === null) return -9999;
+  return phraseInterval(getStreak(id)) - since;
+}
+
+// 今日の出題予定をまとめる
+function getPhraseSchedule() {
+  let due = 0, fresh = 0, waiting = 0, nextDays = null;
+  QUESTIONS.phrase.forEach(q => {
+    if (phraseDaysSince(q.id) === null) { fresh++; return; }
+    const d = phraseDueIn(q.id);
+    if (d <= 0) {
+      due++;
+    } else {
+      waiting++;
+      if (nextDays === null || d < nextDays) nextDays = d;
+    }
+  });
+  return { due, fresh, waiting, nextDays, ready: due + fresh, total: QUESTIONS.phrase.length };
+}
+
+// 出題の優先順位：復習時期が来たもの（超過が大きい順）→ 未着手 → まだ時期が来ていないもの（前倒し）
+function pickPhraseSet(n) {
+  const rank = q => {
+    if (phraseDaysSince(q.id) === null) return 1;
+    return phraseDueIn(q.id) <= 0 ? 0 : 2;
+  };
+  return shuffle(QUESTIONS.phrase)
+    .sort((a, b) => {
+      const ra = rank(a), rb = rank(b);
+      if (ra !== rb) return ra - rb;
+      return phraseDueIn(a.id) - phraseDueIn(b.id);
+    })
+    .slice(0, n)
+    .map(shuffleChoices);
 }
 
 function getMasteryStats() {
@@ -1005,13 +1081,29 @@ function startMode(mode) {
     startBridge(pickBridgeSet(Math.min(5, BRIDGE.length)));
     return;
   }
-  const available = getAvailable(mode);
-  if (available.length === 0) {
-    alert('このカテゴリは全問マスター済みです！🎉\nマスター記録をリセットすると再挑戦できます。');
+  if (QUESTIONS[mode].length === 0) {
+    alert('このカテゴリにはまだ問題がありません。');
     return;
   }
   const limit = 10;
-  const qs = shuffle(available).slice(0, Math.min(limit, available.length)).map(shuffleChoices);
+  let n;
+  if (mode === 'phrase') {
+    const sched = getPhraseSchedule();
+    if (sched.ready > 0) {
+      n = Math.min(limit, sched.ready);
+    } else {
+      const msg = sched.nextDays !== null
+        ? `今日の復習は終わっています！🎉\n次の復習は約${sched.nextDays}日後です。\n\n前倒しで練習しますか？`
+        : '今日の復習は終わっています！🎉\n\n前倒しで練習しますか？';
+      if (!confirm(msg)) return;
+      n = Math.min(limit, QUESTIONS.phrase.length);
+    }
+  } else {
+    n = Math.min(limit, QUESTIONS[mode].length);
+  }
+  const qs = mode === 'phrase'
+    ? pickPhraseSet(n)
+    : shuffle(QUESTIONS[mode]).slice(0, n).map(shuffleChoices);
   state = { mode, questions: qs, idx: 0, score: 0, answered: false, picked: -1, revealed: false, history: [] };
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1034,10 +1126,14 @@ function pick(i) {
     wrongCount[q.id] = (wrongCount[q.id] || 0) + 1;
     saveWrongCount();
   }
-  
+  // 忘却曲線用に「今日解いた」ことを記録する
+  phraseSeen[q.id] = todayStr();
+  savePhraseSeen();
+
   state.history.push({
     q: q.q, picked: q.choices[i], correct: q.choices[q.correct], ok, explain: q.explain,
-    prevStreak, newStreak, justMastered: ok && newStreak === MASTERY_THRESHOLD
+    prevStreak, newStreak, justMastered: ok && newStreak === MASTERY_THRESHOLD,
+    nextIn: phraseInterval(newStreak)
   });
   render();
   if (navigator.vibrate) navigator.vibrate(ok ? 20 : [10, 30, 10]);
@@ -1171,17 +1267,27 @@ function renderHome() {
   const m = getMasteryStats();
   const sp = getSpeakStats();
   const br = getBridgeStats();
-  const remaining = {
-    phrase: getAvailable('phrase').length
-  };
+  const sched = getPhraseSchedule();
+  let phraseLabel;
+  if (sched.total === 0) {
+    phraseLabel = '問題がありません';
+  } else if (sched.ready > 0) {
+    const parts = [];
+    if (sched.due > 0) parts.push(`復習 ${sched.due}問`);
+    if (sched.fresh > 0) parts.push(`新規 ${sched.fresh}問`);
+    phraseLabel = parts.join(' · ');
+  } else {
+    phraseLabel = sched.nextDays !== null ? `今日の分は完了 · 次は約${sched.nextDays}日後` : '今日の分は完了';
+  }
   
   return `
-    <p class="subtitle">3回連続正解した問題はマスター済みとして出題されません。何度も繰り返して全問マスターを目指そう！</p>
+    <p class="subtitle">フレーズは忘却曲線に沿って出題されます。正解するほど次に出る間隔が広がり（1日→3日→7日→14日→30日→60日→90日）、間違えるとまた翌日に出ます。マスター済みの問題も忘れないよう、時間をおいて復習として出ます。</p>
     <div class="mode-grid">
-      <button class="mode-btn" data-mode="phrase" ${remaining.phrase === 0 ? 'disabled' : ''}>
+      <button class="mode-btn" data-mode="phrase" ${sched.total === 0 ? 'disabled' : ''}>
         <div class="mode-icon">💬</div>
         <div class="mode-name">フレーズ</div>
-        <div class="mode-count">${QUESTIONS.phrase.length === 0 ? '問題がありません' : (remaining.phrase > 0 ? `残り${remaining.phrase}問 / 全${QUESTIONS.phrase.length}問` : '全問マスター済み')}</div>
+        <div class="mode-count">${phraseLabel}</div>
+        <div class="mode-mastered">全${sched.total}問 · 1回10問</div>
       </button>
       <button class="mode-btn" data-mode="speak">
         <div class="mode-icon">🗣️</div>
@@ -1254,14 +1360,19 @@ function renderQuestion() {
     const ok = state.picked === q.correct;
     const last = state.history[state.history.length - 1];
     let masteryNote = '';
+    const nextNote = last.nextIn ? `次の出題は約${last.nextIn}日後` : '';
     if (ok) {
       if (last.justMastered) {
-        masteryNote = `<span class="fb-mastery">🎉 マスター達成！この問題はもう出題されません。</span>`;
+        masteryNote = `<span class="fb-mastery">🎉 マスター達成！${nextNote}に復習として出ます。</span>`;
+      } else if (last.newStreak > MASTERY_THRESHOLD) {
+        masteryNote = `<span class="fb-mastery">マスター維持（連続正解 ${last.newStreak}回）・${nextNote}</span>`;
       } else {
-        masteryNote = `<span class="fb-mastery">連続正解 ${last.newStreak}/${MASTERY_THRESHOLD} ${last.newStreak >= 1 && last.newStreak < MASTERY_THRESHOLD ? '（あと ' + (MASTERY_THRESHOLD - last.newStreak) + ' 回でマスター）' : ''}</span>`;
+        masteryNote = `<span class="fb-mastery">連続正解 ${last.newStreak}/${MASTERY_THRESHOLD}（あと ${MASTERY_THRESHOLD - last.newStreak} 回でマスター）・${nextNote}</span>`;
       }
     } else if (last.prevStreak > 0) {
-      masteryNote = `<span class="fb-mastery">連続正解はリセットされました（${last.prevStreak} → 0）</span>`;
+      masteryNote = `<span class="fb-mastery">連続正解はリセットされました（${last.prevStreak} → 0）・${nextNote}</span>`;
+    } else {
+      masteryNote = `<span class="fb-mastery">${nextNote}にもう一度出ます</span>`;
     }
     fbHTML = `
       <div class="feedback ${ok ? 'ok' : 'ng'}">
@@ -1620,8 +1731,7 @@ function attach() {
   const hb = document.getElementById('homeBtn'); if (hb) hb.onclick = goHome;
   const rb = document.getElementById('retryBtn'); if (rb) rb.onclick = () => {
     const m = state.mode;
-    const available = getAvailable(m);
-    if (available.length === 0) { goHome(); return; }
+    if (QUESTIONS[m] && QUESTIONS[m].length === 0) { goHome(); return; }
     startMode(m);
   };
   const resetB = document.getElementById('resetBtn'); if (resetB) resetB.onclick = resetMastery;
