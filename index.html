@@ -476,21 +476,18 @@ const PHRASEBOOK = [
     { en: "Good morning. It is nice to meet you.", ja: 'おはようございます。はじめまして。' },
     { en: "Yes, I can hear you clearly.", ja: 'はい、はっきり聞こえます。', pick: true },
     { en: "Pretty good, thanks. How about you?", ja: 'まあまあです、ありがとう。そちらは？', pick: true },
-    { en: "So far so good.", ja: '今のところ順調です。' },
-    { en: "It is cloudy in Tokyo today.", ja: '今日の東京は曇りです。' }
+    { en: "So far so good.", ja: '今のところ順調です。' }
   ]},
   { scene: '🙋 自己紹介', items: [
-    { en: "Could you go first, please?", ja: '先にお願いできますか。', pick: true },
     { en: "I am Yuki. I live in Tokyo, Japan.", ja: 'ユウキです。日本の東京に住んでいます。' },
     { en: "I am 34 years old and I work as a game programmer.", ja: '34歳で、ゲームプログラマーとして働いています。' },
     { en: "My hobbies are playing games, badminton, and traveling.", ja: '趣味はゲームとバドミントンと旅行です。' },
     { en: "I studied English at a language school in Cebu for a month.", ja: 'セブの語学学校で1か月英語を勉強しました。', pick: true },
-    { en: "That is all about me. Thank you.", ja: '以上です。ありがとうございます。' }
+    { en: "That is about it. Thank you.", ja: '以上です。ありがとうございます。' }
   ]},
   { scene: '📚 教材と進め方', items: [
     { en: "I would like to do Daily News today.", ja: '今日はDaily Newsをやりたいです。' },
     { en: "Could you choose the topic for me?", ja: 'トピックを選んでもらえますか。' },
-    { en: "I would like to repeat after you, please.", ja: '先生の後に続いて読みたいです。', pick: true },
     { en: "I will read by myself. Please correct my pronunciation.", ja: '自分で読みます。発音を直してください。', pick: true },
     { en: "Could we start from Exercise 1?", ja: 'エクササイズ1から始められますか。' },
     { en: "Could you correct my mistakes during the lesson?", ja: 'レッスン中、間違いを直してもらえますか。', pick: true },
@@ -499,8 +496,6 @@ const PHRASEBOOK = [
   ]},
   { scene: '✅ 「質問はある？」と聞かれたら', items: [
     { en: "It is all clear for now.", ja: '今のところ全部わかりました。（先生がよく使う言い方。そのまま真似してよい）', pick: true },
-    { en: "No questions, thank you.", ja: '質問はありません、ありがとうございます。', pick: true },
-    { en: "Everything is clear, thank you.", ja: 'すべて理解できました、ありがとうございます。' },
     { en: "Actually, I have one question. What does this word mean?", ja: '実は1つ質問があります。この単語はどういう意味ですか。' },
     { en: "Could you explain that part again?", ja: 'そこをもう一度説明してもらえますか。' }
   ]},
@@ -508,13 +503,9 @@ const PHRASEBOOK = [
     { en: "Sorry, could you say that again?", ja: 'すみません、もう一度言ってもらえますか。', pick: true },
     { en: "Could you speak more slowly, please?", ja: 'もう少しゆっくり話してもらえますか。' },
     { en: "Sorry, I do not understand the question.", ja: 'すみません、質問が分かりません。', pick: true },
-    { en: "Do you mean the Lego set?", ja: 'レゴのセットのことですか？（Do you mean 〜? で確認）' },
     { en: "How do you say this in English?", ja: 'これは英語で何と言いますか。', pick: true },
-    { en: "How do you say chousa-kekka in English?", ja: '「調査結果」は英語で何と言いますか。（単語名を入れて聞く形。翻訳アプリを使うより速く、覚えられる）', pick: true },
-    { en: "Can I use the same word?", ja: '同じ単語を使ってもいいですか。' },
     { en: "Can you give me an example?", ja: '例を挙げてもらえますか。' },
     { en: "Let me check the text again.", ja: 'もう一度テキストを確認させてください。' },
-    { en: "I forgot what this word means.", ja: 'この単語の意味を忘れてしまいました。', pick: true },
     { en: "Could you give me a hint?", ja: 'ヒントをもらえますか。' },
     { en: "What do you mean by that?", ja: 'それはどういう意味ですか。（単語だけで聞き返さず、この形で）', pick: true },
     { en: "I am not familiar with that word.", ja: 'その言葉は聞いたことがありません。' },
@@ -526,25 +517,15 @@ const PHRASEBOOK = [
     { en: "That is a good question.", ja: 'いい質問ですね。（時間かせぎに使える）' },
     { en: "How can I say this?", ja: '何と言えばいいかな。' },
     { en: "I mean, not to study, but to work.", ja: 'つまり、勉強ではなく働くためです。（I mean で言い直す）' },
-    { en: "Sorry, not positive. Negative.", ja: 'ごめんなさい、ポジティブではなくネガティブです。' },
     { en: "Actually, I started in junior high school.", ja: '実は、始めたのは中学です。（Actually で訂正）' }
   ]},
   { scene: '💬 フリートーク（答えを伸ばす）', items: [
-    { en: "Of course. I love fried rice.", ja: 'もちろんです。チャーハンが大好きです。（一言で止めず、もう一文足す）', pick: true },
-    { en: "I usually have it for lunch.", ja: 'たいてい昼に食べます。（単語だけで答えない）', pick: true },
-    { en: "Yes, I cook it sometimes. It is quick and easy.", ja: 'はい、ときどき作ります。早くて簡単です。' },
     { en: "That sounds interesting.", ja: 'それは面白いですね。（感想の定番）', pick: true },
     { en: "I see. I think so too.", ja: 'なるほど。私もそう思います。（yeah yeah yeah の代わりに）', pick: true },
-    { en: "In Japan, we do not eat it for breakfast.", ja: '日本では朝ごはんには食べません。（自分の国と比べると話が広がる）' },
     { en: "How about you?", ja: 'あなたはどうですか。（質問を返すと会話が続く）', pick: true }
   ]},
   { scene: '💭 意見を言う', items: [
-    { en: "I think it is nostalgic because many people played it in Japan.", ja: '日本では多くの人が遊んだので、懐かしいと思います。', pick: true },
-    { en: "Unlike a real console, you cannot play games on it.", ja: '本物のゲーム機と違って、これでは遊べません。', pick: true },
-    { en: "It is more like a display piece.", ja: 'どちらかというと飾り物です。' },
     { en: "In my job, we have the same problem.", ja: '私の仕事でも同じ問題があります。（得意分野に寄せる）' },
-    { en: "For example, some drivers look at their smartphones.", ja: 'たとえば、運転中にスマホを見る人がいます。' },
-    { en: "Like I said, you cannot play games on it.", ja: 'さっき言ったように、これでは遊べません。' },
     { en: "I do not know the English word, but it is a kind of red soup.", ja: '英語の名前は分かりませんが、赤いスープの一種です。' }
   ]},
   { scene: '👍 賛成・反対（ディスカッション）', items: [
@@ -552,11 +533,7 @@ const PHRASEBOOK = [
     { en: "I disagree.", ja: 'そうは思いません。' },
     { en: "I agree, but it depends on the situation.", ja: '賛成ですが、状況によります。' },
     { en: "I think so too.", ja: '私もそう思います。' },
-    { en: "Workers have to think about many things at the same time.", ja: '店員は同時に多くのことを考えなければなりません。（人 + have to の型）', pick: true },
-    { en: "It is hard to say no to customers.", ja: 'お客さんに断るのは難しいです。（It is hard to の型）', pick: true },
     { en: "There are many rules to remember.", ja: '覚えるべき決まりがたくさんあります。（There are の型）', pick: true },
-    { en: "Good hospitality makes customers happy, so they come back again.", ja: '良いおもてなしはお客さんを喜ばせるので、また来てくれます。' },
-    { en: "In Japan, there is no need to tip.", ja: '日本ではチップを払う必要がありません。' },
     { en: "Watching movies is entertainment, so I do not think it is too expensive.", ja: '映画を見るのは娯楽なので、高すぎるとは思いません。（反対する時の型）', pick: true },
     { en: "I eat popcorn while watching a movie.", ja: '映画を見ながらポップコーンを食べます。（while + ing で「～しながら」）' }
   ]},
@@ -737,7 +714,7 @@ const SPEAK_ALL = [
 
 
 // 内容を追加・修正したら、必ずこの日付を更新すること（最新版かどうかの確認用）
-const APP_UPDATED = '2026/11/22b';
+const APP_UPDATED = '2026/11/23';
 document.getElementById('updated-badge').textContent = '更新 ' + APP_UPDATED;
 
 const MASTERY_THRESHOLD = 3;
